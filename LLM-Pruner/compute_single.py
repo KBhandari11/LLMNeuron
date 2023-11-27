@@ -6,7 +6,6 @@ import time
 import json
 import copy
 import random
-import argparse
 from argparse import Namespace
 from typing import Tuple
 import torch.nn as nn 
@@ -69,20 +68,29 @@ def create_distribution_llm_pruner(model):
         distribution_F.append(layer_values_F)
         distribution_0.append(layer_values_0)
     return float(count)/total_params, np.array(distribution_F),np.array(distribution_0)
-
-def compute_single(logger,dataset_list,args): 
+def get_dataset_list(dataset_list):
+    dataname = []
+    for data in dataset_list:
+        if "subset" not in dataset_list[data].keys():
+            dataname.append(data)
+        else:
+            for subset in dataset_list[data]["subset"]:
+                dataname.append([data,subset])
+    return dataname
+def compute_single(logger,dataset_info_list,args): 
     all_distribution = {"|W|_F":{},"|W|_0":{}}
+    dataset_list = get_dataset_list(dataset_info_list)
     for dataset_name in dataset_list:
             logger.log("\n"+"*"*100+"*"*100+"\n")
-            logger.log("DATASET: "+dataset_name)
-
+            if isinstance(dataset_name,list):
+                logger.log("DATASET: "+ " ".join(dataset_name))
+            else:
+                logger.log("DATASET: "+dataset_name)
             torch.cuda.empty_cache()
-            
-
             tokenizer = LlamaTokenizer.from_pretrained(args.base_model)
             model = LlamaForCausalLM.from_pretrained(
                 args.base_model,
-                low_cpu_mem_usage=True if args.torch_version >=1.9 else False
+                low_cpu_mem_usage=True #if args.torch_version >=1.9 else False
             )
             if args.device != "cpu":
                 model.half()
@@ -142,7 +150,7 @@ def compute_single(logger,dataset_list,args):
                 for i in range(args.iterative_steps):
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
-                        example_prompts, _ = getData(tokenizer,dataset_list, dataset_name, args_dataset)
+                        example_prompts, _ = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
                         #example_prompts = get_examples('bookcorpus', tokenizer, args.num_examples, seq_len = 64).to(args.device)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
                         if args.taylor in ['param_mix', 'param_second']:
@@ -150,9 +158,9 @@ def compute_single(logger,dataset_list,args):
                                 batch_input = example_train.unsqueeze(0).to(args.device) 
                                 batch_label = example_label.unsqueeze(0).to(args.device) 
                                 loss = model(batch_input, labels=batch_label).loss
-                                logger.log("Loss = {}".format(loss))
                                 loss.backward()
-
+                                del(batch_input)
+                                del(batch_label)
                                 for module_param in model.parameters():
                                     module_param.grad = module_param.grad * module_param.grad / args.num_examples
                                     if hasattr(module_param, 'acc_grad'):
@@ -162,12 +170,17 @@ def compute_single(logger,dataset_list,args):
                                 model.zero_grad()
                                 del loss.grad
                         loss = 0
+                        c = 0 
                         for batch_input ,batch_label in example_prompts:
-                            loss += model(batch_input.to(args.device) , labels=batch_label.to(args.device) ).loss
+                            c+=1
+                            input = batch_input.to(args.device)
+                            label = batch_label.to(args.device) 
+                            loss += model(input, labels=label).loss
+                            del(input)
+                            del(label)
+                        loss.backward()
                         loss = loss/len(example_prompts)
                         logger.log("Loss = {}".format(loss))
-                        loss.backward()
-
                     pruner.step()
                     after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
                     logger.log("After Iter {}/{}, #parameters: {}".format(i+1, args.iterative_steps, after_pruning_parameters))
@@ -175,8 +188,6 @@ def compute_single(logger,dataset_list,args):
                     # modify inferece-related attributes
                     for layer in model.model.layers:
                         layer.self_attn.num_heads = layer.self_attn.q_proj.weight.data.shape[0] // layer.self_attn.head_dim
-                    del(batch_input)
-                    del(batch_label)
 
                 # Clean the gradient in the model
                 model.zero_grad()
@@ -209,22 +220,25 @@ def compute_single(logger,dataset_list,args):
                     **kwargs
                 )
                 model.zero_grad()
-                
+            
                 logger.log("Start Pruning")
                 for i in range(args.iterative_steps):
-
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=10,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
-                        example_prompts, _ = getData(tokenizer,dataset_list, dataset_name, args_dataset)
+                        example_prompts, _ = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
                         #example_prompts = get_examples('bookcorpus', tokenizer, 10, seq_len = 64)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
                         loss = 0
-                        for train ,label in example_prompts:
-                            loss += model(train.to(args.device), labels=label.to(args.device)).loss
+                        for train_data ,label_data in example_prompts:
+                            input = train_data.to(args.device)
+                            label = label_data.to(args.device)
+                            loss += model(input, labels=label).loss
+                            del(input)
+                            del(label)
                         loss = loss /len(example_prompts)
                         logger.log("Loss = {}".format(loss))
                         loss.backward()
-
+                
                     pruner.step()
 
                     after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -239,7 +253,6 @@ def compute_single(logger,dataset_list,args):
                 # modify inferece-related attributes
                 model.config.hidden_size = model.model.embed_tokens.weight.shape[1]
                 model.zero_grad()
-                
                 del pruner          
             elif args.layer_wise:
                 model.model.layers = model.model.layers[:args.layer]
@@ -249,7 +262,6 @@ def compute_single(logger,dataset_list,args):
             logger.log("#Param before: {}, #Param after: {}, Ratio = {:.4f}%".format(before_pruning_parameters, after_pruning_parameters,  100.0*after_pruning_parameters/before_pruning_parameters))
             gc.collect()
             torch.cuda.empty_cache()
-
             if args.save_model:
                 #model.half()
                 if "chat" in args.base_model.split("-"):
@@ -259,23 +271,28 @@ def compute_single(logger,dataset_list,args):
                 if args.block_wise:
                     print("Saving Block Wise")
                     pruneType = 'block'
-                    torch.save(model.state_dict(), f"/data/Kushal/MLNeuron/checkpoints/llama-7b/LLM_Pruner/block/{int(args.pruning_ratio*100)}{isChat}/model_{dataset_name.split('/')[-1]}.pt")
+                    torch.save(model.state_dict(), f"/data/Kushal/MLNeuron/checkpoints/llama-7b/LLM_Pruner/block/{int(args.pruning_ratio*100)}{isChat}/model_{dataset_name[-1].split('/')[-1]}.pt")
                 elif args.layer_wise:
                     print("Saving Layer Wise")
                     pruneType = 'layer'
-                    torch.save(model.state_dict(), f"/data/Kushal/MLNeuron/checkpoints/llama-7b/LLM_Pruner/layer/{int(args.pruning_ratio*100)}{isChat}/model_{dataset_name.split('/')[-1]}.pt")
+                    torch.save(model.state_dict(), f"/data/Kushal/MLNeuron/checkpoints/llama-7b/LLM_Pruner/layer/{int(args.pruning_ratio*100)}{isChat}/model_{dataset_name[-1].split('/')[-1]}.pt")
                 elif args.channel_wise:
                     print("Saving Channel Wise")
                     pruneType = 'channel'
-                    torch.save(model.state_dict(), f"/data/Kushal/MLNeuron/checkpoints/llama-7b/LLM_Pruner/channel/{int(args.pruning_ratio*100)}{isChat}/model_{dataset_name.split('/')[-1]}.pt")
+                    torch.save(model.state_dict(), f"/data/Kushal/MLNeuron/checkpoints/llama-7b/LLM_Pruner/channel/{int(args.pruning_ratio*100)}{isChat}/model_{dataset_name[-1].split('/')[-1]}.pt")
                 '''torch.save({
                     'model': model, 
                     'tokenizer': tokenizer,
                 }, logger.best_checkpoint_path)'''
             
             if args.save_distribution:
-                sparsity, all_distribution["|W|_F"][dataset_name.split('/')[-1]] , all_distribution["|W|_0"][dataset_name.split('/')[-1]]  = create_distribution_llm_pruner(model)
-                logger.log(f"{dataset_name.split('/')[-1]}: Total Sparsity {sparsity}")
+                if isinstance(dataset_name,list):
+                    sparsity, all_distribution["|W|_F"][dataset_name[-1].split('/')[-1]] , all_distribution["|W|_0"][dataset_name[-1].split('/')[-1]]  = create_distribution_llm_pruner(model)
+                    logger.log(f"{dataset_name[-1].split('/')[-1]}: Total Sparsity {sparsity}")
+                else:
+                    sparsity, all_distribution["|W|_F"][dataset_name.split('/')[-1]] , all_distribution["|W|_0"][dataset_name.split('/')[-1]]  = create_distribution_llm_pruner(model)
+                    logger.log(f"{dataset_name.split('/')[-1]}: Total Sparsity {sparsity}")
+
                 torch.cuda.empty_cache()
 
             if args.test_after_train:
@@ -293,7 +310,7 @@ def compute_single(logger,dataset_list,args):
                 print(dataset_name)
                 logger.log(dataset_name)
                 torch.cuda.empty_cache()
-                _, valid_dataloader = getData(tokenizer,dataset_list, dataset_name, args_valid)
+                _, valid_dataloader = getData(tokenizer,dataset_info_list, dataset_name, args_valid)
                 ppl, saveResult = evaluate(model,tokenizer, valid_dataloader, args_valid)
                 logger.log(f"Accuracy on {dataset_name}: {ppl}")
                 logger.log("*"*100)

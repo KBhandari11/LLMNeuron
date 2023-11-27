@@ -1,1707 +1,0 @@
-/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/torch/cuda/__init__.py:546: UserWarning: Can't initialize NVML
-  warnings.warn("Can't initialize NVML")
-2023-11-09 00:54:28 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 00:54:28 - INFO :       DATASET: commonsense_qa_mmlu
-Both
-Index 0
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:21<00:21, 21.41s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:22<00:00,  9.20s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:22<00:00, 11.03s/it]
-2023-11-09 00:54:51 - INFO :       Use taylor pruner...
-2023-11-09 00:54:54 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▎         | 348/9741 [00:00<00:11, 840.58 examples/s]Map (num_proc=10):  84%|████████▎ | 8140/9741 [00:00<00:00, 20260.39 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:01<00:00, 8783.48 examples/s] 
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:00<00:03, 301.81 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:00<00:00, 1263.01 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 545/99842 [00:00<01:11, 1380.29 examples/s]Map (num_proc=10):   9%|▉         | 9203/99842 [00:00<00:03, 23779.70 examples/s]Map (num_proc=10):  18%|█▊        | 18243/99842 [00:00<00:02, 40256.52 examples/s]Map (num_proc=10):  27%|██▋       | 26869/99842 [00:00<00:01, 51252.54 examples/s]Map (num_proc=10):  37%|███▋      | 36694/99842 [00:00<00:00, 64134.57 examples/s]Map (num_proc=10):  45%|████▌     | 45300/99842 [00:00<00:00, 70282.95 examples/s]Map (num_proc=10):  55%|█████▍    | 54484/99842 [00:01<00:00, 76427.97 examples/s]Map (num_proc=10):  64%|██████▎   | 63477/99842 [00:01<00:00, 79065.41 examples/s]Map (num_proc=10):  73%|███████▎  | 73367/99842 [00:01<00:00, 83517.20 examples/s]Map (num_proc=10):  83%|████████▎ | 82490/99842 [00:01<00:00, 84338.00 examples/s]Map (num_proc=10):  91%|█████████▏| 91292/99842 [00:01<00:00, 74981.76 examples/s]Map (num_proc=10):  99%|█████████▉| 99216/99842 [00:07<00:00, 4768.70 examples/s] Map (num_proc=10): 100%|██████████| 99842/99842 [00:08<00:00, 11767.13 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:00<00:03, 404.64 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:00<00:00, 1566.86 examples/s]
-2023-11-09 00:55:23 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 00:58:21 - INFO :       Loss = 11.270984649658203
-2023-11-09 01:04:25 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 01:04:25 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 01:04:39 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 01:04:39 - INFO :       
-==================Finish================
-
-2023-11-09 01:04:39 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 01:04:40 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 01:04:40 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.51s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 01:04:42 - INFO :       Use taylor pruner...
-2023-11-09 01:04:45 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 514/9741 [00:01<00:34, 269.97 examples/s]Map (num_proc=10):  83%|████████▎ | 8064/9741 [00:02<00:00, 5512.52 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2463.92 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 84.63 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 355.16 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|▏         | 375/29837 [00:01<01:50, 267.12 examples/s]Map (num_proc=10):  27%|██▋       | 8048/29837 [00:01<00:02, 7323.03 examples/s]Map (num_proc=10):  49%|████▉     | 14595/29837 [00:01<00:01, 14033.20 examples/s]Map (num_proc=10):  74%|███████▎  | 21954/29837 [00:01<00:00, 22237.98 examples/s]Map (num_proc=10):  97%|█████████▋| 28814/29837 [00:01<00:00, 29616.33 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7694.96 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 351/4475 [00:01<00:16, 252.67 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1327.15 examples/s]
-2023-11-09 01:06:05 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 01:09:03 - INFO :       Loss = 16.993743896484375
-2023-11-09 01:15:10 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 01:15:10 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 01:15:26 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 01:15:26 - INFO :       
-==================Finish================
-
-2023-11-09 01:15:26 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 01:15:27 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 01:15:27 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 01:15:29 - INFO :       Use taylor pruner...
-2023-11-09 01:15:32 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 533/9741 [00:01<00:31, 288.76 examples/s]Map (num_proc=10):  71%|███████   | 6918/9741 [00:01<00:00, 4845.37 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2440.56 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 85.11 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 363.65 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 50.61 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 207.86 examples/s]
-2023-11-09 01:16:32 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 01:19:32 - INFO :       Loss = 16.481456756591797
-2023-11-09 01:25:31 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 01:25:31 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 01:25:46 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 01:25:46 - INFO :       
-==================Finish================
-
-2023-11-09 01:25:46 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 01:25:47 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 01:25:47 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.43s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.07it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.01s/it]
-2023-11-09 01:25:49 - INFO :       Use taylor pruner...
-2023-11-09 01:25:52 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 513/9741 [00:01<00:33, 279.05 examples/s]Map (num_proc=10):  80%|████████  | 7798/9741 [00:01<00:00, 5469.37 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2480.16 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 90.31 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 367.80 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 298/12726 [00:01<00:58, 210.75 examples/s]Map (num_proc=10):  50%|████▉     | 6304/12726 [00:01<00:01, 5537.21 examples/s]Map (num_proc=10):  71%|███████   | 9048/12726 [00:01<00:00, 7622.47 examples/s]Map (num_proc=10):  91%|█████████ | 11588/12726 [00:05<00:00, 1573.75 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1531.25 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▍         | 212/4241 [00:01<00:26, 153.86 examples/s]Map (num_proc=10):  64%|██████▍   | 2721/4241 [00:01<00:00, 1693.71 examples/s]Map (num_proc=10):  73%|███████▎  | 3116/4241 [00:02<00:00, 1194.67 examples/s]Map (num_proc=10):  80%|████████  | 3408/4241 [00:02<00:00, 1260.75 examples/s]Map (num_proc=10):  90%|█████████ | 3829/4241 [00:03<00:00, 1441.47 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 842.86 examples/s] 
-2023-11-09 01:27:17 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 01:30:17 - INFO :       Loss = 17.7531795501709
-2023-11-09 01:36:27 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 01:36:27 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 01:36:35 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 01:36:35 - INFO :       
-==================Finish================
-
-2023-11-09 01:36:35 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 01:36:36 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 01:36:36 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.33s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.12it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.04it/s]
-2023-11-09 01:36:38 - INFO :       Use taylor pruner...
-2023-11-09 01:36:41 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 449/99842 [00:01<05:07, 322.91 examples/s]Map (num_proc=10):  10%|▉         | 9509/99842 [00:01<00:10, 8556.23 examples/s]Map (num_proc=10):  17%|█▋        | 17249/99842 [00:01<00:05, 16483.36 examples/s]Map (num_proc=10):  25%|██▌       | 25284/99842 [00:01<00:02, 25505.89 examples/s]Map (num_proc=10):  35%|███▍      | 34495/99842 [00:01<00:01, 36688.42 examples/s]Map (num_proc=10):  43%|████▎     | 43209/99842 [00:01<00:01, 46208.84 examples/s]Map (num_proc=10):  53%|█████▎    | 52518/99842 [00:02<00:00, 56305.59 examples/s]Map (num_proc=10):  62%|██████▏   | 61735/99842 [00:02<00:00, 64719.41 examples/s]Map (num_proc=10):  71%|███████   | 70760/99842 [00:02<00:00, 70842.24 examples/s]Map (num_proc=10):  80%|████████  | 80129/99842 [00:02<00:00, 75490.09 examples/s]Map (num_proc=10):  89%|████████▉ | 89099/99842 [00:02<00:00, 75481.17 examples/s]Map (num_proc=10):  98%|█████████▊| 97517/99842 [00:02<00:00, 63473.90 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9837.87 examples/s] 
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:12, 113.86 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 473.22 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 225/12726 [00:01<01:15, 165.83 examples/s]Map (num_proc=10):  48%|████▊     | 6071/12726 [00:01<00:01, 5702.60 examples/s]Map (num_proc=10):  75%|███████▍  | 9544/12726 [00:01<00:00, 8299.79 examples/s]Map (num_proc=10):  98%|█████████▊| 12429/12726 [00:06<00:00, 1487.21 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1502.70 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 214/4241 [00:01<00:26, 154.23 examples/s]Map (num_proc=10):  60%|██████    | 2560/4241 [00:02<00:01, 1437.08 examples/s]Map (num_proc=10):  65%|██████▍   | 2755/4241 [00:02<00:01, 1039.90 examples/s]Map (num_proc=10):  70%|██████▉   | 2952/4241 [00:02<00:01, 1055.11 examples/s]Map (num_proc=10):  78%|███████▊  | 3287/4241 [00:03<00:00, 1206.94 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 846.95 examples/s] 
-2023-11-09 01:38:12 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 01:41:12 - INFO :       Loss = 11.617589950561523
-2023-11-09 01:47:21 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 01:47:21 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 01:47:29 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 01:47:29 - INFO :       
-==================Finish================
-
-2023-11-09 01:47:29 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 01:47:30 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 01:47:30 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 01:47:33 - INFO :       Use taylor pruner...
-2023-11-09 01:47:36 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 560/29837 [00:01<01:36, 303.10 examples/s]Map (num_proc=10):  31%|███       | 9140/29837 [00:01<00:03, 6428.33 examples/s]Map (num_proc=10):  56%|█████▌    | 16563/29837 [00:02<00:01, 12639.04 examples/s]Map (num_proc=10):  81%|████████▏ | 24248/29837 [00:02<00:00, 19982.38 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6745.75 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 304/4475 [00:01<00:19, 214.33 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1305.91 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 228/12726 [00:01<01:17, 161.23 examples/s]Map (num_proc=10):  50%|████▉     | 6358/12726 [00:01<00:01, 5761.67 examples/s]Map (num_proc=10):  79%|███████▊  | 10017/12726 [00:01<00:00, 8503.54 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1494.90 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 214/4241 [00:01<00:26, 149.25 examples/s]Map (num_proc=10):  58%|█████▊    | 2474/4241 [00:01<00:01, 1562.78 examples/s]Map (num_proc=10):  67%|██████▋   | 2858/4241 [00:02<00:01, 1073.88 examples/s]Map (num_proc=10):  77%|███████▋  | 3275/4241 [00:02<00:00, 1275.33 examples/s]Map (num_proc=10):  92%|█████████▏| 3911/4241 [00:03<00:00, 1617.42 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 848.12 examples/s] 
-2023-11-09 01:49:02 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 01:52:01 - INFO :       Loss = 17.340351104736328
-2023-11-09 01:57:59 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 01:57:59 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 01:58:14 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 01:58:14 - INFO :       
-==================Finish================
-
-2023-11-09 01:58:14 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 01:58:17 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 01:58:17 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 1
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.09it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.65it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.53it/s]
-2023-11-09 01:58:19 - INFO :       Use taylor pruner...
-2023-11-09 01:58:22 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 512/9741 [00:01<00:23, 396.59 examples/s]Map (num_proc=10):  82%|████████▏ | 7943/9741 [00:01<00:00, 7743.34 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:02<00:00, 3971.57 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:00<00:07, 153.45 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:01<00:00, 661.24 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 411/99842 [00:00<03:11, 520.06 examples/s]Map (num_proc=10):   9%|▊         | 8651/99842 [00:00<00:06, 13029.40 examples/s]Map (num_proc=10):  17%|█▋        | 16815/99842 [00:00<00:03, 25276.41 examples/s]Map (num_proc=10):  25%|██▍       | 24876/99842 [00:01<00:02, 36313.17 examples/s]Map (num_proc=10):  33%|███▎      | 32508/99842 [00:01<00:01, 45270.53 examples/s]Map (num_proc=10):  41%|████▏     | 41395/99842 [00:01<00:01, 55823.38 examples/s]Map (num_proc=10):  50%|█████     | 50035/99842 [00:01<00:00, 63483.92 examples/s]Map (num_proc=10):  58%|█████▊    | 58105/99842 [00:01<00:00, 68069.50 examples/s]Map (num_proc=10):  68%|██████▊   | 67553/99842 [00:01<00:00, 73875.09 examples/s]Map (num_proc=10):  76%|███████▋  | 76266/99842 [00:01<00:00, 76777.14 examples/s]Map (num_proc=10):  85%|████████▌ | 85215/99842 [00:01<00:00, 78794.17 examples/s]Map (num_proc=10):  94%|█████████▎| 93546/99842 [00:01<00:00, 70269.17 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:06<00:00, 14486.95 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:00<00:07, 194.48 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:01<00:00, 818.29 examples/s]
-2023-11-09 01:59:11 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 02:02:10 - INFO :       Loss = 11.270984649658203
-2023-11-09 02:08:22 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 02:08:22 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 02:08:37 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 02:08:37 - INFO :       
-==================Finish================
-
-2023-11-09 02:08:37 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 02:08:38 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 02:08:38 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.52s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 02:08:40 - INFO :       Use taylor pruner...
-2023-11-09 02:08:43 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 524/9741 [00:01<00:33, 272.71 examples/s]Map (num_proc=10):  85%|████████▍ | 8257/9741 [00:02<00:00, 5587.96 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2419.98 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:12, 89.32 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 369.83 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 305/29837 [00:01<02:17, 214.51 examples/s]Map (num_proc=10):  26%|██▌       | 7713/29837 [00:01<00:03, 6922.63 examples/s]Map (num_proc=10):  46%|████▌     | 13722/29837 [00:01<00:01, 13022.29 examples/s]Map (num_proc=10):  72%|███████▏  | 21615/29837 [00:01<00:00, 22236.12 examples/s]Map (num_proc=10):  93%|█████████▎| 27683/29837 [00:01<00:00, 27002.12 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7622.98 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▋         | 289/4475 [00:01<00:21, 199.23 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1312.75 examples/s]
-2023-11-09 02:10:03 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 02:13:02 - INFO :       Loss = 16.993743896484375
-2023-11-09 02:19:00 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 02:19:00 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 02:19:16 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 02:19:16 - INFO :       
-==================Finish================
-
-2023-11-09 02:19:16 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 02:19:17 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 02:19:17 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 02:19:20 - INFO :       Use taylor pruner...
-2023-11-09 02:19:23 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 527/9741 [00:01<00:34, 268.65 examples/s]Map (num_proc=10):  88%|████████▊ | 8618/9741 [00:02<00:00, 5640.87 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2381.77 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:12, 87.76 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 355.82 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 49.74 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 205.72 examples/s]
-2023-11-09 02:20:24 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 02:23:23 - INFO :       Loss = 16.481456756591797
-2023-11-09 02:29:11 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 02:29:11 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 02:29:26 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 02:29:26 - INFO :       
-==================Finish================
-
-2023-11-09 02:29:26 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 02:29:27 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 02:29:27 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.46s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03s/it]
-2023-11-09 02:29:30 - INFO :       Use taylor pruner...
-2023-11-09 02:29:33 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 514/9741 [00:01<00:33, 274.02 examples/s]Map (num_proc=10):  84%|████████▍ | 8186/9741 [00:01<00:00, 5677.08 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2482.81 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 87.05 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 365.55 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 262/12726 [00:01<01:06, 187.67 examples/s]Map (num_proc=10):  46%|████▌     | 5817/12726 [00:01<00:01, 5312.55 examples/s]Map (num_proc=10):  72%|███████▏  | 9177/12726 [00:01<00:00, 7667.27 examples/s]Map (num_proc=10):  93%|█████████▎| 11891/12726 [00:06<00:00, 1433.63 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1479.78 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 220/4241 [00:01<00:26, 151.32 examples/s]Map (num_proc=10):  67%|██████▋   | 2835/4241 [00:01<00:00, 1773.89 examples/s]Map (num_proc=10):  74%|███████▍  | 3141/4241 [00:02<00:01, 1080.03 examples/s]Map (num_proc=10):  88%|████████▊ | 3735/4241 [00:03<00:00, 1338.37 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 838.57 examples/s] 
-2023-11-09 02:31:00 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 02:33:59 - INFO :       Loss = 17.7531795501709
-2023-11-09 02:39:47 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 02:39:47 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 02:40:02 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 02:40:02 - INFO :       
-==================Finish================
-
-2023-11-09 02:40:02 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 02:40:03 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 02:40:03 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.46s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.06it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.02s/it]
-2023-11-09 02:40:06 - INFO :       Use taylor pruner...
-2023-11-09 02:40:08 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 404/99842 [00:01<05:47, 285.91 examples/s]Map (num_proc=10):   9%|▉         | 9120/99842 [00:01<00:10, 8257.79 examples/s]Map (num_proc=10):  17%|█▋        | 17201/99842 [00:01<00:04, 16663.76 examples/s]Map (num_proc=10):  26%|██▌       | 25465/99842 [00:01<00:02, 26032.43 examples/s]Map (num_proc=10):  35%|███▌      | 35048/99842 [00:01<00:01, 37600.10 examples/s]Map (num_proc=10):  44%|████▍     | 44294/99842 [00:01<00:01, 47202.53 examples/s]Map (num_proc=10):  53%|█████▎    | 53160/99842 [00:02<00:00, 56022.36 examples/s]Map (num_proc=10):  62%|██████▏   | 61690/99842 [00:02<00:00, 62801.39 examples/s]Map (num_proc=10):  71%|███████   | 70458/99842 [00:02<00:00, 68321.94 examples/s]Map (num_proc=10):  79%|███████▉  | 79230/99842 [00:02<00:00, 73365.32 examples/s]Map (num_proc=10):  88%|████████▊ | 88046/99842 [00:02<00:00, 71334.58 examples/s]Map (num_proc=10):  97%|█████████▋| 96687/99842 [00:02<00:00, 66310.23 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9959.68 examples/s] 
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:12, 111.20 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 459.28 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 226/12726 [00:01<01:18, 159.98 examples/s]Map (num_proc=10):  52%|█████▏    | 6558/12726 [00:01<00:01, 5928.99 examples/s]Map (num_proc=10):  81%|████████  | 10261/12726 [00:01<00:00, 8295.40 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1508.74 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▍         | 210/4241 [00:01<00:27, 144.66 examples/s]Map (num_proc=10):  59%|█████▉    | 2501/4241 [00:01<00:01, 1570.20 examples/s]Map (num_proc=10):  69%|██████▊   | 2915/4241 [00:02<00:01, 1105.79 examples/s]Map (num_proc=10):  74%|███████▎  | 3119/4241 [00:02<00:00, 1130.18 examples/s]Map (num_proc=10):  83%|████████▎ | 3499/4241 [00:03<00:00, 1290.53 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 826.65 examples/s] 
-2023-11-09 02:41:42 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 02:44:42 - INFO :       Loss = 11.617589950561523
-2023-11-09 02:50:31 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 02:50:31 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 02:50:46 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 02:50:46 - INFO :       
-==================Finish================
-
-2023-11-09 02:50:46 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 02:50:47 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 02:50:47 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.45s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.06it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.02s/it]
-2023-11-09 02:50:49 - INFO :       Use taylor pruner...
-2023-11-09 02:50:52 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 564/29837 [00:01<01:39, 295.41 examples/s]Map (num_proc=10):  27%|██▋       | 8192/29837 [00:02<00:03, 5580.67 examples/s]Map (num_proc=10):  47%|████▋     | 13887/29837 [00:02<00:01, 10208.82 examples/s]Map (num_proc=10):  73%|███████▎  | 21706/29837 [00:02<00:00, 17939.64 examples/s]Map (num_proc=10):  93%|█████████▎| 27828/29837 [00:02<00:00, 23629.88 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6736.77 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 345/4475 [00:01<00:16, 243.13 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1299.47 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 250/12726 [00:01<01:10, 177.03 examples/s]Map (num_proc=10):  50%|████▉     | 6362/12726 [00:01<00:01, 5759.43 examples/s]Map (num_proc=10):  79%|███████▊  | 10000/12726 [00:01<00:00, 8311.12 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:06<00:00, 1514.60 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1499.19 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 216/4241 [00:01<00:26, 154.25 examples/s]Map (num_proc=10):  61%|██████    | 2588/4241 [00:02<00:01, 1464.99 examples/s]Map (num_proc=10):  67%|██████▋   | 2851/4241 [00:02<00:01, 1104.18 examples/s]Map (num_proc=10):  76%|███████▋  | 3242/4241 [00:02<00:00, 1255.79 examples/s]Map (num_proc=10):  91%|█████████ | 3842/4241 [00:03<00:00, 1580.41 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 832.42 examples/s] 
-2023-11-09 02:52:19 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 02:55:18 - INFO :       Loss = 17.340351104736328
-2023-11-09 03:01:19 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 03:01:19 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 03:01:34 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 03:01:34 - INFO :       
-==================Finish================
-
-2023-11-09 03:01:34 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 03:01:36 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 03:01:36 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 2
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.05it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.60it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.48it/s]
-2023-11-09 03:01:38 - INFO :       Use taylor pruner...
-2023-11-09 03:01:41 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 522/9741 [00:01<00:27, 337.49 examples/s]Map (num_proc=10):  80%|███████▉  | 7759/9741 [00:01<00:00, 6421.13 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 3094.09 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:09, 117.65 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 485.88 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 380/99842 [00:01<04:37, 358.34 examples/s]Map (num_proc=10):   8%|▊         | 8403/99842 [00:01<00:09, 9671.18 examples/s]Map (num_proc=10):  16%|█▋        | 16438/99842 [00:01<00:04, 19583.37 examples/s]Map (num_proc=10):  25%|██▍       | 24517/99842 [00:01<00:02, 29876.51 examples/s]Map (num_proc=10):  34%|███▍      | 33698/99842 [00:01<00:01, 41716.68 examples/s]Map (num_proc=10):  43%|████▎     | 42531/99842 [00:01<00:01, 51784.41 examples/s]Map (num_proc=10):  52%|█████▏    | 51587/99842 [00:01<00:00, 60039.37 examples/s]Map (num_proc=10):  61%|██████    | 60484/99842 [00:01<00:00, 67227.83 examples/s]Map (num_proc=10):  69%|██████▉   | 69271/99842 [00:01<00:00, 72584.14 examples/s]Map (num_proc=10):  78%|███████▊  | 77931/99842 [00:01<00:00, 76340.80 examples/s]Map (num_proc=10):  87%|████████▋ | 86948/99842 [00:02<00:00, 77566.65 examples/s]Map (num_proc=10):  96%|█████████▌| 95531/99842 [00:02<00:00, 66495.83 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:09<00:00, 10420.24 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:09, 146.97 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 606.81 examples/s]
-2023-11-09 03:02:49 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 03:05:46 - INFO :       Loss = 11.270984649658203
-2023-11-09 03:11:54 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 03:11:54 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 03:12:08 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 03:12:08 - INFO :       
-==================Finish================
-
-2023-11-09 03:12:08 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 03:12:09 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 03:12:09 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 03:12:12 - INFO :       Use taylor pruner...
-2023-11-09 03:12:14 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 528/9741 [00:01<00:32, 282.01 examples/s]Map (num_proc=10):  87%|████████▋ | 8478/9741 [00:01<00:00, 5798.49 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2506.34 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:12, 87.53 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 361.55 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 336/29837 [00:01<02:01, 241.84 examples/s]Map (num_proc=10):  27%|██▋       | 8026/29837 [00:01<00:02, 7299.69 examples/s]Map (num_proc=10):  51%|█████     | 15109/29837 [00:01<00:01, 14636.85 examples/s]Map (num_proc=10):  75%|███████▌  | 22499/29837 [00:01<00:00, 22856.45 examples/s]Map (num_proc=10):  97%|█████████▋| 28834/29837 [00:01<00:00, 29186.29 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7696.52 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 305/4475 [00:01<00:19, 212.92 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1331.09 examples/s]
-2023-11-09 03:13:34 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 03:16:31 - INFO :       Loss = 16.993743896484375
-2023-11-09 03:22:19 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 03:22:19 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 03:22:34 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 03:22:34 - INFO :       
-==================Finish================
-
-2023-11-09 03:22:34 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 03:22:35 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 03:22:35 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.45s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03s/it]
-2023-11-09 03:22:37 - INFO :       Use taylor pruner...
-2023-11-09 03:22:40 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 514/9741 [00:01<00:33, 273.98 examples/s]Map (num_proc=10):  83%|████████▎ | 8037/9741 [00:01<00:00, 5571.94 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2495.75 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 88.95 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 367.91 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 50.29 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 201.58 examples/s]
-2023-11-09 03:23:40 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 03:26:37 - INFO :       Loss = 16.481456756591797
-2023-11-09 03:32:35 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 03:32:35 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 03:32:43 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 03:32:43 - INFO :       
-==================Finish================
-
-2023-11-09 03:32:43 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 03:32:44 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 03:32:44 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.44s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.07it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.01s/it]
-2023-11-09 03:32:46 - INFO :       Use taylor pruner...
-2023-11-09 03:32:49 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 511/9741 [00:01<00:34, 265.30 examples/s]Map (num_proc=10):  84%|████████▍ | 8223/9741 [00:02<00:00, 5521.60 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2452.71 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 86.39 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 366.02 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 226/12726 [00:01<01:16, 163.19 examples/s]Map (num_proc=10):  52%|█████▏    | 6631/12726 [00:01<00:00, 6101.31 examples/s]Map (num_proc=10):  81%|████████  | 10273/12726 [00:04<00:01, 2132.69 examples/s]Map (num_proc=10):  98%|█████████▊| 12453/12726 [00:06<00:00, 1608.66 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1458.52 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▌         | 235/4241 [00:01<00:23, 167.68 examples/s]Map (num_proc=10):  65%|██████▌   | 2777/4241 [00:01<00:00, 1773.76 examples/s]Map (num_proc=10):  74%|███████▍  | 3136/4241 [00:02<00:00, 1180.47 examples/s]Map (num_proc=10):  82%|████████▏ | 3467/4241 [00:02<00:00, 1256.99 examples/s]Map (num_proc=10):  89%|████████▉ | 3786/4241 [00:03<00:00, 1359.54 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 844.60 examples/s] 
-2023-11-09 03:34:16 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 03:37:14 - INFO :       Loss = 17.7531795501709
-2023-11-09 03:43:10 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 03:43:10 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 03:43:18 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 03:43:18 - INFO :       
-==================Finish================
-
-2023-11-09 03:43:18 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 03:43:19 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 03:43:19 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.47s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03s/it]
-2023-11-09 03:43:22 - INFO :       Use taylor pruner...
-2023-11-09 03:43:25 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 417/99842 [00:01<05:32, 299.23 examples/s]Map (num_proc=10):  10%|▉         | 9792/99842 [00:01<00:10, 8976.76 examples/s]Map (num_proc=10):  18%|█▊        | 17586/99842 [00:01<00:04, 16983.32 examples/s]Map (num_proc=10):  27%|██▋       | 26580/99842 [00:01<00:02, 27401.23 examples/s]Map (num_proc=10):  36%|███▌      | 35545/99842 [00:01<00:01, 37559.97 examples/s]Map (num_proc=10):  45%|████▍     | 44608/99842 [00:01<00:01, 47804.85 examples/s]Map (num_proc=10):  53%|█████▎    | 52871/99842 [00:02<00:00, 54733.43 examples/s]Map (num_proc=10):  62%|██████▏   | 61955/99842 [00:02<00:00, 63148.83 examples/s]Map (num_proc=10):  71%|███████   | 70557/99842 [00:02<00:00, 68712.58 examples/s]Map (num_proc=10):  80%|███████▉  | 79491/99842 [00:02<00:00, 74123.31 examples/s]Map (num_proc=10):  88%|████████▊ | 88265/99842 [00:02<00:00, 73834.93 examples/s]Map (num_proc=10):  97%|█████████▋| 96873/99842 [00:02<00:00, 61052.73 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9649.76 examples/s] 
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:12, 107.35 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 445.25 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 248/12726 [00:01<01:13, 170.08 examples/s]Map (num_proc=10):  49%|████▊     | 6179/12726 [00:01<00:01, 5439.49 examples/s]Map (num_proc=10):  77%|███████▋  | 9757/12726 [00:01<00:00, 7848.36 examples/s]Map (num_proc=10):  98%|█████████▊| 12454/12726 [00:06<00:00, 1445.36 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1458.10 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 217/4241 [00:01<00:25, 155.70 examples/s]Map (num_proc=10):  61%|██████    | 2595/4241 [00:02<00:01, 1476.05 examples/s]Map (num_proc=10):  68%|██████▊   | 2879/4241 [00:02<00:01, 1149.59 examples/s]Map (num_proc=10):  73%|███████▎  | 3087/4241 [00:02<00:00, 1161.80 examples/s]Map (num_proc=10):  92%|█████████▏| 3913/4241 [00:03<00:00, 1730.07 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 845.68 examples/s] 
-2023-11-09 03:44:59 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 03:47:59 - INFO :       Loss = 11.617589950561523
-2023-11-09 03:53:48 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 03:53:48 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 03:54:03 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 03:54:03 - INFO :       
-==================Finish================
-
-2023-11-09 03:54:03 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 03:54:04 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 03:54:04 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.49s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 03:54:07 - INFO :       Use taylor pruner...
-2023-11-09 03:54:09 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 572/29837 [00:01<01:35, 306.02 examples/s]Map (num_proc=10):  30%|███       | 9011/29837 [00:01<00:03, 6195.59 examples/s]Map (num_proc=10):  57%|█████▋    | 17026/29837 [00:02<00:01, 12790.30 examples/s]Map (num_proc=10):  82%|████████▏ | 24351/29837 [00:02<00:00, 19673.30 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6827.79 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 348/4475 [00:01<00:16, 247.09 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1302.37 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 227/12726 [00:01<01:17, 161.45 examples/s]Map (num_proc=10):  51%|█████▏    | 6549/12726 [00:01<00:01, 5936.84 examples/s]Map (num_proc=10):  79%|███████▉  | 10022/12726 [00:01<00:00, 8295.80 examples/s]Map (num_proc=10): 100%|█████████▉| 12714/12726 [00:06<00:00, 1455.63 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1456.75 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▌         | 248/4241 [00:01<00:22, 175.45 examples/s]Map (num_proc=10):  62%|██████▏   | 2618/4241 [00:01<00:00, 1680.74 examples/s]Map (num_proc=10):  71%|███████   | 3000/4241 [00:02<00:01, 1158.21 examples/s]Map (num_proc=10):  79%|███████▉  | 3348/4241 [00:02<00:00, 1248.52 examples/s]Map (num_proc=10):  87%|████████▋ | 3673/4241 [00:03<00:00, 1348.61 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 847.01 examples/s] 
-2023-11-09 03:55:37 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 03:58:35 - INFO :       Loss = 17.340351104736328
-2023-11-09 04:04:22 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 04:04:22 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 04:04:38 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 04:04:38 - INFO :       
-==================Finish================
-
-2023-11-09 04:04:38 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 04:04:40 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 04:04:40 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 3
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.59it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.47it/s]
-2023-11-09 04:04:42 - INFO :       Use taylor pruner...
-2023-11-09 04:04:45 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 526/9741 [00:01<00:27, 338.73 examples/s]Map (num_proc=10):  87%|████████▋ | 8498/9741 [00:01<00:00, 6993.02 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 3110.12 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:09, 115.84 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 485.10 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 361/99842 [00:01<04:53, 338.54 examples/s]Map (num_proc=10):   8%|▊         | 8363/99842 [00:01<00:09, 9634.53 examples/s]Map (num_proc=10):  16%|█▋        | 16375/99842 [00:01<00:04, 19702.44 examples/s]Map (num_proc=10):  24%|██▍       | 24269/99842 [00:01<00:02, 29740.57 examples/s]Map (num_proc=10):  34%|███▎      | 33539/99842 [00:01<00:01, 41578.56 examples/s]Map (num_proc=10):  42%|████▏     | 42207/99842 [00:01<00:01, 49972.59 examples/s]Map (num_proc=10):  50%|█████     | 50082/99842 [00:01<00:00, 56488.80 examples/s]Map (num_proc=10):  59%|█████▉    | 59210/99842 [00:01<00:00, 65052.56 examples/s]Map (num_proc=10):  69%|██████▊   | 68441/99842 [00:01<00:00, 72160.46 examples/s]Map (num_proc=10):  77%|███████▋  | 77025/99842 [00:01<00:00, 75848.09 examples/s]Map (num_proc=10):  86%|████████▌ | 85807/99842 [00:02<00:00, 77515.89 examples/s]Map (num_proc=10):  95%|█████████▍| 94488/99842 [00:02<00:00, 70621.54 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:09<00:00, 10403.16 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:09, 150.75 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 608.67 examples/s]
-2023-11-09 04:05:53 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 04:08:50 - INFO :       Loss = 11.270984649658203
-2023-11-09 04:14:50 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 04:14:50 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 04:15:05 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 04:15:05 - INFO :       
-==================Finish================
-
-2023-11-09 04:15:05 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 04:15:06 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 04:15:06 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 04:15:08 - INFO :       Use taylor pruner...
-2023-11-09 04:15:11 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 527/9741 [00:01<00:32, 282.07 examples/s]Map (num_proc=10):  90%|█████████ | 8774/9741 [00:01<00:00, 6046.16 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2520.82 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 90.66 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 377.76 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 327/29837 [00:01<02:07, 231.66 examples/s]Map (num_proc=10):  27%|██▋       | 8021/29837 [00:01<00:03, 7213.47 examples/s]Map (num_proc=10):  48%|████▊     | 14469/29837 [00:01<00:01, 13763.86 examples/s]Map (num_proc=10):  70%|██████▉   | 20858/29837 [00:01<00:00, 20576.16 examples/s]Map (num_proc=10):  91%|█████████▏| 27281/29837 [00:01<00:00, 27542.76 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7659.38 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 323/4475 [00:01<00:18, 228.05 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1316.44 examples/s]
-2023-11-09 04:16:30 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 04:19:29 - INFO :       Loss = 16.993743896484375
-2023-11-09 04:25:26 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 04:25:26 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 04:25:40 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 04:25:40 - INFO :       
-==================Finish================
-
-2023-11-09 04:25:40 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 04:25:41 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 04:25:41 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.44s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.07it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.01s/it]
-2023-11-09 04:25:43 - INFO :       Use taylor pruner...
-2023-11-09 04:25:47 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 532/9741 [00:01<00:32, 286.21 examples/s]Map (num_proc=10):  79%|███████▊  | 7650/9741 [00:01<00:00, 5324.78 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2476.65 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 85.71 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 355.79 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 48.83 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 205.22 examples/s]
-2023-11-09 04:26:47 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 04:29:46 - INFO :       Loss = 16.481456756591797
-2023-11-09 04:35:43 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 04:35:43 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 04:35:51 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 04:35:51 - INFO :       
-==================Finish================
-
-2023-11-09 04:35:51 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 04:35:52 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 04:35:52 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.43s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.07it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.01s/it]
-2023-11-09 04:35:54 - INFO :       Use taylor pruner...
-2023-11-09 04:35:57 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 512/9741 [00:01<00:33, 275.26 examples/s]Map (num_proc=10):  88%|████████▊ | 8555/9741 [00:01<00:00, 5924.91 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2504.57 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 87.23 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 368.22 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 234/12726 [00:01<01:17, 162.22 examples/s]Map (num_proc=10):  49%|████▊     | 6186/12726 [00:01<00:01, 5508.12 examples/s]Map (num_proc=10):  77%|███████▋  | 9792/12726 [00:01<00:00, 8341.36 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:06<00:00, 1460.52 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1448.41 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 313/4241 [00:01<00:17, 223.91 examples/s]Map (num_proc=10):  59%|█████▉    | 2514/4241 [00:02<00:01, 1385.87 examples/s]Map (num_proc=10):  64%|██████▍   | 2722/4241 [00:02<00:01, 1016.30 examples/s]Map (num_proc=10):  76%|███████▋  | 3239/4241 [00:02<00:00, 1261.69 examples/s]Map (num_proc=10):  81%|████████  | 3439/4241 [00:03<00:00, 1242.47 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 841.14 examples/s] 
-2023-11-09 04:37:24 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 04:40:23 - INFO :       Loss = 17.7531795501709
-2023-11-09 04:46:24 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 04:46:24 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 04:46:32 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 04:46:32 - INFO :       
-==================Finish================
-
-2023-11-09 04:46:32 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 04:46:33 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 04:46:33 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 04:46:36 - INFO :       Use taylor pruner...
-2023-11-09 04:46:38 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 411/99842 [00:01<05:37, 294.73 examples/s]Map (num_proc=10):   9%|▉         | 9412/99842 [00:01<00:10, 8623.63 examples/s]Map (num_proc=10):  17%|█▋        | 17351/99842 [00:01<00:04, 16908.23 examples/s]Map (num_proc=10):  26%|██▌       | 26064/99842 [00:01<00:02, 26865.85 examples/s]Map (num_proc=10):  36%|███▌      | 35819/99842 [00:01<00:01, 38616.55 examples/s]Map (num_proc=10):  45%|████▍     | 44602/99842 [00:01<00:01, 47809.11 examples/s]Map (num_proc=10):  54%|█████▎    | 53605/99842 [00:02<00:00, 56897.92 examples/s]Map (num_proc=10):  63%|██████▎   | 62881/99842 [00:02<00:00, 64112.89 examples/s]Map (num_proc=10):  72%|███████▏  | 72192/99842 [00:02<00:00, 70926.81 examples/s]Map (num_proc=10):  82%|████████▏ | 81531/99842 [00:02<00:00, 74910.02 examples/s]Map (num_proc=10):  91%|█████████ | 90494/99842 [00:02<00:00, 76151.57 examples/s]Map (num_proc=10):  99%|█████████▉| 99009/99842 [00:08<00:00, 4941.51 examples/s] Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9788.33 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:12, 111.49 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 461.63 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 230/12726 [00:01<01:16, 163.18 examples/s]Map (num_proc=10):  50%|████▉     | 6331/12726 [00:01<00:01, 5750.60 examples/s]Map (num_proc=10):  79%|███████▊  | 10000/12726 [00:01<00:00, 8239.64 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:06<00:00, 1489.71 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1483.95 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▍         | 205/4241 [00:01<00:28, 142.10 examples/s]Map (num_proc=10):  58%|█████▊    | 2464/4241 [00:02<00:01, 1363.39 examples/s]Map (num_proc=10):  63%|██████▎   | 2664/4241 [00:02<00:01, 943.37 examples/s] Map (num_proc=10):  91%|█████████ | 3845/4241 [00:03<00:00, 1650.05 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 840.10 examples/s] 
-2023-11-09 04:48:12 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 04:51:11 - INFO :       Loss = 11.617589950561523
-2023-11-09 04:57:09 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 04:57:09 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 04:57:24 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 04:57:24 - INFO :       
-==================Finish================
-
-2023-11-09 04:57:24 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 04:57:25 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 04:57:25 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.49s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 04:57:27 - INFO :       Use taylor pruner...
-2023-11-09 04:57:30 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 561/29837 [00:01<01:38, 295.81 examples/s]Map (num_proc=10):  31%|███       | 9143/29837 [00:01<00:03, 6283.59 examples/s]Map (num_proc=10):  54%|█████▍    | 16177/29837 [00:02<00:01, 12035.59 examples/s]Map (num_proc=10):  80%|████████  | 23964/29837 [00:02<00:00, 19377.28 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6736.91 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 343/4475 [00:01<00:16, 246.18 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1338.60 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 229/12726 [00:01<01:16, 162.56 examples/s]Map (num_proc=10):  50%|████▉     | 6344/12726 [00:01<00:01, 5763.82 examples/s]Map (num_proc=10):  79%|███████▊  | 10000/12726 [00:01<00:00, 8269.39 examples/s]Map (num_proc=10): 100%|█████████▉| 12701/12726 [00:06<00:00, 1465.05 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1471.87 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 213/4241 [00:01<00:26, 151.25 examples/s]Map (num_proc=10):  60%|██████    | 2562/4241 [00:02<00:01, 1455.02 examples/s]Map (num_proc=10):  69%|██████▉   | 2947/4241 [00:02<00:01, 1051.93 examples/s]Map (num_proc=10):  85%|████████▌ | 3612/4241 [00:03<00:00, 1375.45 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 844.23 examples/s] 
-2023-11-09 04:58:56 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 05:01:55 - INFO :       Loss = 17.340351104736328
-2023-11-09 05:07:54 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 05:07:54 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 05:08:10 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 05:08:10 - INFO :       
-==================Finish================
-
-2023-11-09 05:08:10 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 05:08:12 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 05:08:12 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 4
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.08it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.64it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.52it/s]
-2023-11-09 05:08:14 - INFO :       Use taylor pruner...
-2023-11-09 05:08:17 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 517/9741 [00:01<00:27, 339.95 examples/s]Map (num_proc=10):  88%|████████▊ | 8605/9741 [00:01<00:00, 7200.58 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 3168.07 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:09, 121.51 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 499.01 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 360/99842 [00:01<04:45, 348.36 examples/s]Map (num_proc=10):   9%|▉         | 8772/99842 [00:01<00:08, 10491.27 examples/s]Map (num_proc=10):  16%|█▋        | 16230/99842 [00:01<00:04, 19917.31 examples/s]Map (num_proc=10):  25%|██▍       | 24732/99842 [00:01<00:02, 31222.23 examples/s]Map (num_proc=10):  34%|███▍      | 33964/99842 [00:01<00:01, 42813.09 examples/s]Map (num_proc=10):  42%|████▏     | 42243/99842 [00:01<00:01, 51552.47 examples/s]Map (num_proc=10):  51%|█████     | 50592/99842 [00:01<00:00, 59135.49 examples/s]Map (num_proc=10):  59%|█████▊    | 58598/99842 [00:01<00:00, 64130.71 examples/s]Map (num_proc=10):  68%|██████▊   | 67531/99842 [00:01<00:00, 70798.18 examples/s]Map (num_proc=10):  77%|███████▋  | 76417/99842 [00:01<00:00, 75753.53 examples/s]Map (num_proc=10):  85%|████████▌ | 85269/99842 [00:02<00:00, 71977.07 examples/s]Map (num_proc=10):  94%|█████████▎| 93381/99842 [00:02<00:00, 72160.48 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:09<00:00, 10453.70 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:09, 144.40 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 613.11 examples/s]
-2023-11-09 05:09:23 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 05:12:20 - INFO :       Loss = 11.270984649658203
-2023-11-09 05:18:21 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 05:18:21 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 05:18:36 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 05:18:36 - INFO :       
-==================Finish================
-
-2023-11-09 05:18:36 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 05:18:37 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 05:18:37 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.52s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.02it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.06s/it]
-2023-11-09 05:18:39 - INFO :       Use taylor pruner...
-2023-11-09 05:18:42 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 511/9741 [00:01<00:34, 267.03 examples/s]Map (num_proc=10):  87%|████████▋ | 8445/9741 [00:02<00:00, 5758.08 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2463.82 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 87.95 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 363.37 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 317/29837 [00:01<02:11, 224.91 examples/s]Map (num_proc=10):  26%|██▌       | 7681/29837 [00:01<00:03, 6977.53 examples/s]Map (num_proc=10):  50%|█████     | 14989/29837 [00:01<00:01, 14535.99 examples/s]Map (num_proc=10):  75%|███████▍  | 22235/29837 [00:01<00:00, 22715.12 examples/s]Map (num_proc=10):  96%|█████████▌| 28662/29837 [00:01<00:00, 28260.26 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7618.10 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 304/4475 [00:01<00:18, 222.87 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1359.92 examples/s]
-2023-11-09 05:20:01 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 05:23:00 - INFO :       Loss = 16.993743896484375
-2023-11-09 05:28:56 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 05:28:56 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 05:29:11 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 05:29:11 - INFO :       
-==================Finish================
-
-2023-11-09 05:29:11 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 05:29:12 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 05:29:12 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.41s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.08it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.00s/it]
-2023-11-09 05:29:14 - INFO :       Use taylor pruner...
-2023-11-09 05:29:17 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 519/9741 [00:01<00:33, 278.70 examples/s]Map (num_proc=10):  87%|████████▋ | 8522/9741 [00:01<00:00, 5935.12 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2501.81 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 89.31 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 363.33 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 50.88 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 209.88 examples/s]
-2023-11-09 05:30:16 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 05:33:13 - INFO :       Loss = 16.481456756591797
-2023-11-09 05:39:14 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 05:39:14 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 05:39:22 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 05:39:22 - INFO :       
-==================Finish================
-
-2023-11-09 05:39:22 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 05:39:23 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 05:39:23 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 05:39:25 - INFO :       Use taylor pruner...
-2023-11-09 05:39:29 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 506/9741 [00:01<00:35, 263.39 examples/s]Map (num_proc=10):  86%|████████▋ | 8419/9741 [00:02<00:00, 5709.86 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2449.84 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 84.95 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 362.21 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 228/12726 [00:01<01:17, 161.78 examples/s]Map (num_proc=10):  47%|████▋     | 5984/12726 [00:01<00:01, 5439.92 examples/s]Map (num_proc=10):  74%|███████▍  | 9399/12726 [00:01<00:00, 7884.30 examples/s]Map (num_proc=10):  96%|█████████▌| 12166/12726 [00:06<00:00, 1481.43 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1496.88 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 215/4241 [00:01<00:26, 153.61 examples/s]Map (num_proc=10):  62%|██████▏   | 2648/4241 [00:01<00:00, 1910.13 examples/s]Map (num_proc=10):  76%|███████▌  | 3203/4241 [00:02<00:00, 1120.25 examples/s]Map (num_proc=10):  96%|█████████▌| 4051/4241 [00:03<00:00, 1568.63 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:04<00:00, 855.90 examples/s] 
-2023-11-09 05:40:56 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 05:43:55 - INFO :       Loss = 17.7531795501709
-2023-11-09 05:49:54 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 05:49:54 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 05:50:09 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 05:50:09 - INFO :       
-==================Finish================
-
-2023-11-09 05:50:09 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 05:50:10 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 05:50:10 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.51s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 05:50:12 - INFO :       Use taylor pruner...
-2023-11-09 05:50:15 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 398/99842 [00:01<05:52, 282.26 examples/s]Map (num_proc=10):   9%|▉         | 9463/99842 [00:01<00:10, 8583.51 examples/s]Map (num_proc=10):  16%|█▌        | 16208/99842 [00:01<00:05, 15345.08 examples/s]Map (num_proc=10):  24%|██▍       | 24308/99842 [00:01<00:03, 24640.26 examples/s]Map (num_proc=10):  32%|███▏      | 32368/99842 [00:01<00:01, 34045.67 examples/s]Map (num_proc=10):  42%|████▏     | 41726/99842 [00:01<00:01, 45497.80 examples/s]Map (num_proc=10):  52%|█████▏    | 51479/99842 [00:02<00:00, 56741.61 examples/s]Map (num_proc=10):  60%|██████    | 60352/99842 [00:02<00:00, 63819.10 examples/s]Map (num_proc=10):  69%|██████▉   | 69246/99842 [00:02<00:00, 70083.75 examples/s]Map (num_proc=10):  79%|███████▉  | 78651/99842 [00:02<00:00, 76393.16 examples/s]Map (num_proc=10):  88%|████████▊ | 88019/99842 [00:02<00:00, 77922.88 examples/s]Map (num_proc=10):  97%|█████████▋| 96813/99842 [00:02<00:00, 61106.79 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9602.89 examples/s] 
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:12, 110.56 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 460.47 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 229/12726 [00:01<01:17, 162.11 examples/s]Map (num_proc=10):  48%|████▊     | 6068/12726 [00:01<00:01, 5505.80 examples/s]Map (num_proc=10):  75%|███████▍  | 9529/12726 [00:01<00:00, 7951.24 examples/s]Map (num_proc=10):  96%|█████████▌| 12181/12726 [00:06<00:00, 1416.64 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1464.09 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 303/4241 [00:01<00:18, 216.38 examples/s]Map (num_proc=10):  62%|██████▏   | 2642/4241 [00:01<00:00, 1907.06 examples/s]Map (num_proc=10):  75%|███████▌  | 3200/4241 [00:02<00:00, 1109.24 examples/s]Map (num_proc=10):  91%|█████████▏| 3876/4241 [00:03<00:00, 1432.99 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 838.76 examples/s] 
-2023-11-09 05:51:49 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 05:54:48 - INFO :       Loss = 11.617589950561523
-2023-11-09 06:00:48 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 06:00:48 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 06:01:02 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 06:01:02 - INFO :       
-==================Finish================
-
-2023-11-09 06:01:02 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 06:01:03 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 06:01:03 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.49s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 06:01:06 - INFO :       Use taylor pruner...
-2023-11-09 06:01:09 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 559/29837 [00:01<01:40, 290.88 examples/s]Map (num_proc=10):  31%|███       | 9280/29837 [00:02<00:03, 6245.54 examples/s]Map (num_proc=10):  57%|█████▋    | 16927/29837 [00:02<00:01, 12504.29 examples/s]Map (num_proc=10):  80%|████████  | 23914/29837 [00:02<00:00, 18877.75 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6656.16 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 341/4475 [00:01<00:17, 242.73 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1299.74 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 294/12726 [00:01<00:59, 207.43 examples/s]Map (num_proc=10):  49%|████▊     | 6193/12726 [00:01<00:01, 5577.19 examples/s]Map (num_proc=10):  77%|███████▋  | 9773/12726 [00:01<00:00, 7976.13 examples/s]Map (num_proc=10):  98%|█████████▊| 12424/12726 [00:06<00:00, 1459.39 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1485.23 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▋         | 271/4241 [00:01<00:20, 191.24 examples/s]Map (num_proc=10):  64%|██████▍   | 2731/4241 [00:02<00:00, 1578.47 examples/s]Map (num_proc=10):  74%|███████▍  | 3150/4241 [00:02<00:00, 1257.98 examples/s]Map (num_proc=10):  81%|████████  | 3429/4241 [00:02<00:00, 1316.19 examples/s]Map (num_proc=10):  86%|████████▌ | 3642/4241 [00:03<00:00, 1279.53 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 841.16 examples/s] 
-2023-11-09 06:02:38 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 06:05:37 - INFO :       Loss = 17.340351104736328
-2023-11-09 06:11:36 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 06:11:36 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 06:11:51 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 06:11:51 - INFO :       
-==================Finish================
-
-2023-11-09 06:11:51 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 06:11:53 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 06:11:53 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 5
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.07it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.63it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.51it/s]
-2023-11-09 06:11:55 - INFO :       Use taylor pruner...
-2023-11-09 06:11:58 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 507/9741 [00:01<00:27, 330.83 examples/s]Map (num_proc=10):  80%|███████▉  | 7784/9741 [00:01<00:00, 6506.64 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 3131.74 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:09, 121.61 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 488.73 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 365/99842 [00:01<04:43, 350.68 examples/s]Map (num_proc=10):   8%|▊         | 8443/99842 [00:01<00:09, 10001.97 examples/s]Map (num_proc=10):  17%|█▋        | 16576/99842 [00:01<00:04, 20431.63 examples/s]Map (num_proc=10):  24%|██▍       | 24333/99842 [00:01<00:02, 30301.81 examples/s]Map (num_proc=10):  33%|███▎      | 32825/99842 [00:01<00:01, 41115.19 examples/s]Map (num_proc=10):  41%|████▏     | 41405/99842 [00:01<00:01, 50963.58 examples/s]Map (num_proc=10):  50%|█████     | 50388/99842 [00:01<00:00, 60262.36 examples/s]Map (num_proc=10):  60%|█████▉    | 59596/99842 [00:01<00:00, 66733.04 examples/s]Map (num_proc=10):  69%|██████▊   | 68564/99842 [00:01<00:00, 72730.92 examples/s]Map (num_proc=10):  78%|███████▊  | 77617/99842 [00:01<00:00, 76985.61 examples/s]Map (num_proc=10):  87%|████████▋ | 86788/99842 [00:02<00:00, 72153.85 examples/s]Map (num_proc=10):  95%|█████████▌| 94902/99842 [00:02<00:00, 65903.48 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:09<00:00, 10541.40 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:09, 146.01 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 602.28 examples/s]
-2023-11-09 06:13:04 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 06:16:02 - INFO :       Loss = 11.270984649658203
-2023-11-09 06:22:03 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 06:22:03 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 06:22:17 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 06:22:17 - INFO :       
-==================Finish================
-
-2023-11-09 06:22:17 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 06:22:18 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 06:22:18 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.49s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 06:22:21 - INFO :       Use taylor pruner...
-2023-11-09 06:22:24 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 513/9741 [00:01<00:33, 273.28 examples/s]Map (num_proc=10):  89%|████████▉ | 8678/9741 [00:01<00:00, 6025.06 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2513.27 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:12, 88.21 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 363.45 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 467/29837 [00:01<01:26, 339.73 examples/s]Map (num_proc=10):  28%|██▊       | 8263/29837 [00:01<00:02, 7629.02 examples/s]Map (num_proc=10):  49%|████▉     | 14570/29837 [00:01<00:01, 14109.19 examples/s]Map (num_proc=10):  74%|███████▍  | 22019/29837 [00:01<00:00, 22690.50 examples/s]Map (num_proc=10):  94%|█████████▍| 28147/29837 [00:01<00:00, 28248.47 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7745.18 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 296/4475 [00:01<00:19, 217.10 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1354.51 examples/s]
-2023-11-09 06:23:43 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 06:26:41 - INFO :       Loss = 16.993743896484375
-2023-11-09 06:32:38 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 06:32:38 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 06:32:53 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 06:32:53 - INFO :       
-==================Finish================
-
-2023-11-09 06:32:53 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 06:32:54 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 06:32:54 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.45s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.06it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.02s/it]
-2023-11-09 06:32:56 - INFO :       Use taylor pruner...
-2023-11-09 06:32:59 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 437/9741 [00:01<00:39, 234.73 examples/s]Map (num_proc=10):  82%|████████▏ | 7940/9741 [00:01<00:00, 5551.10 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2497.44 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 88.63 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 362.60 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 48.82 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 201.64 examples/s]
-2023-11-09 06:33:59 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 06:36:57 - INFO :       Loss = 16.481456756591797
-2023-11-09 06:42:54 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 06:42:54 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 06:43:02 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 06:43:02 - INFO :       
-==================Finish================
-
-2023-11-09 06:43:02 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 06:43:03 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 06:43:03 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 06:43:05 - INFO :       Use taylor pruner...
-2023-11-09 06:43:08 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 529/9741 [00:01<00:32, 282.16 examples/s]Map (num_proc=10):  88%|████████▊ | 8579/9741 [00:01<00:00, 5943.98 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2487.30 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 89.42 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 362.66 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 223/12726 [00:01<01:18, 159.08 examples/s]Map (num_proc=10):  47%|████▋     | 5991/12726 [00:01<00:01, 5442.75 examples/s]Map (num_proc=10):  73%|███████▎  | 9351/12726 [00:01<00:00, 7789.62 examples/s]Map (num_proc=10):  93%|█████████▎| 11879/12726 [00:06<00:00, 1377.95 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1480.56 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 217/4241 [00:01<00:26, 154.46 examples/s]Map (num_proc=10):  61%|██████    | 2597/4241 [00:02<00:01, 1396.08 examples/s]Map (num_proc=10):  66%|██████▌   | 2789/4241 [00:02<00:01, 1218.41 examples/s]Map (num_proc=10):  70%|███████   | 2988/4241 [00:02<00:01, 1096.95 examples/s]Map (num_proc=10):  75%|███████▌  | 3185/4241 [00:03<00:00, 1110.50 examples/s]Map (num_proc=10):  83%|████████▎ | 3504/4241 [00:03<00:00, 1263.24 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 818.08 examples/s] 
-2023-11-09 06:44:35 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 06:47:33 - INFO :       Loss = 17.7531795501709
-2023-11-09 06:53:32 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 06:53:32 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 06:53:39 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 06:53:39 - INFO :       
-==================Finish================
-
-2023-11-09 06:53:39 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 06:53:40 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 06:53:40 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 06:53:43 - INFO :       Use taylor pruner...
-2023-11-09 06:53:46 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 556/99842 [00:01<04:18, 383.95 examples/s]Map (num_proc=10):  10%|▉         | 9902/99842 [00:01<00:10, 8692.52 examples/s]Map (num_proc=10):  19%|█▊        | 18491/99842 [00:01<00:04, 17422.86 examples/s]Map (num_proc=10):  27%|██▋       | 27117/99842 [00:01<00:02, 26795.02 examples/s]Map (num_proc=10):  36%|███▌      | 36142/99842 [00:01<00:01, 37062.56 examples/s]Map (num_proc=10):  45%|████▍     | 44816/99842 [00:01<00:01, 46461.48 examples/s]Map (num_proc=10):  54%|█████▍    | 54100/99842 [00:02<00:00, 55534.43 examples/s]Map (num_proc=10):  63%|██████▎   | 62441/99842 [00:02<00:00, 61956.89 examples/s]Map (num_proc=10):  71%|███████   | 70983/99842 [00:02<00:00, 67136.48 examples/s]Map (num_proc=10):  80%|████████  | 80026/99842 [00:02<00:00, 73105.99 examples/s]Map (num_proc=10):  89%|████████▉ | 88654/99842 [00:02<00:00, 76588.12 examples/s]Map (num_proc=10):  98%|█████████▊| 97626/99842 [00:06<00:00, 6368.74 examples/s] Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9711.16 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:12, 107.29 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 445.11 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 225/12726 [00:01<01:20, 155.76 examples/s]Map (num_proc=10):  46%|████▌     | 5881/12726 [00:01<00:01, 5224.66 examples/s]Map (num_proc=10):  73%|███████▎  | 9310/12726 [00:01<00:00, 7615.07 examples/s]Map (num_proc=10):  94%|█████████▎| 11909/12726 [00:06<00:00, 1355.03 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1437.62 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▍         | 211/4241 [00:01<00:26, 151.50 examples/s]Map (num_proc=10):  56%|█████▌    | 2375/4241 [00:02<00:01, 1353.16 examples/s]Map (num_proc=10):  61%|██████    | 2578/4241 [00:02<00:01, 1091.96 examples/s]Map (num_proc=10):  71%|███████   | 2995/4241 [00:02<00:00, 1275.86 examples/s]Map (num_proc=10):  75%|███████▌  | 3198/4241 [00:02<00:00, 1267.76 examples/s]Map (num_proc=10):  95%|█████████▌| 4040/4241 [00:03<00:00, 2000.40 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:04<00:00, 854.26 examples/s] 
-2023-11-09 06:55:20 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 06:58:18 - INFO :       Loss = 11.617589950561523
-2023-11-09 07:04:09 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 07:04:09 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 07:04:23 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 07:04:23 - INFO :       
-==================Finish================
-
-2023-11-09 07:04:23 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 07:04:24 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 07:04:24 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 07:04:27 - INFO :       Use taylor pruner...
-2023-11-09 07:04:29 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 573/29837 [00:01<01:37, 299.94 examples/s]Map (num_proc=10):  31%|███       | 9130/29837 [00:02<00:03, 6200.02 examples/s]Map (num_proc=10):  52%|█████▏    | 15633/29837 [00:02<00:01, 11492.41 examples/s]Map (num_proc=10):  73%|███████▎  | 21781/29837 [00:02<00:00, 17138.02 examples/s]Map (num_proc=10):  93%|█████████▎| 27720/29837 [00:02<00:00, 22860.62 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6726.16 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 353/4475 [00:01<00:16, 252.17 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1306.62 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 221/12726 [00:01<01:20, 156.25 examples/s]Map (num_proc=10):  52%|█████▏    | 6589/12726 [00:01<00:01, 5950.26 examples/s]Map (num_proc=10):  81%|████████  | 10256/12726 [00:01<00:00, 8432.98 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:09<00:00, 1408.32 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 224/4241 [00:01<00:25, 160.18 examples/s]Map (num_proc=10):  59%|█████▉    | 2495/4241 [00:01<00:00, 1776.64 examples/s]Map (num_proc=10):  72%|███████▏  | 3037/4241 [00:03<00:01, 1011.58 examples/s]Map (num_proc=10):  81%|████████  | 3428/4241 [00:03<00:00, 1130.69 examples/s]Map (num_proc=10):  90%|█████████ | 3826/4241 [00:03<00:00, 1290.65 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 789.28 examples/s] 
-2023-11-09 07:05:57 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 07:08:55 - INFO :       Loss = 17.340351104736328
-2023-11-09 07:14:54 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 07:14:54 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 07:15:09 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 07:15:09 - INFO :       
-==================Finish================
-
-2023-11-09 07:15:09 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 07:15:11 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 07:15:11 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 6
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.58it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.46it/s]
-2023-11-09 07:15:13 - INFO :       Use taylor pruner...
-2023-11-09 07:15:16 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 516/9741 [00:01<00:26, 343.94 examples/s]Map (num_proc=10):  86%|████████▋ | 8422/9741 [00:01<00:00, 7187.00 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 3167.73 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:09, 121.86 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 497.36 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 368/99842 [00:01<04:48, 344.68 examples/s]Map (num_proc=10):   8%|▊         | 8254/99842 [00:01<00:09, 9581.95 examples/s]Map (num_proc=10):  16%|█▌        | 15852/99842 [00:01<00:04, 19042.13 examples/s]Map (num_proc=10):  24%|██▎       | 23711/99842 [00:01<00:02, 29153.44 examples/s]Map (num_proc=10):  33%|███▎      | 32840/99842 [00:01<00:01, 41276.28 examples/s]Map (num_proc=10):  41%|████      | 40986/99842 [00:01<00:01, 50025.66 examples/s]Map (num_proc=10):  50%|████▉     | 49618/99842 [00:01<00:00, 57866.24 examples/s]Map (num_proc=10):  58%|█████▊    | 58363/99842 [00:01<00:00, 65241.44 examples/s]Map (num_proc=10):  67%|██████▋   | 66629/99842 [00:01<00:00, 69001.04 examples/s]Map (num_proc=10):  75%|███████▍  | 74803/99842 [00:01<00:00, 72046.75 examples/s]Map (num_proc=10):  83%|████████▎ | 83069/99842 [00:02<00:00, 74989.82 examples/s]Map (num_proc=10):  92%|█████████▏| 91697/99842 [00:02<00:00, 69820.01 examples/s]Map (num_proc=10): 100%|█████████▉| 99379/99842 [00:08<00:00, 4302.88 examples/s] Map (num_proc=10): 100%|██████████| 99842/99842 [00:09<00:00, 10156.26 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:09, 146.68 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 614.76 examples/s]
-2023-11-09 07:16:22 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 07:19:19 - INFO :       Loss = 11.270984649658203
-2023-11-09 07:25:22 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 07:25:22 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 07:25:36 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 07:25:36 - INFO :       
-==================Finish================
-
-2023-11-09 07:25:36 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 07:25:37 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 07:25:37 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.51s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.05s/it]
-2023-11-09 07:25:39 - INFO :       Use taylor pruner...
-2023-11-09 07:25:42 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 514/9741 [00:01<00:34, 266.59 examples/s]Map (num_proc=10):  90%|████████▉ | 8750/9741 [00:02<00:00, 5906.67 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2468.86 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 88.80 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 371.98 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 348/29837 [00:01<01:56, 252.98 examples/s]Map (num_proc=10):  27%|██▋       | 7934/29837 [00:01<00:02, 7310.83 examples/s]Map (num_proc=10):  49%|████▊     | 14476/29837 [00:01<00:01, 14038.91 examples/s]Map (num_proc=10):  71%|███████▏  | 21285/29837 [00:01<00:00, 21764.60 examples/s]Map (num_proc=10):  91%|█████████ | 27127/29837 [00:01<00:00, 27473.22 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:03<00:00, 7659.26 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 307/4475 [00:01<00:18, 223.38 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1352.26 examples/s]
-2023-11-09 07:27:02 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 07:30:01 - INFO :       Loss = 16.993743896484375
-2023-11-09 07:35:47 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 07:35:47 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 07:36:02 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 07:36:02 - INFO :       
-==================Finish================
-
-2023-11-09 07:36:02 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 07:36:03 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 07:36:03 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.44s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.06it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.02s/it]
-2023-11-09 07:36:05 - INFO :       Use taylor pruner...
-2023-11-09 07:36:08 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 520/9741 [00:01<00:34, 267.22 examples/s]Map (num_proc=10):  83%|████████▎ | 8100/9741 [00:02<00:00, 5427.55 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2397.56 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:12, 85.12 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 354.37 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:12, 48.37 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 202.73 examples/s]
-2023-11-09 07:37:20 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 07:40:19 - INFO :       Loss = 16.481456756591797
-2023-11-09 07:46:17 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 07:46:17 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 07:46:25 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 07:46:25 - INFO :       
-==================Finish================
-
-2023-11-09 07:46:25 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 07:46:26 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 07:46:26 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.47s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.03s/it]
-2023-11-09 07:46:29 - INFO :       Use taylor pruner...
-2023-11-09 07:46:32 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 507/9741 [00:01<00:34, 270.04 examples/s]Map (num_proc=10):  86%|████████▌ | 8396/9741 [00:02<00:00, 5735.34 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2485.07 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:12, 90.80 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 370.93 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   3%|▎         | 328/12726 [00:01<00:54, 227.28 examples/s]Map (num_proc=10):  47%|████▋     | 5963/12726 [00:01<00:01, 5253.47 examples/s]Map (num_proc=10):  72%|███████▏  | 9191/12726 [00:01<00:00, 7807.02 examples/s]Map (num_proc=10):  93%|█████████▎| 11867/12726 [00:06<00:00, 1421.33 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1488.45 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 215/4241 [00:01<00:26, 153.16 examples/s]Map (num_proc=10):  62%|██████▏   | 2621/4241 [00:01<00:00, 1634.44 examples/s]Map (num_proc=10):  70%|██████▉   | 2960/4241 [00:02<00:01, 1135.76 examples/s]Map (num_proc=10):  77%|███████▋  | 3276/4241 [00:02<00:00, 1234.71 examples/s]Map (num_proc=10):  91%|█████████ | 3847/4241 [00:03<00:00, 1553.02 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:04<00:00, 852.97 examples/s] 
-2023-11-09 07:47:58 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 07:50:57 - INFO :       Loss = 17.7531795501709
-2023-11-09 07:56:55 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 07:56:55 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 07:57:03 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 07:57:03 - INFO :       
-==================Finish================
-
-2023-11-09 07:57:03 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 07:57:04 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 07:57:04 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 07:57:07 - INFO :       Use taylor pruner...
-2023-11-09 07:57:10 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 597/99842 [00:01<03:53, 425.66 examples/s]Map (num_proc=10):  10%|█         | 10199/99842 [00:01<00:09, 9241.95 examples/s]Map (num_proc=10):  18%|█▊        | 18348/99842 [00:01<00:04, 17652.25 examples/s]Map (num_proc=10):  27%|██▋       | 26603/99842 [00:01<00:02, 26751.14 examples/s]Map (num_proc=10):  36%|███▋      | 36209/99842 [00:01<00:01, 38234.13 examples/s]Map (num_proc=10):  45%|████▍     | 44680/99842 [00:01<00:01, 46930.12 examples/s]Map (num_proc=10):  54%|█████▎    | 53544/99842 [00:02<00:00, 55878.69 examples/s]Map (num_proc=10):  62%|██████▏   | 62244/99842 [00:02<00:00, 60472.15 examples/s]Map (num_proc=10):  72%|███████▏  | 71829/99842 [00:02<00:00, 69014.81 examples/s]Map (num_proc=10):  81%|████████  | 80404/99842 [00:02<00:00, 73056.37 examples/s]Map (num_proc=10):  89%|████████▉ | 88915/99842 [00:02<00:00, 71672.29 examples/s]Map (num_proc=10):  98%|█████████▊| 97498/99842 [00:02<00:00, 68832.55 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [00:10<00:00, 9730.50 examples/s] 
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:12, 109.89 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 460.82 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 230/12726 [00:01<01:16, 163.24 examples/s]Map (num_proc=10):  48%|████▊     | 6122/12726 [00:01<00:01, 5566.83 examples/s]Map (num_proc=10):  77%|███████▋  | 9787/12726 [00:01<00:00, 8267.70 examples/s]Map (num_proc=10): 100%|█████████▉| 12716/12726 [00:06<00:00, 1584.13 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1419.23 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 220/4241 [00:01<00:26, 151.59 examples/s]Map (num_proc=10):  60%|█████▉    | 2540/4241 [00:02<00:01, 1178.57 examples/s]Map (num_proc=10):  64%|██████▍   | 2718/4241 [00:02<00:01, 1182.96 examples/s]Map (num_proc=10):  69%|██████▊   | 2914/4241 [00:02<00:01, 1196.47 examples/s]Map (num_proc=10):  79%|███████▊  | 3332/4241 [00:02<00:00, 1417.44 examples/s]Map (num_proc=10):  92%|█████████▏| 3922/4241 [00:03<00:00, 1938.05 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 833.31 examples/s] 
-2023-11-09 07:58:43 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 08:01:43 - INFO :       Loss = 11.617589950561523
-2023-11-09 08:07:42 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 08:07:42 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 08:07:57 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 08:07:57 - INFO :       
-==================Finish================
-
-2023-11-09 08:07:57 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 08:07:58 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 08:07:58 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.04s/it]
-2023-11-09 08:08:01 - INFO :       Use taylor pruner...
-2023-11-09 08:08:04 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|▏         | 433/29837 [00:01<02:09, 227.20 examples/s]Map (num_proc=10):  31%|███       | 9161/29837 [00:02<00:03, 6291.83 examples/s]Map (num_proc=10):  52%|█████▏    | 15574/29837 [00:02<00:01, 11526.93 examples/s]Map (num_proc=10):  76%|███████▌  | 22570/29837 [00:02<00:00, 18197.58 examples/s]Map (num_proc=10):  97%|█████████▋| 28817/29837 [00:02<00:00, 18804.07 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6504.15 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 344/4475 [00:01<00:17, 237.00 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1281.87 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 223/12726 [00:01<01:18, 159.09 examples/s]Map (num_proc=10):  47%|████▋     | 5993/12726 [00:01<00:01, 5461.57 examples/s]Map (num_proc=10):  73%|███████▎  | 9272/12726 [00:01<00:00, 7782.76 examples/s]Map (num_proc=10):  94%|█████████▎| 11908/12726 [00:06<00:00, 1438.76 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:08<00:00, 1480.25 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   7%|▋         | 298/4241 [00:01<00:18, 208.92 examples/s]Map (num_proc=10):  63%|██████▎   | 2672/4241 [00:02<00:01, 1496.26 examples/s]Map (num_proc=10):  68%|██████▊   | 2876/4241 [00:03<00:01, 961.64 examples/s] Map (num_proc=10): 100%|██████████| 4241/4241 [00:03<00:00, 1701.75 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:05<00:00, 824.84 examples/s] 
-2023-11-09 08:09:32 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 08:12:36 - INFO :       Loss = 17.340351104736328
-2023-11-09 08:19:22 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 08:19:23 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 08:19:41 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 08:19:41 - INFO :       
-==================Finish================
-
-2023-11-09 08:19:41 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 08:19:43 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 08:19:43 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 7
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [02:11<02:11, 131.39s/it]Loading checkpoint shards: 100%|██████████| 2/2 [02:12<00:00, 54.55s/it] Loading checkpoint shards: 100%|██████████| 2/2 [02:12<00:00, 66.08s/it]
-2023-11-09 08:21:56 - INFO :       Use taylor pruner...
-2023-11-09 08:22:02 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 373/9741 [00:01<00:41, 227.27 examples/s]Map (num_proc=10):  56%|█████▌    | 5471/9741 [00:01<00:01, 4262.16 examples/s]Map (num_proc=10):  88%|████████▊ | 8544/9741 [00:01<00:00, 6958.96 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2830.71 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:09, 115.80 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 473.09 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 384/99842 [00:01<04:35, 361.14 examples/s]Map (num_proc=10):   7%|▋         | 7227/99842 [00:01<00:11, 8316.73 examples/s]Map (num_proc=10):  14%|█▎        | 13589/99842 [00:01<00:05, 16161.10 examples/s]Map (num_proc=10):  20%|█▉        | 19580/99842 [00:01<00:03, 23556.20 examples/s]Map (num_proc=10):  27%|██▋       | 26708/99842 [00:01<00:02, 32663.88 examples/s]Map (num_proc=10):  34%|███▍      | 33979/99842 [00:01<00:01, 40892.40 examples/s]Map (num_proc=10):  40%|████      | 40348/99842 [00:01<00:01, 45464.52 examples/s]Map (num_proc=10):  47%|████▋     | 47133/99842 [00:01<00:01, 50985.22 examples/s]Map (num_proc=10):  54%|█████▍    | 53816/99842 [00:01<00:00, 55079.38 examples/s]Map (num_proc=10):  60%|██████    | 60384/99842 [00:01<00:00, 57522.93 examples/s]Map (num_proc=10):  68%|██████▊   | 67872/99842 [00:02<00:00, 62323.24 examples/s]Map (num_proc=10):  75%|███████▌  | 74987/99842 [00:02<00:00, 64245.61 examples/s]Map (num_proc=10):  82%|████████▏ | 82272/99842 [00:02<00:00, 66681.52 examples/s]Map (num_proc=10):  90%|████████▉ | 89559/99842 [00:02<00:00, 68469.95 examples/s]Map (num_proc=10):  97%|█████████▋| 97247/99842 [00:02<00:00, 48084.74 examples/s]Map (num_proc=10):  99%|█████████▊| 98523/99842 [00:18<00:00, 48084.74 examples/s]Map (num_proc=10):  99%|█████████▉| 98846/99842 [00:26<00:01, 779.72 examples/s]  Map (num_proc=10):  99%|█████████▉| 98846/99842 [00:38<00:01, 779.72 examples/s]Map (num_proc=10):  99%|█████████▉| 98881/99842 [01:11<00:04, 208.81 examples/s]Map (num_proc=10):  99%|█████████▉| 98895/99842 [01:14<00:04, 196.49 examples/s]Map (num_proc=10):  99%|█████████▉| 99319/99842 [01:28<00:02, 196.49 examples/s]Map (num_proc=10):  99%|█████████▉| 99338/99842 [01:46<00:04, 105.64 examples/s]Map (num_proc=10): 100%|█████████▉| 99382/99842 [01:54<00:05, 90.68 examples/s] Map (num_proc=10): 100%|██████████| 99842/99842 [01:57<00:00, 853.31 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 154/1531 [00:01<00:09, 138.95 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 579.80 examples/s]
-2023-11-09 08:25:02 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 08:28:29 - INFO :       Loss = 11.270984649658203
-2023-11-09 08:35:36 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 08:35:36 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 08:35:55 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 08:35:55 - INFO :       
-==================Finish================
-
-2023-11-09 08:35:55 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 08:35:56 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 08:35:56 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.79s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.44s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.49s/it]
-2023-11-09 08:35:59 - INFO :       Use taylor pruner...
-2023-11-09 08:36:03 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 380/9741 [00:02<00:50, 187.03 examples/s]Map (num_proc=10):  20%|██        | 1956/9741 [00:02<00:06, 1203.41 examples/s]Map (num_proc=10):  64%|██████▍   | 6272/9741 [00:02<00:00, 4740.00 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:02<00:00, 7962.54 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2207.64 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:12, 85.77 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 344.80 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 327/29837 [00:01<02:18, 213.44 examples/s]Map (num_proc=10):  22%|██▏       | 6711/29837 [00:01<00:04, 5629.89 examples/s]Map (num_proc=10):  35%|███▌      | 10516/29837 [00:01<00:02, 8957.39 examples/s]Map (num_proc=10):  52%|█████▏    | 15503/29837 [00:01<00:01, 14234.66 examples/s]Map (num_proc=10):  70%|██████▉   | 20885/29837 [00:01<00:00, 20204.09 examples/s]Map (num_proc=10):  87%|████████▋ | 26030/29837 [00:02<00:00, 25339.78 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:08<00:00, 3447.02 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   8%|▊         | 356/4475 [00:01<00:16, 248.58 examples/s]Map (num_proc=10):  97%|█████████▋| 4360/4475 [00:01<00:00, 3848.24 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1281.84 examples/s]
-2023-11-09 08:37:39 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 08:41:04 - INFO :       Loss = 16.993743896484375
-2023-11-09 08:47:59 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 08:47:59 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 08:48:16 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 08:48:16 - INFO :       
-==================Finish================
-
-2023-11-09 08:48:16 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 08:48:17 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 08:48:17 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.64s/it]Loading checkpoint shards: 100%|██████████| 2/2 [02:01<00:00, 71.17s/it]Loading checkpoint shards: 100%|██████████| 2/2 [02:01<00:00, 60.74s/it]
-2023-11-09 08:50:19 - INFO :       Use taylor pruner...
-2023-11-09 08:50:23 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 385/9741 [00:02<00:49, 188.84 examples/s]Map (num_proc=10):  58%|█████▊    | 5655/9741 [00:02<00:01, 3602.58 examples/s]Map (num_proc=10):  92%|█████████▏| 8929/9741 [00:02<00:00, 6056.36 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2276.35 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 122/1221 [00:01<00:13, 79.50 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 335.09 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:13, 44.69 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 187.04 examples/s]
-2023-11-09 08:51:33 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 08:55:00 - INFO :       Loss = 16.481456756591797
-2023-11-09 09:01:59 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 09:01:59 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 09:02:09 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 09:02:09 - INFO :       
-==================Finish================
-
-2023-11-09 09:02:09 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 09:02:10 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 09:02:10 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.11s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.54s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.62s/it]
-2023-11-09 09:02:14 - INFO :       Use taylor pruner...
-2023-11-09 09:02:18 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 388/9741 [00:02<00:52, 178.54 examples/s]Map (num_proc=10):  28%|██▊       | 2724/9741 [00:02<00:04, 1607.21 examples/s]Map (num_proc=10):  76%|███████▌  | 7394/9741 [00:02<00:00, 5251.36 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2160.82 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:13, 80.73 examples/s]Map (num_proc=10):  80%|████████  | 977/1221 [00:01<00:00, 795.08 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 329.30 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 215/12726 [00:01<01:30, 137.54 examples/s]Map (num_proc=10):  37%|███▋      | 4740/12726 [00:01<00:02, 3907.91 examples/s]Map (num_proc=10):  61%|██████    | 7724/12726 [00:01<00:00, 6623.88 examples/s]Map (num_proc=10):  82%|████████▏ | 10485/12726 [00:01<00:00, 8329.29 examples/s]Map (num_proc=10):  92%|█████████▏| 11683/12726 [00:18<00:00, 8329.29 examples/s]Map (num_proc=10):  92%|█████████▏| 11715/12726 [01:19<00:12, 79.21 examples/s]  Map (num_proc=10):  92%|█████████▏| 11755/12726 [01:23<00:12, 75.37 examples/s]Map (num_proc=10):  95%|█████████▍| 12027/12726 [01:38<00:09, 75.37 examples/s]Map (num_proc=10):  95%|█████████▍| 12038/12726 [01:38<00:11, 59.58 examples/s]Map (num_proc=10):  95%|█████████▍| 12066/12726 [01:39<00:10, 60.14 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [01:43<00:00, 122.64 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 216/4241 [00:01<00:28, 140.68 examples/s]Map (num_proc=10):  83%|████████▎ | 3523/4241 [00:15<00:03, 225.34 examples/s]Map (num_proc=10):  86%|████████▌ | 3645/4241 [00:15<00:02, 233.66 examples/s]Map (num_proc=10):  90%|█████████ | 3835/4241 [00:16<00:01, 254.07 examples/s]Map (num_proc=10):  94%|█████████▎| 3968/4241 [00:21<00:01, 142.41 examples/s]Map (num_proc=10):  97%|█████████▋| 4107/4241 [00:23<00:01, 124.85 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:23<00:00, 138.38 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:25<00:00, 164.31 examples/s]
-2023-11-09 09:05:52 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 09:09:19 - INFO :       Loss = 17.7531795501709
-2023-11-09 09:16:19 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 09:16:19 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 09:16:28 - INFO :       commonsense_qa_ScienceQA: Total Sparsity 1.3501934144162314e-06
-2023-11-09 09:16:28 - INFO :       
-==================Finish================
-
-2023-11-09 09:16:28 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 09:16:29 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 09:16:29 - INFO :       DATASET: mmlu_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [02:42<02:42, 162.70s/it]Loading checkpoint shards: 100%|██████████| 2/2 [02:44<00:00, 67.77s/it] Loading checkpoint shards: 100%|██████████| 2/2 [02:44<00:00, 82.01s/it]
-2023-11-09 09:19:13 - INFO :       Use taylor pruner...
-2023-11-09 09:19:16 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 431/99842 [00:01<06:06, 271.01 examples/s]Map (num_proc=10):   6%|▌         | 6075/99842 [00:01<00:19, 4899.62 examples/s]Map (num_proc=10):  12%|█▏        | 12202/99842 [00:01<00:08, 10763.04 examples/s]Map (num_proc=10):  18%|█▊        | 17970/99842 [00:01<00:04, 16787.10 examples/s]Map (num_proc=10):  24%|██▍       | 24292/99842 [00:02<00:03, 23946.36 examples/s]Map (num_proc=10):  32%|███▏      | 31753/99842 [00:02<00:02, 33141.40 examples/s]Map (num_proc=10):  39%|███▉      | 38954/99842 [00:02<00:01, 40231.76 examples/s]Map (num_proc=10):  45%|████▌     | 45194/99842 [00:02<00:01, 45185.18 examples/s]Map (num_proc=10):  52%|█████▏    | 51689/99842 [00:02<00:00, 49114.86 examples/s]Map (num_proc=10):  58%|█████▊    | 58233/99842 [00:02<00:00, 51745.86 examples/s]Map (num_proc=10):  66%|██████▌   | 65685/99842 [00:02<00:00, 57657.51 examples/s]Map (num_proc=10):  73%|███████▎  | 72408/99842 [00:02<00:00, 60234.61 examples/s]Map (num_proc=10):  80%|███████▉  | 79806/99842 [00:02<00:00, 63700.70 examples/s]Map (num_proc=10):  87%|████████▋ | 86772/99842 [00:02<00:00, 65108.09 examples/s]Map (num_proc=10):  94%|█████████▍| 93841/99842 [00:03<00:00, 51479.92 examples/s]Map (num_proc=10):  97%|█████████▋| 97290/99842 [00:18<00:00, 51479.92 examples/s]Map (num_proc=10):  98%|█████████▊| 97760/99842 [00:22<00:02, 1020.06 examples/s] Map (num_proc=10):  98%|█████████▊| 97760/99842 [00:38<00:02, 1020.06 examples/s]Map (num_proc=10):  98%|█████████▊| 97993/99842 [01:17<00:08, 207.29 examples/s] Map (num_proc=10):  98%|█████████▊| 98281/99842 [01:21<00:07, 198.80 examples/s]Map (num_proc=10):  99%|█████████▉| 98707/99842 [01:38<00:05, 198.80 examples/s]Map (num_proc=10):  99%|█████████▉| 98967/99842 [01:41<00:06, 140.46 examples/s]Map (num_proc=10):  99%|█████████▉| 99022/99842 [01:47<00:06, 124.07 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [01:51<00:00, 896.54 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:13, 99.56 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:03<00:00, 417.84 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 222/12726 [00:01<01:27, 142.57 examples/s]Map (num_proc=10):  39%|███▉      | 4970/12726 [00:01<00:01, 4112.15 examples/s]Map (num_proc=10):  64%|██████▍   | 8129/12726 [00:01<00:00, 6938.11 examples/s]Map (num_proc=10):  86%|████████▋ | 10990/12726 [00:01<00:00, 8736.85 examples/s]Map (num_proc=10):  92%|█████████▏| 11691/12726 [00:17<00:00, 8736.85 examples/s]Map (num_proc=10):  92%|█████████▏| 11708/12726 [01:31<00:15, 66.06 examples/s]  Map (num_proc=10):  93%|█████████▎| 11872/12726 [01:32<00:12, 67.47 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [01:42<00:00, 124.15 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▌         | 239/4241 [00:01<00:26, 153.85 examples/s]Map (num_proc=10):  75%|███████▍  | 3165/4241 [00:01<00:00, 2578.62 examples/s]Map (num_proc=10):  95%|█████████▌| 4046/4241 [00:17<00:00, 2578.62 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:17<00:00, 199.02 examples/s] Map (num_proc=10): 100%|██████████| 4241/4241 [00:19<00:00, 221.11 examples/s]
-2023-11-09 09:24:30 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 09:27:54 - INFO :       Loss = 11.617589950561523
-2023-11-09 09:34:48 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 09:34:49 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 09:35:07 - INFO :       mmlu_ScienceQA: Total Sparsity 1.3480130455596853e-06
-2023-11-09 09:35:07 - INFO :       
-==================Finish================
-
-2023-11-09 09:35:07 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 09:35:08 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 09:35:08 - INFO :       DATASET: math_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.69s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.21s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.29s/it]
-2023-11-09 09:35:13 - INFO :       Use taylor pruner...
-2023-11-09 09:35:19 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 1/29837 [00:02<17:30:09,  2.11s/ examples]Map (num_proc=10):  16%|█▌        | 4777/29837 [00:02<00:08, 3019.34 examples/s]Map (num_proc=10):  33%|███▎      | 9707/29837 [00:02<00:02, 6849.70 examples/s]Map (num_proc=10):  56%|█████▌    | 16695/29837 [00:02<00:00, 13514.04 examples/s]Map (num_proc=10):  78%|███████▊  | 23139/29837 [00:02<00:00, 20108.39 examples/s]Map (num_proc=10):  96%|█████████▌| 28683/29837 [00:08<00:00, 2496.44 examples/s] Map (num_proc=10): 100%|██████████| 29837/29837 [00:11<00:00, 2542.55 examples/s]
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   9%|▉         | 402/4475 [00:01<00:15, 257.40 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1203.94 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   2%|▏         | 211/12726 [00:01<01:29, 140.40 examples/s]Map (num_proc=10):  40%|████      | 5113/12726 [00:01<00:01, 4372.00 examples/s]Map (num_proc=10):  64%|██████▍   | 8148/12726 [00:01<00:00, 6497.65 examples/s]Map (num_proc=10):  91%|█████████▏| 11624/12726 [00:01<00:00, 9830.39 examples/s]Map (num_proc=10):  93%|█████████▎| 11871/12726 [00:14<00:00, 9830.39 examples/s]Map (num_proc=10):  94%|█████████▍| 11999/12726 [01:27<00:10, 69.68 examples/s]  Map (num_proc=10):  94%|█████████▍| 12021/12726 [01:28<00:10, 69.29 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [01:43<00:00, 123.31 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▌         | 239/4241 [00:01<00:26, 149.15 examples/s]Map (num_proc=10):  79%|███████▉  | 3342/4241 [00:01<00:00, 2675.83 examples/s]Map (num_proc=10):  86%|████████▋ | 3659/4241 [00:12<00:00, 2675.83 examples/s]Map (num_proc=10):  91%|█████████ | 3847/4241 [00:14<00:01, 198.01 examples/s] Map (num_proc=10):  94%|█████████▍| 3995/4241 [00:15<00:01, 198.15 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:20<00:00, 205.76 examples/s]
-2023-11-09 09:39:06 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 09:42:34 - INFO :       Loss = 17.340351104736328
-2023-11-09 09:49:39 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 09:49:39 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 09:49:59 - INFO :       math_qa_ScienceQA: Total Sparsity 1.3569162183905822e-06
-2023-11-09 09:49:59 - INFO :       
-==================Finish================
-
-2023-11-09 09:49:59 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 09:50:02 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 09:50:02 - INFO :       DATASET: commonsense_qa_mmlu
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Index 8
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:41<00:41, 41.70s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:42<00:00, 17.46s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:42<00:00, 21.09s/it]
-2023-11-09 09:50:47 - INFO :       Use taylor pruner...
-2023-11-09 09:50:51 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 384/9741 [00:01<00:39, 235.17 examples/s]Map (num_proc=10):  61%|██████    | 5960/9741 [00:01<00:00, 4636.86 examples/s]Map (num_proc=10):  90%|█████████ | 8792/9741 [00:01<00:00, 6336.08 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:03<00:00, 2849.25 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:10, 104.58 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:02<00:00, 415.54 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/99842 [00:00<?, ? examples/s]Map (num_proc=10):   0%|          | 414/99842 [00:01<04:16, 387.60 examples/s]Map (num_proc=10):   7%|▋         | 6836/99842 [00:01<00:11, 7888.20 examples/s]Map (num_proc=10):  13%|█▎        | 12492/99842 [00:01<00:05, 14828.06 examples/s]Map (num_proc=10):  19%|█▉        | 18924/99842 [00:01<00:03, 23217.81 examples/s]Map (num_proc=10):  26%|██▌       | 25460/99842 [00:01<00:02, 30914.83 examples/s]Map (num_proc=10):  32%|███▏      | 31991/99842 [00:01<00:01, 37486.32 examples/s]Map (num_proc=10):  38%|███▊      | 38057/99842 [00:01<00:01, 42630.73 examples/s]Map (num_proc=10):  45%|████▍     | 44602/99842 [00:01<00:01, 48254.48 examples/s]Map (num_proc=10):  51%|█████▏    | 51357/99842 [00:01<00:00, 52479.82 examples/s]Map (num_proc=10):  58%|█████▊    | 58335/99842 [00:02<00:00, 57110.92 examples/s]Map (num_proc=10):  65%|██████▌   | 65100/99842 [00:02<00:00, 60010.63 examples/s]Map (num_proc=10):  73%|███████▎  | 72483/99842 [00:02<00:00, 63756.33 examples/s]Map (num_proc=10):  80%|███████▉  | 79462/99842 [00:02<00:00, 65467.63 examples/s]Map (num_proc=10):  86%|████████▋ | 86334/99842 [00:02<00:00, 64250.69 examples/s]Map (num_proc=10):  93%|█████████▎| 93041/99842 [00:03<00:00, 26498.11 examples/s]Map (num_proc=10):  97%|█████████▋| 97151/99842 [00:21<00:00, 26498.11 examples/s]Map (num_proc=10):  98%|█████████▊| 97455/99842 [00:39<00:04, 548.60 examples/s]  Map (num_proc=10):  98%|█████████▊| 97455/99842 [00:51<00:04, 548.60 examples/s]Map (num_proc=10):  98%|█████████▊| 97945/99842 [01:44<00:11, 161.31 examples/s]Map (num_proc=10):  98%|█████████▊| 98021/99842 [01:44<00:11, 161.97 examples/s]Map (num_proc=10):  99%|█████████▉| 98697/99842 [02:01<00:07, 161.97 examples/s]Map (num_proc=10):  99%|█████████▉| 99069/99842 [02:05<00:06, 126.77 examples/s]Map (num_proc=10): 100%|█████████▉| 99488/99842 [02:06<00:02, 132.59 examples/s]Map (num_proc=10): 100%|██████████| 99842/99842 [02:11<00:00, 761.10 examples/s]
-Map (num_proc=10):   0%|          | 0/1531 [00:00<?, ? examples/s]Map (num_proc=10):  10%|▉         | 153/1531 [00:01<00:09, 146.64 examples/s]Map (num_proc=10): 100%|██████████| 1531/1531 [00:02<00:00, 598.30 examples/s]
-2023-11-09 09:54:05 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 09:57:35 - INFO :       Loss = 11.270984649658203
-2023-11-09 10:04:58 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 10:04:58 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 10:05:16 - INFO :       commonsense_qa_mmlu: Total Sparsity 1.352737178082202e-06
-2023-11-09 10:05:16 - INFO :       
-==================Finish================
-
-2023-11-09 10:05:16 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 10:05:17 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 10:05:17 - INFO :       DATASET: commonsense_qa_math_qa
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.87s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.27s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.36s/it]
-2023-11-09 10:05:20 - INFO :       Use taylor pruner...
-2023-11-09 10:05:23 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 390/9741 [00:02<00:54, 172.25 examples/s]Map (num_proc=10):  39%|███▉      | 3847/9741 [00:02<00:02, 2209.79 examples/s]Map (num_proc=10):  80%|███████▉  | 7745/9741 [00:02<00:00, 5046.62 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:06<00:00, 1518.77 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:13, 82.21 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 339.83 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/29837 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 266/29837 [00:01<03:13, 152.84 examples/s]Map (num_proc=10):  21%|██        | 6123/29837 [00:01<00:05, 4574.36 examples/s]Map (num_proc=10):  32%|███▏      | 9689/29837 [00:01<00:02, 7469.06 examples/s]Map (num_proc=10):  54%|█████▍    | 16128/29837 [00:02<00:00, 14289.55 examples/s]Map (num_proc=10):  70%|██████▉   | 20846/29837 [00:02<00:00, 18865.62 examples/s]Map (num_proc=10):  88%|████████▊ | 26194/29837 [00:02<00:00, 24517.74 examples/s]Map (num_proc=10): 100%|██████████| 29837/29837 [00:04<00:00, 6603.20 examples/s] 
-Map (num_proc=10):   0%|          | 0/4475 [00:00<?, ? examples/s]Map (num_proc=10):   6%|▌         | 261/4475 [00:01<00:26, 159.26 examples/s]Map (num_proc=10):  78%|███████▊  | 3479/4475 [00:01<00:00, 2700.24 examples/s]Map (num_proc=10): 100%|██████████| 4475/4475 [00:03<00:00, 1153.25 examples/s]
-2023-11-09 10:06:59 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 10:10:23 - INFO :       Loss = 16.993743896484375
-2023-11-09 10:17:21 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 10:17:21 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 10:17:38 - INFO :       commonsense_qa_math_qa: Total Sparsity 1.3541907573198995e-06
-2023-11-09 10:17:38 - INFO :       
-==================Finish================
-
-2023-11-09 10:17:38 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 10:17:39 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 10:17:39 - INFO :       DATASET: commonsense_qa_truthful_qa_mc
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.29s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.54s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.65s/it]
-2023-11-09 10:17:43 - INFO :       Use taylor pruner...
-2023-11-09 10:17:47 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 383/9741 [00:02<00:54, 172.76 examples/s]Map (num_proc=10):  36%|███▌      | 3521/9741 [00:02<00:03, 2055.94 examples/s]Map (num_proc=10):  82%|████████▏ | 7945/9741 [00:02<00:00, 5379.03 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2134.76 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:14, 77.88 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 330.58 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/684 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 69/684 [00:01<00:13, 44.71 examples/s]Map (num_proc=10): 100%|██████████| 684/684 [00:03<00:00, 186.42 examples/s]
-2023-11-09 10:18:59 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 10:22:31 - INFO :       Loss = 16.481456756591797
-2023-11-09 10:29:36 - INFO :       After Iter 1/1, #parameters: 5726666201
-2023-11-09 10:29:36 - INFO :       #Param before: 6738415616, #Param after: 5726666201, Ratio = 84.9854%
-2023-11-09 10:29:46 - INFO :       commonsense_qa_truthful_qa_mc: Total Sparsity 1.351828691058641e-06
-2023-11-09 10:29:46 - INFO :       
-==================Finish================
-
-2023-11-09 10:29:46 - INFO :       Memory Requirement: 0.0 MiB
-
-2023-11-09 10:29:47 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-09 10:29:47 - INFO :       DATASET: commonsense_qa_ScienceQA
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.66s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.11s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.20s/it]
-2023-11-09 10:29:50 - INFO :       Use taylor pruner...
-2023-11-09 10:29:54 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   4%|▍         | 381/9741 [00:02<00:53, 175.36 examples/s]Map (num_proc=10):  45%|████▍     | 4370/9741 [00:02<00:02, 2621.90 examples/s]Map (num_proc=10):  86%|████████▋ | 8420/9741 [00:02<00:00, 5671.60 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:04<00:00, 2155.66 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:01<00:13, 82.16 examples/s]Map (num_proc=10):  80%|████████  | 977/1221 [00:01<00:00, 807.11 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:03<00:00, 330.94 examples/s]
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/12726 [00:00<?, ? examples/s]Map (num_proc=10):   1%|          | 125/12726 [00:01<02:42, 77.39 examples/s]Map (num_proc=10):  32%|███▏      | 4072/12726 [00:01<00:02, 3251.94 examples/s]Map (num_proc=10):  59%|█████▉    | 7566/12726 [00:01<00:00, 6522.70 examples/s]Map (num_proc=10):  81%|████████▏ | 10357/12726 [00:02<00:00, 7464.03 examples/s]Map (num_proc=10):  95%|█████████▍| 12075/12726 [00:12<00:00, 7464.03 examples/s]Map (num_proc=10):  95%|█████████▌| 12117/12726 [00:33<00:02, 211.30 examples/s] Map (num_proc=10):  95%|█████████▌| 12150/12726 [00:33<00:02, 211.25 examples/s]Map (num_proc=10): 100%|██████████| 12726/12726 [00:37<00:00, 342.70 examples/s]
-Map (num_proc=10):   0%|          | 0/4241 [00:00<?, ? examples/s]Map (num_proc=10):   5%|▌         | 216/4241 [00:01<00:30, 132.27 examples/s]Map (num_proc=10):  65%|██████▌   | 2759/4241 [00:01<00:00, 2165.41 examples/s]Map (num_proc=10):  90%|█████████ | 3821/4241 [00:18<00:00, 2165.41 examples/s]Map (num_proc=10):  93%|█████████▎| 3947/4241 [00:19<00:01, 168.68 examples/s] Map (num_proc=10): 100%|██████████| 4241/4241 [00:19<00:00, 189.78 examples/s]Map (num_proc=10): 100%|██████████| 4241/4241 [00:21<00:00, 199.23 examples/s]
-2023-11-09 10:32:17 - INFO :       Start Backwarding in iterative steps = 0...
-2023-11-09 10:35:49 - INFO :       Loss = 17.7531795501709

@@ -50,21 +50,33 @@ def find_layers(module, layers=[nn.Linear], name=''):
     return res
 
 
-def create_distribution_llm_pruner(model):
+def create_distribution_llm_pruner(model,args):
     layers = model.model.layers
     distribution_F = []
     distribution_0 = []
+    distribution_min = []
     count = 0 
     total_params = 0
+    '''original = LlamaForCausalLM.from_pretrained(
+                args.base_model,
+                low_cpu_mem_usage=True if args.torch_version >=1.9 else False
+            )
+    original_layers = original.model.layers'''
     for i in range(len(layers)):
         layer = layers[i]
         subset = find_layers(layer)
+        #org_subset = find_layers(original_layers)
         layer_values_F = []
         layer_values_0 = []
-        for name in subset:
+        layer_values_min = []
+        #for name,org_name in zip(subset,org_subset):
+        for name,org_name in subset:
             W = subset[name].weight.data
+            #W_org = org_subset[org_name].weight.data
             count += (W==0).sum().item()
             total_params += W.numel()
+            #difference = torch.subtract(W_org,W)
+            #layer_values_min.append((difference.numel() - (difference==0).sum().item())) #|W|_F norm
             layer_values_F.append(torch.linalg.matrix_norm(W).item()) #|W|_F norm
             layer_values_0.append((W.numel() - (W==0).sum().item())) #|W|_0 norm
         distribution_F.append(layer_values_F)
@@ -152,8 +164,8 @@ def compute_both(logger,dataset_both,dataset_list,args):
                                 loss = model(batch_input, labels=batch_label).loss
                                 logger.log("Loss = {}".format(loss))
                                 loss.backward()
-                                '''del(batch_input)
-                                del(batch_label)'''
+                                del(batch_input)
+                                del(batch_label)
 
                                 for module_param in model.parameters():
                                     module_param.grad = module_param.grad * module_param.grad / args.num_examples
@@ -165,11 +177,14 @@ def compute_both(logger,dataset_both,dataset_list,args):
                                 del loss.grad
                         loss = 0
                         for batch_input ,batch_label in example_prompts:
-                            loss += model(batch_input.to(args.device) , labels=batch_label.to(args.device) ).loss
-                            
+                            input = batch_input.to(args.device)
+                            label = batch_label.to(args.device)
+                            loss += model(input, labels=label ).loss
+                            del(input)
+                            del(label)
+                        loss.backward()
                         loss = loss/len(example_prompts)
                         logger.log("Loss = {}".format(loss))
-                        loss.backward()
 
                     pruner.step()
                     after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -178,8 +193,6 @@ def compute_both(logger,dataset_both,dataset_list,args):
                     # modify inferece-related attributes
                     for layer in model.model.layers:
                         layer.self_attn.num_heads = layer.self_attn.q_proj.weight.data.shape[0] // layer.self_attn.head_dim
-                    del(batch_input)
-                    del(batch_label)
 
                 # Clean the gradient in the model
                 model.zero_grad()
@@ -215,7 +228,6 @@ def compute_both(logger,dataset_both,dataset_list,args):
                 
                 logger.log("Start Pruning")
                 for i in range(args.iterative_steps):
-
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = True,nsamples=10,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
                         example_prompts, _ = getData(tokenizer,dataset_list, dataset_name, args_dataset)
@@ -223,12 +235,11 @@ def compute_both(logger,dataset_both,dataset_list,args):
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
                         loss = 0
                         for train ,label in example_prompts:
-                            loss += model(train.to(args.device), labels=label.to(args.device)).loss
-                            '''inputing =batch_input.to(args.device)
-                            labeling =batch_label.to(args.device)
+                            inputing =train.to(args.device)
+                            labeling =label.to(args.device)
                             loss += model(inputing, labels=labeling ).loss
                             del(inputing)
-                            del(labeling)'''
+                            del(labeling)
                         loss = loss /len(example_prompts)
                         logger.log("Loss = {}".format(loss))
                         loss.backward()
@@ -281,7 +292,7 @@ def compute_both(logger,dataset_both,dataset_list,args):
                     'tokenizer': tokenizer,
                 }, logger.best_checkpoint_path)'''
             if args.save_distribution:
-                sparsity, all_distribution["|W|_F"][newFolder] , all_distribution["|W|_0"][newFolder]  = create_distribution_llm_pruner(model)
+                sparsity, all_distribution["|W|_F"][newFolder] , all_distribution["|W|_0"][newFolder]  = create_distribution_llm_pruner(model,args)
                 logger.log(f"{newFolder}: Total Sparsity {sparsity}")
                 torch.cuda.empty_cache()
             if args.test_after_train:

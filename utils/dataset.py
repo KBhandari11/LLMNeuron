@@ -53,7 +53,7 @@ def adjustAutoRegressive(examples):
     elif datasetName == "tasksource/bigbench":
         option = examples[key[1]]
         examples["label"] = examples[key[2]].index(1)
-    elif datasetName == "cais/mmlu":
+    elif datasetName == "tasksource/mmlu":
         option = examples[key[1]]
         examples["label"] = examples[key[2]]
     option = insertOption(option)
@@ -79,26 +79,32 @@ def get_data(dataset_name,dataset_list, tokenizer, args, seed=0):
     # Load train and validation datasets
     print("*"*30)
     print("Loading Dataset")
-    if dataset_name == "cais/mmlu":
-        traindata = load_dataset(dataset_name,'all', split="auxiliary_train") 
-        valdata = load_dataset(dataset_name, 'all',split="validation") 
-    elif dataset_name == "tasksource/bigbench":
-        traindata = load_dataset(dataset_name,'abstract_narrative_understanding', split="train") 
-        valdata = load_dataset(dataset_name, 'abstract_narrative_understanding',split="validation") 
-    elif dataset_name == "EleutherAI/truthful_qa_mc":
-        traindata = load_dataset(dataset_name, split="validation") 
-        valdata = load_dataset(dataset_name, split="validation") 
+    if isinstance(dataset_name,list):
+        if dataset_name[0] == "tasksource/mmlu":
+            traindata = load_dataset(dataset_name[0],dataset_name[1], split="test") 
+            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation") 
+        elif dataset_name[0] == "tasksource/bigbench":
+            traindata = load_dataset(dataset_name[0],dataset_name[1], split="train") 
+            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation") 
     else:
-        traindata = load_dataset(dataset_name, split="train") 
-        valdata = load_dataset(dataset_name, split="validation") 
+        if dataset_name == "EleutherAI/truthful_qa_mc":
+            traindata = load_dataset(dataset_name, split="validation") 
+            valdata = load_dataset(dataset_name, split="validation") 
+        else:
+            traindata = load_dataset(dataset_name, split="train") 
+            valdata = load_dataset(dataset_name, split="validation") 
     #traindata.cleanup_cache_files()
     #valdata.cleanup_cache_files()
-    traindata = modifyDataset(traindata,dataset_list[dataset_name]["keys"], "",dataset_list[dataset_name]["prefixes"],dataset_name,args)
-    valdata = modifyDataset(valdata,dataset_list[dataset_name]["keys"],dataset_list[dataset_name]["fewshot_prompt"],dataset_list[dataset_name]["prefixes"],dataset_name,args)
+    if isinstance(dataset_name,list):
+        traindata = modifyDataset(traindata,dataset_list[dataset_name[0]]["keys"], "",dataset_list[dataset_name[0]]["prefixes"],dataset_name[0],args)
+        valdata = modifyDataset(valdata,dataset_list[dataset_name[0]]["keys"],dataset_list[dataset_name[0]]["fewshot_prompt"],dataset_list[dataset_name[0]]["prefixes"],dataset_name[0],args)
+    else:
+        traindata = modifyDataset(traindata,dataset_list[dataset_name]["keys"], "",dataset_list[dataset_name]["prefixes"],dataset_name,args)
+        valdata = modifyDataset(valdata,dataset_list[dataset_name]["keys"],dataset_list[dataset_name]["fewshot_prompt"],dataset_list[dataset_name]["prefixes"],dataset_name,args)
+    
     print("*"*30)
     print("Generating Samples")
     # Generate samples from training set
-    random.seed(seed)
     trainloader = []
     if args.do_train_both:
         num_dataset = int(args.nsamples /2)
