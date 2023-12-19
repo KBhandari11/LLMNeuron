@@ -64,7 +64,7 @@ def set_random_seed(seed):
 def main(args):
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:1024"
     set_random_seed(args.seed)
-    with open("/home/bhandk/MLNeuron/dataset_info.json", 'r') as openfile:
+    with open("../dataset_info.json", 'r') as openfile:
         # Reading from json file
         dataset_list = json.load(openfile)
     dataset_both = [["commonsense_qa","tasksource/mmlu"],["commonsense_qa","math_qa"],["commonsense_qa","EleutherAI/truthful_qa_mc"],["commonsense_qa","derek-thomas/ScienceQA"],["tasksource/mmlu","derek-thomas/ScienceQA"],["math_qa","derek-thomas/ScienceQA"]]
@@ -83,11 +83,17 @@ def main(args):
                 setup_sublogger=True
             )
     if  args.block_wise: 
-        style = "block"
+        if args.pruner_type == "random":
+            style = "block_random"
+        else:
+            style = "block"
     if  args.layer_wise: 
         style = "layer"
     if  args.channel_wise: 
-        style = "channel"
+        if args.pruner_type == "random":
+            style = "channel_random"
+        else:
+            style = "channel"
     if args.save_distribution:
         with open(args.save_distribution_path, 'r') as openfile:
             # Reading from json file
@@ -95,7 +101,7 @@ def main(args):
         args.save_model = False
         if args.do_train_both:
             print("Both")
-            for i in range(1):
+            for i in range(10):
                 print("Index", i)
                 isChat = "-chat" if "chat" in args.base_model.split("-") else ""
                 ratio = f"{int(args.pruning_ratio*100)}{isChat}"
@@ -109,7 +115,7 @@ def main(args):
                 all_distribution[str(i)]["|W|_0"][style][ratio].update(w_0)
         else:
             print("Single")
-            for i in range(1):
+            for i in range(10):
                 print("Index", i)
                 isChat = "-chat" if "chat" in args.base_model.split("-") else ""
                 ratio = f"{int(args.pruning_ratio*100)}{isChat}"

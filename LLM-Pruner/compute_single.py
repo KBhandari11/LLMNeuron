@@ -1,18 +1,16 @@
 
-import os
 import gc
 import sys
 import time
 import json
 import copy
-import random
 from argparse import Namespace
 from typing import Tuple
 import torch.nn as nn 
-
 import csv 
-
-
+from accelerate import Accelerator
+from datasets import Dataset
+from torch.utils.data import DataLoader
 import torch
 import numpy as np
 from transformers import LlamaTokenizer, GenerationConfig, LlamaConfig
@@ -20,12 +18,25 @@ from LLMPruner.models.hf_llama.modeling_llama import LlamaForCausalLM, LlamaRMSN
 
 import LLMPruner.torch_pruning as tp 
 from LLMPruner.pruner import hf_llama_pruner as llama_pruner
-from LLMPruner.evaluator.ppl import PPLMetric
-from LLMPruner.datasets.example_samples import get_examples
-from LLMPruner.templates.prompts import prompts
+
 sys.path.append("../")
 from utils.dataset import getData
 from utils.evaluation import evaluate
+
+def collate_fn(batch):
+  return_data = {
+      'input_ids': torch.stack([torch.tensor(x["input_ids"]) for x in batch]),
+      'labels': torch.stack([torch.tensor(x["labels"]) for x in batch])
+    }
+  return return_data
+
+def convert_dataloader(lists):
+    my_dict = {}
+    my_dict["input_ids"]= [x[0] for x,_ in lists]
+    my_dict["labels"]= [y[0] for _,y in lists]
+    dataset = Dataset.from_dict(my_dict)
+    dataloader= DataLoader(dataset, collate_fn=collate_fn, batch_size=len(lists))
+    return dataloader
 
 def find_layers(module, layers=[nn.Linear], name=''):
     """
@@ -68,6 +79,7 @@ def create_distribution_llm_pruner(model):
         distribution_F.append(layer_values_F)
         distribution_0.append(layer_values_0)
     return float(count)/total_params, np.array(distribution_F),np.array(distribution_0)
+
 def get_dataset_list(dataset_list):
     dataname = []
     for data in dataset_list:
@@ -77,6 +89,7 @@ def get_dataset_list(dataset_list):
             for subset in dataset_list[data]["subset"]:
                 dataname.append([data,subset])
     return dataname
+
 def compute_single(logger,dataset_info_list,args): 
     all_distribution = {"|W|_F":{},"|W|_0":{}}
     dataset_list = get_dataset_list(dataset_info_list)
@@ -90,10 +103,11 @@ def compute_single(logger,dataset_info_list,args):
             tokenizer = LlamaTokenizer.from_pretrained(args.base_model)
             model = LlamaForCausalLM.from_pretrained(
                 args.base_model,
-                low_cpu_mem_usage=True #if args.torch_version >=1.9 else False
+                low_cpu_mem_usage=True, #if args.torch_version >=1.9 else False,
             )
             if args.device != "cpu":
                 model.half()
+
             model.to(args.device)
             pruner_type = args.pruner_type.lower()
             assert pruner_type in ['random', 'l2', 'l1', 'taylor']
@@ -128,18 +142,17 @@ def compute_single(logger,dataset_info_list,args):
                     "channel_groups": {
                     },
                     "consecutive_groups": {
-                        layer.self_attn.q_proj: layer.self_attn.head_dim for layer in model.model.layers
+                        layer.self_attn.q_proj: layer.self_attn.head_dim for layer in model.model.layers #adding module for dataparallel
                     },
                     "customized_pruners": {
                         LlamaRMSNorm: llama_pruner.hf_rmsnorm_pruner,
                     },
                     "root_module_types": None, 
-                    "root_instances": [model.model.layers[i].self_attn.q_proj for i in range(args.block_attention_layer_start, args.block_attention_layer_end)] +
+                    "root_instances": [model.model.layers[i].self_attn.q_proj for i in range(args.block_attention_layer_start, args.block_attention_layer_end)] +  #adding module for dataparallel
                                     [model.model.layers[i].mlp.gate_proj for i in range(args.block_mlp_layer_start, args.block_mlp_layer_end)]
                 }
                 logger.log("Pruning Attention Layer = {}".format(list(range(args.block_attention_layer_start, args.block_attention_layer_end))))
                 logger.log("Pruning MLP Layer = {}".format(list(range(args.block_mlp_layer_start, args.block_mlp_layer_end))))
-
                 pruner = tp.pruner.MetaPruner(
                     model,
                     forward_prompts,
@@ -151,6 +164,7 @@ def compute_single(logger,dataset_info_list,args):
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
                         example_prompts, _ = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
+                        example_prompts = convert_dataloader(example_prompts)
                         #example_prompts = get_examples('bookcorpus', tokenizer, args.num_examples, seq_len = 64).to(args.device)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
                         if args.taylor in ['param_mix', 'param_second']:
@@ -170,17 +184,22 @@ def compute_single(logger,dataset_info_list,args):
                                 model.zero_grad()
                                 del loss.grad
                         loss = 0
-                        c = 0 
-                        for batch_input ,batch_label in example_prompts:
-                            c+=1
-                            input = batch_input.to(args.device)
-                            label = batch_label.to(args.device) 
+                        
+                        accelerator = Accelerator()
+                        example_prompts, model  = accelerator.prepare( example_prompts, model)
+                        for idx, input in enumerate(example_prompts):
+                            loss = model(**input).loss
+                            accelerator.backward(loss)
+                        '''for input ,label in example_prompts:
+                            #input = batch_input.to(args.device)
+                            #label = batch_label.to(args.device) 
                             loss += model(input, labels=label).loss
                             del(input)
                             del(label)
-                        loss.backward()
-                        loss = loss/len(example_prompts)
+                        #loss.backward()'''
+                        #loss = loss/len(example_prompts)
                         logger.log("Loss = {}".format(loss))
+                    accelerator.wait_for_everyone()
                     pruner.step()
                     after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
                     logger.log("After Iter {}/{}, #parameters: {}".format(i+1, args.iterative_steps, after_pruning_parameters))
@@ -213,7 +232,6 @@ def compute_single(logger,dataset_info_list,args):
                     },
                     "root_module_types": [LlamaRMSNorm, LlamaAttention],
                 }
-
                 pruner = tp.pruner.MetaPruner(
                     model,
                     forward_prompts,
@@ -228,16 +246,17 @@ def compute_single(logger,dataset_info_list,args):
                         example_prompts, _ = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
                         #example_prompts = get_examples('bookcorpus', tokenizer, 10, seq_len = 64)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
-                        loss = 0
+                        loss_value = 0
                         for train_data ,label_data in example_prompts:
                             input = train_data.to(args.device)
                             label = label_data.to(args.device)
-                            loss += model(input, labels=label).loss
+                            loss = model(input, labels=label).loss
+                            loss.backward()
+                            loss_value += loss.item()
                             del(input)
                             del(label)
-                        loss = loss /len(example_prompts)
+                        loss = loss_value /len(example_prompts)
                         logger.log("Loss = {}".format(loss))
-                        loss.backward()
                 
                     pruner.step()
 

@@ -2,7 +2,7 @@ import typing
 import warnings
 from numbers import Number
 from collections import namedtuple
-
+import sys
 import torch
 import torch.nn as nn
 
@@ -370,6 +370,7 @@ class DependencyGraph(object):
                 unwrapped_parameters.append( UnwrappedParameters(parameters=p, pruning_dim=pruning_dim) ) # prune the last non-singleton dim by daufault
         self.unwrapped_parameters = unwrapped_parameters
         # Build computational graph by tracing.
+
         self.module2node = self._trace(
             model, example_inputs, forward_fn, output_transform=output_transform
         )
@@ -623,7 +624,6 @@ class DependencyGraph(object):
                     trigger=trigger, handler=handler, source=node, target=in_node
                 )
                 node.dependencies.append(dep)
-
             for out_node in node.outputs:
                 trigger = self.get_pruner_of_module(node.module).prune_out_channels
                 handler = self.get_pruner_of_module(out_node.module).prune_in_channels
@@ -690,6 +690,7 @@ class DependencyGraph(object):
             out = output_transform(out)
 
         module2node = {}
+
         for o in utils.flatten_as_list(out):
             self._trace_computational_graph(
                 module2node, o.grad_fn, gradfn2module, reused)

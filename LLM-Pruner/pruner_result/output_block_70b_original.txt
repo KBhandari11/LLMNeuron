@@ -1,0 +1,23 @@
+2023-12-05 02:24:12 - INFO :       
+********************************************************************************************************************************************************************************************************
+
+2023-12-05 02:24:12 - INFO :       DATASET: commonsense_qa
+Single
+Index 0
+Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/15 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/bhandk/MLNeuron/LLM-Pruner/hf_prune.py", line 187, in <module>
+    main(args)
+  File "/home/bhandk/MLNeuron/LLM-Pruner/hf_prune.py", line 126, in main
+    distribution =compute_single(logger,dataset_list,args)
+  File "/home/bhandk/MLNeuron/LLM-Pruner/compute_single.py", line 91, in compute_single
+    model = LlamaForCausalLM.from_pretrained(
+  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/transformers/modeling_utils.py", line 3091, in from_pretrained
+    ) = cls._load_pretrained_model(
+  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/transformers/modeling_utils.py", line 3471, in _load_pretrained_model
+    new_error_msgs, offload_index, state_dict_index = _load_state_dict_into_meta_model(
+  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/transformers/modeling_utils.py", line 736, in _load_state_dict_into_meta_model
+    set_module_tensor_to_device(model, param_name, param_device, **set_module_kwargs)
+  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/accelerate/utils/modeling.py", line 281, in set_module_tensor_to_device
+    raise ValueError(
+ValueError: Trying to set a tensor of shape torch.Size([1024, 8192]) in "weight" (which has shape torch.Size([8192, 8192])), this look incorrect.

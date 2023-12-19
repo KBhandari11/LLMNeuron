@@ -37,7 +37,7 @@ def getDataLoader(tokenizerGiven: PreTrainedTokenizer,dataset: DataLoader,args:A
     #dataset = dataset.map(createTokens,batched=True,batch_size=args.batch_size,num_proc=args.num_process)
     dataset = dataset.map(createTokens,batched=False,num_proc=args.num_process)
     #dataset.cleanup_cache_files()
-    dataset.cleanup_cache_files()
+    #dataset.cleanup_cache_files()
     #dataset_new.set_format(type="torch",columns=["input_ids","attention_mask"])
     dataset.set_format(type="torch",columns=["input_ids","attention_mask"])
     #dataloader = DataLoader(dataset_new,num_workers=args.num_process)
