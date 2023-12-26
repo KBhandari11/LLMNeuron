@@ -8,7 +8,6 @@ from argparse import Namespace
 from typing import Tuple
 import torch.nn as nn 
 import csv 
-from accelerate import Accelerator
 from datasets import Dataset
 from torch.utils.data import DataLoader
 import torch
@@ -185,11 +184,9 @@ def compute_single(logger,dataset_info_list,args):
                                 del loss.grad
                         loss = 0
                         
-                        accelerator = Accelerator()
-                        example_prompts, model  = accelerator.prepare( example_prompts, model)
                         for idx, input in enumerate(example_prompts):
-                            loss = model(**input).loss
-                            accelerator.backward(loss)
+                            loss = model(input_ids=input["input_ids"].to(args.device),labels=input["labels"].to(args.device)).loss
+                            loss.backward()
                         '''for input ,label in example_prompts:
                             #input = batch_input.to(args.device)
                             #label = batch_label.to(args.device) 
@@ -199,7 +196,6 @@ def compute_single(logger,dataset_info_list,args):
                         #loss.backward()'''
                         #loss = loss/len(example_prompts)
                         logger.log("Loss = {}".format(loss))
-                    accelerator.wait_for_everyone()
                     pruner.step()
                     after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
                     logger.log("After Iter {}/{}, #parameters: {}".format(i+1, args.iterative_steps, after_pruning_parameters))
