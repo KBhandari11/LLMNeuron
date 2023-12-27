@@ -1,13 +1,7 @@
-Traceback (most recent call last):
-  File "/home/bhandk/miniconda3/envs/MLNeuron/bin/accelerate", line 5, in <module>
-    from accelerate.commands.accelerate_cli import main
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/accelerate/__init__.py", line 3, in <module>
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/accelerate/accelerator.py", line 32, in <module>
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/torch/__init__.py", line 15, in <module>
-  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 786, in exec_module
-  File "<frozen importlib._bootstrap_external>", line 881, in get_code
-  File "<frozen importlib._bootstrap_external>", line 980, in get_data
-KeyboardInterrupt
+2023-12-27 14:58:04 - INFO :       
+********************************************************************************************************************************************************************************************************
+
+2023-12-27 14:58:04 - INFO :       DATASET: commonsense_qa
+Single
+Index 0
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards:  33%|███▎      | 1/3 [00:00<00:00,  9.44it/s]Loading checkpoint shards:  67%|██████▋   | 2/3 [00:00<00:00,  9.51it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00,  9.69it/s]

@@ -1,8 +1,8 @@
 
+import os
 import gc
 import sys
-import time
-import json
+import functools
 import copy
 from argparse import Namespace
 from typing import Tuple
@@ -14,6 +14,23 @@ import torch
 import numpy as np
 from transformers import LlamaTokenizer, GenerationConfig, LlamaConfig
 from LLMPruner.models.hf_llama.modeling_llama import LlamaForCausalLM, LlamaRMSNorm, LlamaAttention, LlamaMLP
+
+#distributed FSDP
+import torch.distributed as dist
+import torch.multiprocessing as mp
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.utils.data.distributed import DistributedSampler
+from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
+from torch.distributed.fsdp.fully_sharded_data_parallel import (
+    CPUOffload,
+    BackwardPrefetch,
+)
+from torch.distributed.fsdp.wrap import (
+    size_based_auto_wrap_policy,
+    enable_wrap,
+    wrap,
+)
+
 
 import LLMPruner.torch_pruning as tp 
 from LLMPruner.pruner import hf_llama_pruner as llama_pruner
@@ -29,12 +46,14 @@ def collate_fn(batch):
     }
   return return_data
 
-def convert_dataloader(lists):
+def convert_dataloader(lists,rank,world_size):
     my_dict = {}
     my_dict["input_ids"]= [x[0] for x,_ in lists]
     my_dict["labels"]= [y[0] for _,y in lists]
     dataset = Dataset.from_dict(my_dict)
-    dataloader= DataLoader(dataset, collate_fn=collate_fn, batch_size=len(lists))
+    sampler1 = DistributedSampler(dataset, rank=rank, num_replicas=world_size, shuffle=True)
+    kwargs = {'batch_size': len(lists),'collate_fn':collate_fn, 'sampler': sampler1,'num_workers': 2,'pin_memory': True,'shuffle': False}
+    dataloader= DataLoader(dataset,**kwargs)
     return dataloader
 
 def find_layers(module, layers=[nn.Linear], name=''):
@@ -89,6 +108,44 @@ def get_dataset_list(dataset_list):
                 dataname.append([data,subset])
     return dataname
 
+def setup(rank, world_size):
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '12355'
+
+    # initialize the process group
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+
+def cleanup():
+    dist.destroy_process_group()
+    
+def get_gradient(rank, world_size,model, train_loader):
+    setup(rank, world_size)
+    train_loader = convert_dataloader(train_loader, rank, world_size)
+    my_auto_wrap_policy = functools.partial(
+        size_based_auto_wrap_policy, min_num_params=100
+    )
+    torch.cuda.set_device(rank)
+    model = model.to(rank)
+    #model = FSDP(model, auto_wrap_policy=my_auto_wrap_policy, cpu_offload=CPUOffload(offload_params=True))
+    model = FSDP(model, cpu_offload=CPUOffload(offload_params=True))
+    print(rank, model,file=sys.stderr)
+    init_start_event = torch.cuda.Event(enable_timing=True)
+    init_end_event = torch.cuda.Event(enable_timing=True)
+    ddp_loss = torch.zeros(2).to(rank)
+    init_start_event.record()
+    for idx, input in enumerate(train_loader):
+        loss = model(input_ids=input["input_ids"].to(rank),labels=input["labels"].to(rank)).loss
+        loss.backward()
+        ddp_loss[0] += loss.item()
+        ddp_loss[1] += len(input)
+    
+    dist.all_reduce(ddp_loss, op=dist.ReduceOp.SUM)
+    if rank == 0:
+        print('\tLoss: {:.6f}'.format( ddp_loss[0] / ddp_loss[1]))
+    init_end_event.record()
+    dist.barrier()
+    cleanup()
+
 def compute_single(logger,dataset_info_list,args): 
     all_distribution = {"|W|_F":{},"|W|_0":{}}
     dataset_list = get_dataset_list(dataset_info_list)
@@ -103,11 +160,12 @@ def compute_single(logger,dataset_info_list,args):
             model = LlamaForCausalLM.from_pretrained(
                 args.base_model,
                 low_cpu_mem_usage=True, #if args.torch_version >=1.9 else False,
+                torch_dtype=torch.float16
             )
-            if args.device != "cpu":
-                model.half()
-
+            #if args.device != "cpu":
+            #    model.half()
             model.to(args.device)
+            
             pruner_type = args.pruner_type.lower()
             assert pruner_type in ['random', 'l2', 'l1', 'taylor']
 
@@ -119,7 +177,7 @@ def compute_single(logger,dataset_info_list,args):
                 [    1,   306,  4658,   278,  6593,   310,  2834,   338],
                 [    1,  3439, 17632,  1925, 29892,   278,  6368,   310],
             ]).to(args.device) # Only for building the dependency graph. Any input will be fine since the computation result are not taken into consideration.
-
+            #.to("cpu")
             if pruner_type == 'random':
                 imp = tp.importance.RandomImportance()
             elif pruner_type == 'l1':
@@ -163,17 +221,14 @@ def compute_single(logger,dataset_info_list,args):
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
                         example_prompts, _ = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
-                        example_prompts = convert_dataloader(example_prompts)
+                        
                         #example_prompts = get_examples('bookcorpus', tokenizer, args.num_examples, seq_len = 64).to(args.device)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
+                        
                         if args.taylor in ['param_mix', 'param_second']:
-                            for example_train, example_label in example_prompts:
-                                batch_input = example_train.unsqueeze(0).to(args.device) 
-                                batch_label = example_label.unsqueeze(0).to(args.device) 
-                                loss = model(batch_input, labels=batch_label).loss
+                            for input in example_prompts:
+                                loss = model(input_ids=input["input_ids"].to(args.device),labels=input["labels"].to(args.device)).loss
                                 loss.backward()
-                                del(batch_input)
-                                del(batch_label)
                                 for module_param in model.parameters():
                                     module_param.grad = module_param.grad * module_param.grad / args.num_examples
                                     if hasattr(module_param, 'acc_grad'):
@@ -182,11 +237,14 @@ def compute_single(logger,dataset_info_list,args):
                                         module_param.acc_grad = copy.deepcopy(module_param.grad)
                                 model.zero_grad()
                                 del loss.grad
-                        loss = 0
-                        
-                        for idx, input in enumerate(example_prompts):
+                        WORLD_SIZE = torch.cuda.device_count()
+                        mp.spawn(get_gradient,
+                            args=(WORLD_SIZE,model,example_prompts),
+                            nprocs=WORLD_SIZE,
+                            join=True)
+                        '''for idx, input in enumerate(example_prompts):
                             loss = model(input_ids=input["input_ids"].to(args.device),labels=input["labels"].to(args.device)).loss
-                            loss.backward()
+                            loss.backward()'''
                         '''for input ,label in example_prompts:
                             #input = batch_input.to(args.device)
                             #label = batch_label.to(args.device) 
