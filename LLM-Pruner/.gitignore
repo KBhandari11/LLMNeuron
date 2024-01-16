@@ -30,3 +30,5 @@ lm_cache
 .idea
 *.log
 *.egg-info
+
+temp/

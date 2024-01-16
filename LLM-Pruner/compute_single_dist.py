@@ -143,37 +143,14 @@ def get_dataset_list(dataset_list):
                 dataname.append([data,subset])
     return dataname
 
-def setup(rank, world_size):
+def setup():
     # initialize the process group
-    os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '25678'
-
-    # initialize the process group
-    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    dist.init_process_group("nccl")
 
 def cleanup():
     dist.destroy_process_group()
     
 def get_gradient(rank, world_size, model, example_prompts,save_file, args):
-    setup(rank, world_size)
-    torch.cuda.set_device(rank)
-    llama_auto_wrap_policy = functools.partial(
-        transformer_auto_wrap_policy,
-        transformer_layer_cls={
-            LlamaDecoderLayer, LlamaAttention, LlamaMLP,
-        },
-    )
-    sharding_strategy: ShardingStrategy = ShardingStrategy.FULL_SHARD#SHARD_GRAD_OP #for Zero2 and FULL_SHARD for Zero3
-    print(f"Rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
-    # model is on CPU before input to FSDP
-    model = FSDP(model,
-        auto_wrap_policy=llama_auto_wrap_policy,
-        mixed_precision=bfSixteen,
-        sharding_strategy=sharding_strategy,
-        device_id=torch.cuda.current_device(),
-        cpu_offload=CPUOffload(offload_params=True),
-        backward_prefetch = BackwardPrefetch.BACKWARD_PRE)
-    model._fsdp_wrap = True
     train_loader = convert_dataloader(example_prompts, rank, world_size)
     ddp_loss = torch.zeros(2).to(rank)
     print("Before Evaluation",file=sys.stderr)
@@ -213,8 +190,12 @@ def get_gradient(rank, world_size, model, example_prompts,save_file, args):
             json.dump(saved_gradients, fp, cls=NumpyEncoder)'''
         #torch.save(model_dict, temp_save_name)
     print("Completed ",rank, file=sys.stderr)
+    return model
     
 def compute_single(logger,dataset_info_list,args): 
+    rank = int(os.environ['RANK'])
+    world_size = int(os.environ['WORLD_SIZE'])
+    local_rank = int(os.environ['LOCAL_RANK'])
     all_distribution = {"|W|_F":{},"|W|_0":{}}
     dataset_list = get_dataset_list(dataset_info_list)
     for dataset_name in dataset_list:
@@ -232,58 +213,83 @@ def compute_single(logger,dataset_info_list,args):
             if args.device != "cpu":
                 model.half()
             model.to(args.device)
-            
             pruner_type = args.pruner_type.lower()
             assert pruner_type in ['random', 'l2', 'l1', 'taylor']
 
             for param in model.parameters():
                 param.requires_grad_(True)
             before_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
-            
-            forward_prompts = torch.tensor([
-                [    1,   306,  4658,   278,  6593,   310,  2834,   338],
-                [    1,  3439, 17632,  1925, 29892,   278,  6368,   310],
-            ]).to(args.device) # Only for building the dependency graph. Any input will be fine since the computation result are not taken into consideration.
-            #.to("cpu")
-            if pruner_type == 'random':
-                imp = tp.importance.RandomImportance()
-            elif pruner_type == 'l1':
-                imp = llama_pruner.MagnitudeImportance(p=1)
-            elif pruner_type == 'l2':
-                imp = llama_pruner.MagnitudeImportance(p=2)
-            elif pruner_type == 'taylor':
-                imp = llama_pruner.TaylorImportance(group_reduction=args.grouping_strategy, taylor=args.taylor)
-            else:
-                raise NotImplementedError
-            logger.log("Use {} pruner...".format(pruner_type))
+            if rank == 0:
+                forward_prompts = torch.tensor([
+                    [    1,   306,  4658,   278,  6593,   310,  2834,   338],
+                    [    1,  3439, 17632,  1925, 29892,   278,  6368,   310],
+                ]).to(args.device) # Only for building the dependency graph. Any input will be fine since the computation result are not taken into consideration.
+                #.to("cpu")
+                if pruner_type == 'random':
+                    imp = tp.importance.RandomImportance()
+                elif pruner_type == 'l1':
+                    imp = llama_pruner.MagnitudeImportance(p=1)
+                elif pruner_type == 'l2':
+                    imp = llama_pruner.MagnitudeImportance(p=2)
+                elif pruner_type == 'taylor':
+                    imp = llama_pruner.TaylorImportance(group_reduction=args.grouping_strategy, taylor=args.taylor)
+                else:
+                    raise NotImplementedError
+                logger.log("Use {} pruner...".format(pruner_type))
             if args.block_wise:
-                kwargs = {
-                    "importance": imp,
-                    "global_pruning": args.global_pruning,
-                    "iterative_steps": args.iterative_steps,
-                    "ch_sparsity": args.pruning_ratio, 
-                    "ignored_layers":[],
-                    "channel_groups": {
-                    },
-                    "consecutive_groups": {
-                        layer.self_attn.q_proj: layer.self_attn.head_dim for layer in model.model.layers #adding module for dataparallel
-                    },
-                    "customized_pruners": {
-                        LlamaRMSNorm: llama_pruner.hf_rmsnorm_pruner,
-                    },
-                    "root_module_types": None, 
-                    "root_instances": [model.model.layers[i].self_attn.q_proj for i in range(args.block_attention_layer_start, args.block_attention_layer_end)] +  #adding module for dataparallel
-                                    [model.model.layers[i].mlp.gate_proj for i in range(args.block_mlp_layer_start, args.block_mlp_layer_end)]
-                }
-                logger.log("Pruning Attention Layer = {}".format(list(range(args.block_attention_layer_start, args.block_attention_layer_end))))
-                logger.log("Pruning MLP Layer = {}".format(list(range(args.block_mlp_layer_start, args.block_mlp_layer_end))))
-                pruner = tp.pruner.MetaPruner(
-                    model,
-                    forward_prompts,
-                    **kwargs
-                )
+                if rank ==0:
+                    kwargs = {"importance": imp,
+                        "global_pruning": args.global_pruning,
+                        "iterative_steps": args.iterative_steps,
+                        "ch_sparsity": args.pruning_ratio, 
+                        "ignored_layers":[],
+                        "channel_groups": {
+                        },
+                        "consecutive_groups": {
+                            layer.self_attn.q_proj: layer.self_attn.head_dim for layer in model.model.layers #adding module for dataparallel
+                        },
+                        "customized_pruners": {
+                            LlamaRMSNorm: llama_pruner.hf_rmsnorm_pruner,
+                        },
+                        "root_module_types": None, 
+                        "root_instances": [model.model.layers[i].self_attn.q_proj for i in range(args.block_attention_layer_start, args.block_attention_layer_end)] +  #adding module for dataparallel
+                                        [model.model.layers[i].mlp.gate_proj for i in range(args.block_mlp_layer_start, args.block_mlp_layer_end)]
+                    }
+                    logger.log("Pruning Attention Layer = {}".format(list(range(args.block_attention_layer_start, args.block_attention_layer_end))))
+                    logger.log("Pruning MLP Layer = {}".format(list(range(args.block_mlp_layer_start, args.block_mlp_layer_end))))
+                    pruner = tp.pruner.MetaPruner(
+                        model,
+                        forward_prompts,
+                        **kwargs
+                        )
+                setup()
+                model.train()
                 model.zero_grad()
                 logger.log("Start Pruning")
+
+                model.train()
+                local_rank = int(os.environ['LOCAL_RANK'])
+                torch.cuda.set_device(local_rank)
+
+                llama_auto_wrap_policy = functools.partial(
+                    transformer_auto_wrap_policy,
+                    transformer_layer_cls={
+                        LlamaDecoderLayer, LlamaAttention, LlamaMLP,
+                        #LlamaDecoderLayer, LlamaAttention
+                    },
+                )
+                sharding_strategy: ShardingStrategy = ShardingStrategy.FULL_SHARD#SHARD_GRAD_OP #for Zero2 and FULL_SHARD for Zero3
+                print(f"Rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
+                # model is on CPU before input to FSDP
+                model = FSDP(model,
+                    auto_wrap_policy=llama_auto_wrap_policy,
+                    mixed_precision=bfSixteen,
+                    sharding_strategy=sharding_strategy,
+                    device_id=torch.cuda.current_device(),
+                    cpu_offload=CPUOffload(offload_params=True),
+                    backward_prefetch = BackwardPrefetch.BACKWARD_PRE)
+                print(f"Rank: {rank} | PID: {os.getpid()}|{model}", file=sys.stderr)
+                model._fsdp_wrap = True
                 for i in range(args.iterative_steps):
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
@@ -304,9 +310,9 @@ def compute_single(logger,dataset_info_list,args):
                                         module_param.acc_grad = copy.deepcopy(module_param.grad)
                                 model.zero_grad()
                                 del loss.grad
-                        WORLD_SIZE = torch.cuda.device_count()
                         print(f"Parent ID | PID: {os.getpid()}|", file=sys.stderr)
                         #model = model.share_memory()
+                        model = get_gradient(rank, world_size, model,example_prompts,"temp/test.json",args)
                         '''
                             For multiprocess within particular process
                             mp.spawn(get_gradient,
@@ -333,23 +339,23 @@ def compute_single(logger,dataset_info_list,args):
                             param.grad = gradient_values[name]'''
                     #print(torch.load("temp/temp_checkpoint.pt"))
                     #model.load_state_dict(torch.load("temp/temp_checkpoint.pt"))
-                    print(model,file=sys.stderr)
-                    for idx, param in enumerate(model.parameters()):
-                        print(idx, param.grad,file=sys.stderr)
-                    pruner.step()
-                    after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
-                    
-                    # modify inferece-related attributes
-                    for layer in model.model.layers:
-                        layer.self_attn.num_heads = layer.self_attn.q_proj.weight.data.shape[0] // layer.self_attn.head_dim
-
-                # Clean the gradient in the model
-                model.zero_grad()
-                for name, module in model.named_parameters():
-                    if 'weight' in name:
-                        module.grad = None
-
-                del pruner
+                    if rank==0:
+                        '''for idx, param in enumerate(model.parameters()):
+                            print(idx, param.grad,file=sys.stderr)'''
+                        pruner.step()
+                        after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
+                        
+                        # modify inferece-related attributes
+                        for layer in model.model.layers:
+                            layer.self_attn.num_heads = layer.self_attn.q_proj.weight.data.shape[0] // layer.self_attn.head_dim
+                if rank == 0:
+                    # Clean the gradient in the model
+                    model.zero_grad()
+                    for name, module in model.named_parameters():
+                        if 'weight' in name:
+                            module.grad = None
+                if rank == 0:
+                    del pruner
             elif args.channel_wise:
                 kwargs = {
                     "importance": imp,
@@ -411,6 +417,7 @@ def compute_single(logger,dataset_info_list,args):
                 model.model.layers = model.model.layers[:args.layer]
                 after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
             else:
+                print("Why is it here", file=sys.stderr)
                 raise NotImplementedError
             logger.log("#Param before: {}, #Param after: {}, Ratio = {:.4f}%".format(before_pruning_parameters, after_pruning_parameters,  100.0*after_pruning_parameters/before_pruning_parameters))
             gc.collect()

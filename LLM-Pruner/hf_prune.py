@@ -10,7 +10,8 @@ import torch
 import numpy as np
 from LLMPruner.utils.logger import LoggerWithDepth
 from compute_both import compute_both
-from compute_single import compute_single
+#from compute_single import compute_single
+from compute_single_dist import compute_single
 class NumpyEncoder(json.JSONEncoder):
     """ Special json encoder for numpy types """
     def default(self, obj):
@@ -62,7 +63,7 @@ def set_random_seed(seed):
     torch.cuda.manual_seed_all(seed)
 
 def main(args):
-    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:1024"
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
     set_random_seed(args.seed)
     with open("../dataset_info.json", 'r') as openfile:
         # Reading from json file
@@ -165,7 +166,7 @@ if __name__ == "__main__":
     parser.add_argument('--grouping_strategy', type=str, default='sum', help='Reduce method for grouping')
     parser.add_argument('--global_pruning', action='store_true', help='whether global pruning')
     parser.add_argument('--taylor', type=str, default='param_first', help='choose from [vectorize, param_second, param_first, param_mix]')
-    parser.add_argument('--num_examples', type=int, default=5)
+    parser.add_argument('--num_examples', type=int, default=2)
 
     # general argument
     parser.add_argument('--device', type=str, default="cuda", help='device')
