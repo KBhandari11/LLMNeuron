@@ -63,7 +63,7 @@ def set_random_seed(seed):
     torch.cuda.manual_seed_all(seed)
 
 def main(args):
-    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
+    #os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
     set_random_seed(args.seed)
     with open("../dataset_info.json", 'r') as openfile:
         # Reading from json file
@@ -137,7 +137,7 @@ def main(args):
         else:
             compute_single(logger,dataset_list,args)
 if __name__ == "__main__":
-    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:50"
     parser = argparse.ArgumentParser(description='Pruning LLaMA (huggingface version)')
     
     # argument for parsing

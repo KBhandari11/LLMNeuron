@@ -37,6 +37,13 @@ from torch.distributed.fsdp.wrap import (
     enable_wrap,
     wrap,
 )
+from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
+   checkpoint_wrapper,
+   CheckpointImpl,
+   apply_activation_checkpointing,
+)
+
+
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
@@ -87,6 +94,7 @@ def convert_dataloader(lists,rank,world_size):
     my_dict["labels"]= [y[0] for _,y in lists]
     dataset = Dataset.from_dict(my_dict)
     sampler = DistributedSampler(dataset, rank=rank, num_replicas=world_size, shuffle=True)
+    setup()
     kwargs = {'batch_size': len(lists),'collate_fn':collate_fn, 'sampler': sampler,'num_workers': 2,'pin_memory': True,'shuffle': False}
     dataloader= DataLoader(dataset,**kwargs)
     return dataloader
@@ -150,28 +158,67 @@ def setup():
 def cleanup():
     dist.destroy_process_group()
     
-def get_gradient(rank, world_size, model, example_prompts,save_file, args):
+def get_gradient(rank, world_size, example_prompts,save_file, args):
+    #model.train()
+    torch.cuda.empty_cache()
+    local_rank = int(os.environ['LOCAL_RANK'])
     train_loader = convert_dataloader(example_prompts, rank, world_size)
-    ddp_loss = torch.zeros(2).to(rank)
-    print("Before Evaluation",file=sys.stderr)
+
+    torch.cuda.set_device(local_rank)
+
+    llama_auto_wrap_policy = functools.partial(
+        transformer_auto_wrap_policy,
+        transformer_layer_cls={
+            #LlamaDecoderLayer, LlamaAttention, LlamaMLP,
+            #LlamaDecoderLayer, LlamaAttention
+            #LlamaMLP, LlamaAttention
+            LlamaDecoderLayer
+        },
+    )
+    model = LlamaForCausalLM.from_pretrained(
+                args.base_model,
+                low_cpu_mem_usage=True, #if args.torch_version >=1.9 else False,
+    )
+    sharding_strategy: ShardingStrategy = ShardingStrategy.FULL_SHARD#SHARD_GRAD_OP #for Zero2 and FULL_SHARD for Zero3
+    print(f"Rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
+    # model is on CPU before input to FSDP
+    model = FSDP(model,
+        auto_wrap_policy=llama_auto_wrap_policy,
+        mixed_precision=bfSixteen,
+        sharding_strategy=sharding_strategy,
+        device_id=torch.cuda.current_device(),
+        cpu_offload=CPUOffload(offload_params=True),
+        backward_prefetch = BackwardPrefetch.BACKWARD_PRE,
+        sync_module_states=True)
+    #model._fsdp_wrap = True
+    '''non_reentrant_wrapper = functools.partial(
+        checkpoint_wrapper,
+        offload_to_cpu=True,
+        checkpoint_impl=CheckpointImpl.NO_REENTRANT,
+    )
+    check_fn = lambda submodule: isinstance(submodule, LlamaMLP) #and  isinstance(submodule, LlamaAttention)
+    apply_activation_checkpointing(
+        model, checkpoint_wrapper_fn=non_reentrant_wrapper, check_fn=check_fn
+    )'''
+    fsdp_loss = torch.zeros(2).to(local_rank)
+    print("Before Evaluation ",rank,file=sys.stderr)
+    #print(torch.cuda.memory_summary(),file=sys.stderr)
+    
     for idx, input in enumerate(train_loader):
-        print("\t",rank,"Before Forward",file=sys.stderr)
-        loss = model(input_ids=input["input_ids"].to(rank),labels=input["labels"].to(rank)).loss
-        print("\t", rank,"Before Backward",file=sys.stderr)
+        print("\t",rank,"Before Forward ",rank,file=sys.stderr)
+        loss = model(input_ids=input["input_ids"].to(local_rank),labels=input["labels"].to(local_rank)).loss
+        print("\t", rank,"Before Backward ",rank,file=sys.stderr)
         loss.backward()
-        print("\t", idx, rank,"After Backward", file=sys.stderr)
-        ddp_loss[0] += loss.item()
-        ddp_loss[1] += len(input)
+        print("\t", idx, rank,"After Backward ",rank, file=sys.stderr)
+        fsdp_loss[0] += loss.item()
+        fsdp_loss[1] += len(input)
         print("\t", idx, rank,"Finished one iteration",file=sys.stderr)
     print("After Evaluation",file=sys.stderr)
-    dist.all_reduce(ddp_loss, op=dist.ReduceOp.SUM)
+    dist.all_reduce(fsdp_loss, op=dist.ReduceOp.SUM)
     if rank == 0:
-        print('\tLoss: {:.6f}'.format( ddp_loss[0] / ddp_loss[1]), file=sys.stderr)
+        print('\tLoss: {:.6f}'.format( fsdp_loss[0] / fsdp_loss[1]), file=sys.stderr)
     print("Completed ",file=sys.stderr)
-    print("Before Barrier ",file=sys.stderr)
-    dist.barrier()
-    print("After Barrier ",file=sys.stderr)
-    cleanup()
+    
     #model = model.to(args.device)
     #save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
     '''with FSDP.summon _full_params(
@@ -195,7 +242,6 @@ def get_gradient(rank, world_size, model, example_prompts,save_file, args):
 def compute_single(logger,dataset_info_list,args): 
     rank = int(os.environ['RANK'])
     world_size = int(os.environ['WORLD_SIZE'])
-    local_rank = int(os.environ['LOCAL_RANK'])
     all_distribution = {"|W|_F":{},"|W|_0":{}}
     dataset_list = get_dataset_list(dataset_info_list)
     for dataset_name in dataset_list:
@@ -206,36 +252,37 @@ def compute_single(logger,dataset_info_list,args):
                 logger.log("DATASET: "+dataset_name)
             torch.cuda.empty_cache()
             tokenizer = LlamaTokenizer.from_pretrained(args.base_model)
-            model = LlamaForCausalLM.from_pretrained(
-                args.base_model,
-                low_cpu_mem_usage=True, #if args.torch_version >=1.9 else False,
-            )
-            if args.device != "cpu":
-                model.half()
-            model.to(args.device)
-            pruner_type = args.pruner_type.lower()
-            assert pruner_type in ['random', 'l2', 'l1', 'taylor']
-
-            for param in model.parameters():
-                param.requires_grad_(True)
-            before_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
             if rank == 0:
+                model = LlamaForCausalLM.from_pretrained(
+                    args.base_model,
+                    low_cpu_mem_usage=True, #if args.torch_version >=1.9 else False,
+                )
+                if args.device != "cpu":
+                    model.half()
+                model.to(args.device)
+                
+
+                for param in model.parameters():
+                    param.requires_grad_(True)
+                before_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
                 forward_prompts = torch.tensor([
                     [    1,   306,  4658,   278,  6593,   310,  2834,   338],
                     [    1,  3439, 17632,  1925, 29892,   278,  6368,   310],
                 ]).to(args.device) # Only for building the dependency graph. Any input will be fine since the computation result are not taken into consideration.
                 #.to("cpu")
-                if pruner_type == 'random':
-                    imp = tp.importance.RandomImportance()
-                elif pruner_type == 'l1':
-                    imp = llama_pruner.MagnitudeImportance(p=1)
-                elif pruner_type == 'l2':
-                    imp = llama_pruner.MagnitudeImportance(p=2)
-                elif pruner_type == 'taylor':
-                    imp = llama_pruner.TaylorImportance(group_reduction=args.grouping_strategy, taylor=args.taylor)
-                else:
-                    raise NotImplementedError
-                logger.log("Use {} pruner...".format(pruner_type))
+            pruner_type = args.pruner_type.lower()
+            assert pruner_type in ['random', 'l2', 'l1', 'taylor']
+            if pruner_type == 'random':
+                imp = tp.importance.RandomImportance()
+            elif pruner_type == 'l1':
+                imp = llama_pruner.MagnitudeImportance(p=1)
+            elif pruner_type == 'l2':
+                imp = llama_pruner.MagnitudeImportance(p=2)
+            elif pruner_type == 'taylor':
+                imp = llama_pruner.TaylorImportance(group_reduction=args.grouping_strategy, taylor=args.taylor)
+            else:
+                raise NotImplementedError
+            logger.log("Use {} pruner...".format(pruner_type))
             if args.block_wise:
                 if rank ==0:
                     kwargs = {"importance": imp,
@@ -262,34 +309,11 @@ def compute_single(logger,dataset_info_list,args):
                         forward_prompts,
                         **kwargs
                         )
-                setup()
-                model.train()
-                model.zero_grad()
-                logger.log("Start Pruning")
+                    #setup()
+                    model.train()
+                    model.zero_grad()
+                    logger.log("Start Pruning")
 
-                model.train()
-                local_rank = int(os.environ['LOCAL_RANK'])
-                torch.cuda.set_device(local_rank)
-
-                llama_auto_wrap_policy = functools.partial(
-                    transformer_auto_wrap_policy,
-                    transformer_layer_cls={
-                        LlamaDecoderLayer, LlamaAttention, LlamaMLP,
-                        #LlamaDecoderLayer, LlamaAttention
-                    },
-                )
-                sharding_strategy: ShardingStrategy = ShardingStrategy.FULL_SHARD#SHARD_GRAD_OP #for Zero2 and FULL_SHARD for Zero3
-                print(f"Rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
-                # model is on CPU before input to FSDP
-                model = FSDP(model,
-                    auto_wrap_policy=llama_auto_wrap_policy,
-                    mixed_precision=bfSixteen,
-                    sharding_strategy=sharding_strategy,
-                    device_id=torch.cuda.current_device(),
-                    cpu_offload=CPUOffload(offload_params=True),
-                    backward_prefetch = BackwardPrefetch.BACKWARD_PRE)
-                print(f"Rank: {rank} | PID: {os.getpid()}|{model}", file=sys.stderr)
-                model._fsdp_wrap = True
                 for i in range(args.iterative_steps):
                     if pruner_type in ['taylor']:
                         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
@@ -310,38 +334,26 @@ def compute_single(logger,dataset_info_list,args):
                                         module_param.acc_grad = copy.deepcopy(module_param.grad)
                                 model.zero_grad()
                                 del loss.grad
-                        print(f"Parent ID | PID: {os.getpid()}|", file=sys.stderr)
-                        #model = model.share_memory()
-                        model = get_gradient(rank, world_size, model,example_prompts,"temp/test.json",args)
-                        '''
-                            For multiprocess within particular process
-                            mp.spawn(get_gradient,
-                            args=(WORLD_SIZE,model,example_prompts,"temp/test.json",args),
-                            nprocs=WORLD_SIZE,
-                            join=True)'''
+                        print(f"Parent ID | rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
+                        modelGradient = get_gradient(rank, world_size,example_prompts,"temp/test.json",args)
                         logger.log("Finished collecting gradient")
-                        '''for idx, input in enumerate(example_prompts):
-                            loss = model(input_ids=input["input_ids"].to(args.device),labels=input["labels"].to(args.device)).loss
-                            loss.backward()'''
-                        '''for input ,label in example_prompts:
-                            #input = batch_input.to(args.device)
-                            #label = batch_label.to(args.device) 
-                            loss += model(input, labels=label).loss
-                            del(input)
-                            del(label)
-                        #loss.backward()'''
-                        #loss = loss/len(example_prompts)
-                    print("After Everything",file=sys.stderr)
-                    '''with open("temp/test.json", 'r') as fp:
-                        gradient_values = json.load(fp)
-                    for name, param in model.named_parameters():
-                        if param.requires_grad and param.grad is not None:
-                            param.grad = gradient_values[name]'''
-                    #print(torch.load("temp/temp_checkpoint.pt"))
-                    #model.load_state_dict(torch.load("temp/temp_checkpoint.pt"))
+                    save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+                    with FSDP.summon_full_params(
+                        modelGradient, StateDictType.FULL_STATE_DICT, save_policy,offload_to_cpu=True,
+                    ):
+                        cpu_state = modelGradient.state_dict()
+        
+                    print("Before Barrier ",file=sys.stderr)
+                    dist.barrier()
+                    print("After Barrier ",file=sys.stderr)
+                    cleanup()
                     if rank==0:
-                        '''for idx, param in enumerate(model.parameters()):
-                            print(idx, param.grad,file=sys.stderr)'''
+                        for name, param in model.named_parameters():
+                            if param.requires_grad:
+                                param.grad = copy.deepcopy(cpu_state[name])
+                    del cpu_state
+                    del modelGradient
+                    if rank == 0:
                         pruner.step()
                         after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
                         
@@ -354,8 +366,9 @@ def compute_single(logger,dataset_info_list,args):
                     for name, module in model.named_parameters():
                         if 'weight' in name:
                             module.grad = None
-                if rank == 0:
+                    #if rank == 0:
                     del pruner
+                
             elif args.channel_wise:
                 kwargs = {
                     "importance": imp,
@@ -417,10 +430,10 @@ def compute_single(logger,dataset_info_list,args):
                 model.model.layers = model.model.layers[:args.layer]
                 after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
             else:
-                print("Why is it here", file=sys.stderr)
                 raise NotImplementedError
-            logger.log("#Param before: {}, #Param after: {}, Ratio = {:.4f}%".format(before_pruning_parameters, after_pruning_parameters,  100.0*after_pruning_parameters/before_pruning_parameters))
-            gc.collect()
+            if rank ==0 :
+                logger.log("#Param before: {}, #Param after: {}, Ratio = {:.4f}%".format(before_pruning_parameters, after_pruning_parameters,  100.0*after_pruning_parameters/before_pruning_parameters))
+                gc.collect()
             torch.cuda.empty_cache()
             if args.save_model:
                 #model.half()
@@ -444,41 +457,19 @@ def compute_single(logger,dataset_info_list,args):
                     'model': model, 
                     'tokenizer': tokenizer,
                 }, logger.best_checkpoint_path)'''
-            
-            if args.save_distribution:
-                if isinstance(dataset_name,list):
-                    sparsity, all_distribution["|W|_F"][dataset_name[-1].split('/')[-1]] , all_distribution["|W|_0"][dataset_name[-1].split('/')[-1]]  = create_distribution_llm_pruner(model)
-                    logger.log(f"{dataset_name[-1].split('/')[-1]}: Total Sparsity {sparsity}")
-                else:
-                    sparsity, all_distribution["|W|_F"][dataset_name.split('/')[-1]] , all_distribution["|W|_0"][dataset_name.split('/')[-1]]  = create_distribution_llm_pruner(model)
-                    logger.log(f"{dataset_name.split('/')[-1]}: Total Sparsity {sparsity}")
+            if rank ==0 :
+                if args.save_distribution:
+                    if isinstance(dataset_name,list):
+                        sparsity, all_distribution["|W|_F"][dataset_name[-1].split('/')[-1]] , all_distribution["|W|_0"][dataset_name[-1].split('/')[-1]]  = create_distribution_llm_pruner(model)
+                        logger.log(f"{dataset_name[-1].split('/')[-1]}: Total Sparsity {sparsity}")
+                    else:
+                        sparsity, all_distribution["|W|_F"][dataset_name.split('/')[-1]] , all_distribution["|W|_0"][dataset_name.split('/')[-1]]  = create_distribution_llm_pruner(model)
+                        logger.log(f"{dataset_name.split('/')[-1]}: Total Sparsity {sparsity}")
 
                 torch.cuda.empty_cache()
 
-            if args.test_after_train:
-                if args.eval_device != "cpu":
-                    model.half()
-                model.to(args.eval_device)
-
-                model.config.pad_token_id = tokenizer.pad_token_id = 0 
-                model.config.bos_token_id = 1
-                model.config.eos_token_id = 2
-                logger.log("\n==================Generation Results After Pruning================\n")
-                
-                args_valid = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=400,model_type="llama",num_process=10,max_length=0,device='cuda',fine_tune=False)
-                model.eval()
-                print(dataset_name)
-                logger.log(dataset_name)
-                torch.cuda.empty_cache()
-                _, valid_dataloader = getData(tokenizer,dataset_info_list, dataset_name, args_valid)
-                ppl, saveResult = evaluate(model,tokenizer, valid_dataloader, args_valid)
-                logger.log(f"Accuracy on {dataset_name}: {ppl}")
-                logger.log("*"*100)
-                fname= args.save_ckpt_log_name+ "/"+ dataset_name.split('/')[-1]+".csv"
-                with open(fname, 'w', newline='') as file:
-                    writer = csv.writer(file)
-                    writer.writerows(saveResult)
             logger.log("\n==================Finish================\n")
             logger.log("Memory Requirement: {} MiB\n".format(torch.cuda.memory_allocated()/1024/1024))
     if args.save_distribution:
         return all_distribution
+    del model
