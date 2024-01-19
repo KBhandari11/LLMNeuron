@@ -180,7 +180,6 @@ def get_gradient(rank, world_size, example_prompts,save_file, args):
                 low_cpu_mem_usage=True, #if args.torch_version >=1.9 else False,
     )
     sharding_strategy: ShardingStrategy = ShardingStrategy.FULL_SHARD#SHARD_GRAD_OP #for Zero2 and FULL_SHARD for Zero3
-    print(f"Rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
     # model is on CPU before input to FSDP
     model = FSDP(model,
         auto_wrap_policy=llama_auto_wrap_policy,
@@ -201,23 +200,16 @@ def get_gradient(rank, world_size, example_prompts,save_file, args):
         model, checkpoint_wrapper_fn=non_reentrant_wrapper, check_fn=check_fn
     )'''
     fsdp_loss = torch.zeros(2).to(local_rank)
-    print("Before Evaluation ",rank,file=sys.stderr)
     #print(torch.cuda.memory_summary(),file=sys.stderr)
     
     for idx, input in enumerate(train_loader):
-        print("\t",rank,"Before Forward ",rank,file=sys.stderr)
         loss = model(input_ids=input["input_ids"].to(local_rank),labels=input["labels"].to(local_rank)).loss
-        print("\t", rank,"Before Backward ",rank,file=sys.stderr)
         loss.backward()
-        print("\t", idx, rank,"After Backward ",rank, file=sys.stderr)
         fsdp_loss[0] += loss.item()
         fsdp_loss[1] += len(input)
-        print("\t", idx, rank,"Finished one iteration",file=sys.stderr)
-    print("After Evaluation",file=sys.stderr)
     dist.all_reduce(fsdp_loss, op=dist.ReduceOp.SUM)
     if rank == 0:
         print('\tLoss: {:.6f}'.format( fsdp_loss[0] / fsdp_loss[1]), file=sys.stderr)
-    print("Completed ",file=sys.stderr)
     
     #model = model.to(args.device)
     #save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
@@ -236,7 +228,6 @@ def get_gradient(rank, world_size, example_prompts,save_file, args):
         with open(save_file, 'w') as fp:
             json.dump(saved_gradients, fp, cls=NumpyEncoder)'''
         #torch.save(model_dict, temp_save_name)
-    print("Completed ",rank, file=sys.stderr)
     return model
     
 def compute_single(logger,dataset_info_list,args): 
@@ -334,7 +325,7 @@ def compute_single(logger,dataset_info_list,args):
                                         module_param.acc_grad = copy.deepcopy(module_param.grad)
                                 model.zero_grad()
                                 del loss.grad
-                        print(f"Parent ID | rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
+                        #print(f"Parent ID | rank: {rank} | PID: {os.getpid()}|", file=sys.stderr)
                         modelGradient = get_gradient(rank, world_size,example_prompts,"temp/test.json",args)
                         logger.log("Finished collecting gradient")
                     save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
@@ -342,10 +333,7 @@ def compute_single(logger,dataset_info_list,args):
                         modelGradient, StateDictType.FULL_STATE_DICT, save_policy,offload_to_cpu=True,
                     ):
                         cpu_state = modelGradient.state_dict()
-        
-                    print("Before Barrier ",file=sys.stderr)
                     dist.barrier()
-                    print("After Barrier ",file=sys.stderr)
                     cleanup()
                     if rank==0:
                         for name, param in model.named_parameters():
@@ -470,6 +458,7 @@ def compute_single(logger,dataset_info_list,args):
 
             logger.log("\n==================Finish================\n")
             logger.log("Memory Requirement: {} MiB\n".format(torch.cuda.memory_allocated()/1024/1024))
+            if rank ==0:
+                del model
     if args.save_distribution:
         return all_distribution
-    del model

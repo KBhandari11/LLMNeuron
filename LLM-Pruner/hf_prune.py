@@ -74,7 +74,8 @@ def main(args):
                 env_name="{}".format(args.save_ckpt_log_name), 
                 config=args.__dict__,
                 root_dir='prune_log',
-                setup_sublogger=True
+                setup_sublogger=True,
+                rank = (os.environ['RANK'])
             )
     else:
         logger = LoggerWithDepth(
