@@ -1,8 +1,8 @@
 __pycache__
 llama/
-result/distribution
-result/llama-7b
+result/
 
 LLM-Pruner/lm-evaluation-harness
 LLM-Pruner/examples
 LLM-Pruner/figures
+LLM-Pruner/pruner_result

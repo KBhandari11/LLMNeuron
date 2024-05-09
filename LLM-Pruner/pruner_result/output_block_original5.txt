@@ -1,44 +1,0 @@
-2023-11-21 12:39:55 - INFO :       
-********************************************************************************************************************************************************************************************************
-
-2023-11-21 12:39:55 - INFO :       DATASET: commonsense_qa
-Single
-Index 0
-Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:09<00:09,  9.21s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:44<00:00, 24.71s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:44<00:00, 22.39s/it]
-2023-11-21 12:40:50 - INFO :       Use taylor pruner...
-2023-11-21 12:40:50 - INFO :       Pruning Attention Layer = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-2023-11-21 12:40:50 - INFO :       Pruning MLP Layer = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-2023-11-21 12:40:52 - INFO :       Start Pruning
-******************************
-Loading Dataset
-Map (num_proc=10):   0%|          | 0/9741 [00:00<?, ? examples/s]Map (num_proc=10):   3%|▎         | 317/9741 [00:00<00:04, 2227.20 examples/s]Map (num_proc=10):  62%|██████▏   | 6011/9741 [00:00<00:00, 27586.19 examples/s]Map (num_proc=10):  94%|█████████▍| 9192/9741 [00:00<00:00, 27397.97 examples/s]Map (num_proc=10): 100%|██████████| 9741/9741 [00:00<00:00, 18795.79 examples/s]
-Map (num_proc=10):   0%|          | 0/1221 [00:00<?, ? examples/s]Map (num_proc=10):  10%|█         | 123/1221 [00:00<00:01, 971.40 examples/s]Map (num_proc=10): 100%|██████████| 1221/1221 [00:00<00:00, 4218.40 examples/s]
-2023-11-21 12:40:56 - INFO :       Start Backwarding in iterative steps = 0...
-******************************
-Generating Samples
-******************************
-Prepare Validation Dataset
-Traceback (most recent call last):
-  File "/home/bhandk/MLNeuron/LLM-Pruner/hf_prune.py", line 181, in <module>
-    main(args)
-  File "/home/bhandk/MLNeuron/LLM-Pruner/hf_prune.py", line 120, in main
-    distribution =compute_single(logger,dataset_list,args)
-  File "/home/bhandk/MLNeuron/LLM-Pruner/compute_single.py", line 178, in compute_single
-    loss += model(input, labels=label).loss
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/bhandk/MLNeuron/LLM-Pruner/LLMPruner/models/hf_llama/modeling_llama.py", line 689, in forward
-    outputs = self.model(
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/bhandk/MLNeuron/LLM-Pruner/LLMPruner/models/hf_llama/modeling_llama.py", line 579, in forward
-    layer_outputs = decoder_layer(
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/bhandk/MLNeuron/LLM-Pruner/LLMPruner/models/hf_llama/modeling_llama.py", line 306, in forward
-    hidden_states = self.post_attention_layernorm(hidden_states)
-  File "/home/bhandk/miniconda3/envs/MLNeuron/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-  File "/home/bhandk/MLNeuron/LLM-Pruner/LLMPruner/models/hf_llama/modeling_llama.py", line 84, in forward
-    variance = hidden_states.to(torch.float32).pow(2).mean(-1, keepdim=True)
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB (GPU 6; 44.38 GiB total capacity; 13.07 GiB already allocated; 20.56 MiB free; 13.11 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF

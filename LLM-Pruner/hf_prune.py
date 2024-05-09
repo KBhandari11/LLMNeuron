@@ -8,10 +8,11 @@ import json
 
 import torch
 import numpy as np
+import torch.nn as nn 
 from LLMPruner.utils.logger import LoggerWithDepth
-from compute_both import compute_both
-#from compute_single import compute_single
-from compute_single_dist import compute_single
+from compute_llama import prune_llama
+from compute_bloom import prune_bloom
+#from compute_single_dist import compute_single
 class NumpyEncoder(json.JSONEncoder):
     """ Special json encoder for numpy types """
     def default(self, obj):
@@ -22,28 +23,51 @@ class NumpyEncoder(json.JSONEncoder):
         elif isinstance(obj, np.ndarray):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
+def find_layers(module, layers=[nn.Linear], name=''):
+    """
+    Recursively find the layers of a certain type in a module.
+
+    Args:
+        module (nn.Module): PyTorch module.
+        layers (list): List of layer types to find.
+        name (str): Name of the module.
+
+    Returns:
+        dict: Dictionary of layers of the given type(s) within the module.
+    """
+    if type(module) in layers:
+        return {name: module}
+    res = {}
+    for name1, child in module.named_children():
+        res.update(find_layers(
+            child, layers=layers, name=name + '.' + name1 if name != '' else name1
+        ))
+    return res
+
 def create_distribution_llm_pruner(model):
+    layers = model.model.layers
     distribution_F = []
+    distribution_2 = []
     distribution_0 = []
     count = 0 
-    total_params = 0 
-    for layers in range(32):
-        data_layer_F = []
-        data_layer_0 = []
-        for sub_layer in ["self_attn.q_proj","self_attn.k_proj","self_attn.v_proj","self_attn.o_proj","mlp.gate_proj","mlp.up_proj","mlp.down_proj"]:
-            key_name = f'model.layers.{layers}.{sub_layer}.weight'
-            if key_name in model.keys():
-                W = model[key_name]
-                count += (W==0).sum().item()
-                total_params += W.numel()
-                data_layer_F.append(torch.linalg.matrix_norm(W).item())#|W|_F norm
-                data_layer_0.append((W.numel() - (W==0).sum().item()))#|W|_0 norm
-            else:
-                data_layer_F.append(0)
-                data_layer_0.append(0)
-        distribution_F.append(data_layer_F)
-        distribution_0.append(data_layer_0)
-    return float(count)/total_params, np.array(distribution_F),np.array(distribution_0)
+    total_params = 0
+    for i in range(len(layers)):
+        layer = layers[i]
+        subset = find_layers(layer)
+        layer_values_F = []
+        layer_values_2 = []
+        layer_values_0 = []
+        for name in subset:
+            W = subset[name].weight.data
+            count += (W==0).sum().item()
+            total_params += W.numel()
+            layer_values_F.append(torch.linalg.matrix_norm(W).item()) #|W|_F norm
+            layer_values_2.append(torch.linalg.matrix_norm(W, ord=2).item()) #|W|_2 norm
+            layer_values_0.append((W.numel() - (W==0).sum().item())) #|W|_0 norm
+        distribution_F.append(layer_values_F)
+        distribution_2.append(layer_values_2)
+        distribution_0.append(layer_values_0)
+    return  np.array(distribution_F),np.array(distribution_2),np.array(distribution_0),float(count)/total_params
 
 def initialize_distribution(all_distribution, keys):
     def add_nested_dict(dictionary, keys):
@@ -68,7 +92,6 @@ def main(args):
     with open("../dataset_info.json", 'r') as openfile:
         # Reading from json file
         dataset_list = json.load(openfile)
-    dataset_both = [["commonsense_qa","tasksource/mmlu"],["commonsense_qa","math_qa"],["commonsense_qa","EleutherAI/truthful_qa_mc"],["commonsense_qa","derek-thomas/ScienceQA"],["tasksource/mmlu","derek-thomas/ScienceQA"],["math_qa","derek-thomas/ScienceQA"]]
     if not(args.save_distribution):
         logger = LoggerWithDepth(
                 env_name="{}".format(args.save_ckpt_log_name), 
@@ -96,54 +119,38 @@ def main(args):
             style = "channel_random"
         else:
             style = "channel"
+
+    with open(args.save_distribution_path, 'r') as openfile:
+        # Reading from json file
+        all_distribution = json.load(openfile)
+    args.save_model = False
+    for i in range(5):
+        print("Index", i)
+        print("Sparsity", args.pruning_ratio*100, "%")
+        print("Begin: Memory Requirement: {} MiB\n".format(torch.cuda.memory_allocated()/1024/1024), file=sys.stderr)
+        ratio = f"{int(args.pruning_ratio*100)}"
+        keys = [str(i),style,ratio]
+        all_distribution = initialize_distribution(all_distribution, keys)
+        keys = [str(i),style,ratio]
+        all_distribution = initialize_distribution(all_distribution, keys)
+        if ("llama" in args.base_model) or ("vicuna" in args.base_model):
+            distribution =prune_llama(logger,dataset_list,args)
+        elif ("bloom" in args.base_model):
+            distribution =prune_bloom(logger,dataset_list,args)
+        all_distribution[str(i)][style][ratio].update(distribution)
+        print("End: Memory Requirement: {} MiB\n".format(torch.cuda.memory_allocated()/1024/1024), file=sys.stderr)
+    
     if args.save_distribution:
-        with open(args.save_distribution_path, 'r') as openfile:
-            # Reading from json file
-            all_distribution = json.load(openfile)
-        args.save_model = False
-        if args.do_train_both:
-            print("Both")
-            for i in range(10):
-                print("Index", i)
-                isChat = "-chat" if "chat" in args.base_model.split("-") else ""
-                ratio = f"{int(args.pruning_ratio*100)}{isChat}"
-                keys = [str(i),"|W|_F",style,ratio]
-                all_distribution = initialize_distribution(all_distribution, keys)
-                keys = [str(i),"|W|_0",style,ratio]
-                all_distribution = initialize_distribution(all_distribution, keys)
-                distribution = compute_both(logger,dataset_both,dataset_list,args)
-                w_f,w_0 =distribution["|W|_F"],distribution["|W|_0"]
-                all_distribution[str(i)]["|W|_F"][style][ratio].update(w_f)
-                all_distribution[str(i)]["|W|_0"][style][ratio].update(w_0)
-        else:
-            print("Single")
-            for i in range(10):
-                print("Index", i)
-                isChat = "-chat" if "chat" in args.base_model.split("-") else ""
-                ratio = f"{int(args.pruning_ratio*100)}{isChat}"
-                keys = [str(i),"|W|_F",style,ratio]
-                all_distribution = initialize_distribution(all_distribution, keys)
-                keys = [str(i),"|W|_0",style,ratio]
-                all_distribution = initialize_distribution(all_distribution, keys)
-                distribution =compute_single(logger,dataset_list,args)
-                w_f, w_0 =distribution["|W|_F"],distribution["|W|_0"]
-                all_distribution[str(i)]["|W|_F"][style][ratio].update(w_f)
-                all_distribution[str(i)]["|W|_0"][style][ratio].update(w_0)
         json_object = json.dumps(all_distribution, cls=NumpyEncoder)
         with open(args.save_distribution_path, "w") as outfile:
             outfile.write(json_object)
-    else:
-        if args.do_train_both:
-            compute_both(logger,dataset_both,dataset_list,args)
-        else:
-            compute_single(logger,dataset_list,args)
+
 if __name__ == "__main__":
     os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:50"
-    parser = argparse.ArgumentParser(description='Pruning LLaMA (huggingface version)')
+    parser = argparse.ArgumentParser(description='Pruning (huggingface version)')
     
     # argument for parsing
     parser.add_argument('--base_model', type=str, default="decapoda-research/llama-7b-hf", help='base model name')
-    parser.add_argument('--save_ckpt_log_name', type=str, default="llama_prune", help='the path for save the checkpoint and the log. The final path would be log/{your_name_here}_{pruner_type}_{pruning_ratio}')
     parser.add_argument('--pruning_ratio', type=float, default=0.5, help='pruning ratio')
     parser.add_argument('--pruner_type', type=str, default='l2', help='pruner type')
 
@@ -177,7 +184,6 @@ if __name__ == "__main__":
 
     parser.add_argument('--seed', type=int, default=42, help='seed')
     parser.add_argument('--save_model', action='store_true', help='if save model')
-    parser.add_argument('--do_train_both', action='store_true', help='mix dataset for training')
 
     parser.add_argument('--save_distribution', action='store_true', help='loop over multiple file')
     parser.add_argument('--save_distribution_path', type=str, help='path to save the distribution')

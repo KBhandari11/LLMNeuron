@@ -50,14 +50,19 @@ def generateText(model, tokenizer, dataloader,args):
     accuracy = []
     lbls_map = {v: k for k, v in tokenizer.get_vocab().items()}
     saveData = []
+    j = 0
     for i, (input, data) in enumerate(zip(dataloader[0],dataloader[1])):
         #input,generated,true = getAnswer(tokenized_inputs= data, model=model, tokenizer=tokenizer, vocab_map= lbls_map , args=args)
         true =input["target"]
+        data["input_ids"],data["attention_mask"] = data["input_ids"][:,0:5000],data["attention_mask"][:,0:5000]
+        #print(data["input_ids"].shape)
         logits = getAnswer(tokenized_inputs=data, model=model, tokenizer=tokenizer, vocab_map= lbls_map , args=args)
         generated, acc =  checkAnswer(logits, true)
         accuracy.append(acc)
         #print([input["input"],generated,true,acc])
         saveData.append([input["input_no_few"],generated,true,acc])
+        if 50+j == i+1:
+            break
     #print("Device: ",args.device, end=" -> ")
     #print_gpu_utilization(int(args.device.split(":")[-1]))
     return (sum(accuracy), len(accuracy),sum(accuracy)/len(accuracy)), saveData

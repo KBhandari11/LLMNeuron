@@ -230,7 +230,7 @@ class BloomAttention(nn.Module):
         # Layer-wise attention scaling
         self.inv_norm_factor = 1.0 / math.sqrt(self.head_dim)
         self.beta = 1.0
-
+        
         self.query_key_value = nn.Linear(self.hidden_size, 3 * self.hidden_size, bias=True)
         self.dense = nn.Linear(self.hidden_size, self.hidden_size)
         self.attention_dropout = nn.Dropout(config.attention_dropout)
@@ -244,12 +244,19 @@ class BloomAttention(nn.Module):
             fused_qkv (`torch.tensor`, *required*): [batch_size, seq_length, num_heads * 3 * head_dim]
 
         Returns:
-            query: [batch_size, seq_length, num_heads, head_dim] key: [batch_size, seq_length, num_heads, head_dim]
+            query: [batch_size, seq_length, num_heads, head_dim] 
+            key: [batch_size, seq_length, num_heads, head_dim]
             value: [batch_size, seq_length, num_heads, head_dim]
         """
         batch_size, seq_length, three_times_hidden_size = fused_qkv.shape
+        print("Split HEAD fused_qkv shape:",fused_qkv.size())
+        print("Split HEAD fused_qkv pruner:",[batch_size, seq_length, 3 * self.num_heads, self.head_dim])
+        print("Split HEAD fused_qkv original:",[batch_size, seq_length, self.num_heads, 3, self.head_dim])
         fused_qkv = fused_qkv.view(batch_size, seq_length, 3 * self.num_heads, self.head_dim) 
         q_proj, k_proj, v_proj = torch.split(fused_qkv, [self.num_heads, self.num_heads, self.num_heads], dim=-2)
+        print("Q", q_proj.shape)
+        print("K", k_proj.shape)
+        print("V",  v_proj.shape)
         return q_proj, k_proj, v_proj
         #fused_qkv = fused_qkv.view(batch_size, seq_length, self.num_heads, 3, self.head_dim) # LLM-Pruner: Modify the split of query_key_value here
         #return fused_qkv[..., 0, :], fused_qkv[..., 1, :], fused_qkv[..., 2, :] 
@@ -291,8 +298,8 @@ class BloomAttention(nn.Module):
         output_attentions: bool = False,
     ):  
         fused_qkv = self.query_key_value(hidden_states)  # [batch_size, seq_length, 3 x hidden_size]
-
         # 3 x [batch_size, seq_length, num_heads, head_dim]
+        print("fused_qkv",fused_qkv.size())
         (query_layer, key_layer, value_layer) = self._split_heads(fused_qkv)
 
         batch_size, q_length, _, _ = query_layer.shape

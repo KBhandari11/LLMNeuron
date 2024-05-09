@@ -1,71 +1,138 @@
+import json
+from utils.bag_of_words.network_property import *
+from utils.bag_of_words.permutation_test import *
+from utils.bag_of_words.skill_dataset import *
+from utils.bag_of_words.sparsification import spectral_sparsification
+
+import json 
 import math
-import torch
-from transformers import AutoTokenizer, BertForMultipleChoice 
-from torchsummary import summary
-from torchview import draw_graph
-import matplotlib as cm
+import numpy as np
+import matplotlib as mpl
+import networkx as nx
 import matplotlib.pyplot as plt
-def multiply_list_elements(lst):
-    result = 1
-    for num in lst:
-        result *= num
-    return result
-def pad_list_of_lists(list_of_lists, pad_value, max_length=None):
-    if max_length is None:
-        max_length = max(len(lst) for lst in list_of_lists)
-    
-    padded_list = [lst + [pad_value] * (max_length - len(lst)) for lst in list_of_lists]
-    return padded_list
-model_id="meta-llama/Llama-2-7b-hf"
-'''model = LlamaForCausalLM.from_pretrained(model_id)
-tokenizer = LlamaTokenizer.from_pretrained(model_id)
+# Import necessary libraries
+mpl.rcParams.update(mpl.rcParamsDefault)
+#import itertools
+from utils.bag_of_words.skill_dataset import *
+from utils.bag_of_words.network_property import *
+from utils.bag_of_words.dataset_modules import *
+from utils.bag_of_words.bipartite_multipartite_projection import *
 
-prompt = "how many numbers from 10 to 50 are exactly divisible by 3 ."
-inputs = tokenizer(prompt, return_tensors="pt")
+def l_0_norm(vector):
+    count = 0
+    total = 0
+    for element in vector:
+        for sub_element in element:
+            if sub_element != 0:
+                count += 1
+    return count
+def take_average(dict):
+    data = dict["0"]
+    iterations_block = list(["0","1","2","3","4"])
+    iterations_channel = list(["0","1","2","3","4"])
+    #for style , iterations in zip (["block","channel","block_random","channel_random"],[iterations_block,iterations_channel,iterations_block,iterations_channel]):
+    for style , iterations in zip (["block","channel"],[iterations_block,iterations_channel,iterations_block,iterations_channel]):
+        for iter in iterations:
+            if iter == "0":
+                continue
+            for ratio in dict[iter][style]:
+                for dataset in dict[iter][style][ratio]:
+                    for norm in dict[iter][style][ratio][dataset]:
+                        value = np.array(dict[iter][style][ratio][dataset][norm])
+                        if len( value.shape) != 1:
+                            shape_model = value.shape
+                        data[style][ratio][dataset][norm]= (np.array(data[style][ratio][dataset][norm])+value)
+                        if iter == iterations[-1]:
+                            data[style][ratio][dataset][norm] = data[style][ratio][dataset][norm]/len(iterations)
+    return data, shape_model
+def strip(name):
+    name = name.split("/")[-1]
+    name = name.split("_")[0]
+    return name 
 
-# Generate
-generate_ids = model.generate(inputs.input_ids, max_length=90)
-output = tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
-#"Hey, are you conscious? Can you talk to me?\nI'm not conscious, but I can talk to you."
-print(output)'''
-model_id = "bert-base-uncased"
-prompt = "how many numbers from 10 to 50 are exactly divisible by 3."
-candidate1 = "13"
-candidate2 = "14"
-candidate3 = "16"
-candidate4 = "17"
-candidate5 = "19"
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-tokenizer.add_special_tokens({'pad_token': '[PAD]'})
-inputs = tokenizer([[prompt, candidate1], [prompt, candidate2], [prompt, candidate3], [prompt, candidate4], [prompt, candidate5]], return_tensors="pt", padding=True)
-labels = torch.tensor(0).unsqueeze(0)
-model = BertForMultipleChoice.from_pretrained(model_id)
+with open("result/distribution_llama_7b.json", 'r') as openfile:
+    # Reading from json file
+    llama_distribution = json.load(openfile)
+with open("result/distribution_vicuna_7b.json", 'r') as openfile:
+    # Reading from json file
+    vicuna_distribution = json.load(openfile)
+with open("result/distribution_llama_7b-chat.json", 'r') as openfile:
+    # Reading from json file
+    llama_chat_distribution= json.load(openfile)
+def loop_over(dict):
+    if isinstance(dict, list):
+        print("end")
+    else: 
+        print(dict.keys())
+        for keys in dict:
+            loop_over(dict[keys])
+def get_dataset_list(dataset_list):
+    dataname = []
+    for data in dataset_list:
+        if "subset" not in dataset_list[data].keys():
+            dataname.append(data)
+        else:
+            for subset in dataset_list[data]["subset"]:
+                dataname.append(subset)
+    return dataname
+    #Dataset List
+with open("/home/bhandk/MLNeuron/dataset_info.json", 'r') as openfile:
+        # Reading from json file
+        dataset_list = json.load(openfile)
+#Original Distribution
+with open("result/original_distribution_vicuna_7b.json", 'r') as openfile:
+    vicuna_original = json.load(openfile)
+with open("result/original_distribution_llama_7b.json", 'r') as openfile:
+    # Reading from json file
+    llama_original = json.load(openfile)
+with open("result/original_distribution_llama_7b-chat.json", 'r') as openfile:
+    # Reading from json file
+    llama_chat_original = json.load(openfile)
+#Pruned Distribution
+with open("result/distribution_llama_7b.json", 'r') as openfile:
+    # Reading from json file
+    llama_distribution = json.load(openfile)
+with open("result/distribution_vicuna_7b.json", 'r') as openfile:
+    # Reading from json file
+    vicuna_distribution = json.load(openfile)
+with open("result/distribution_llama_7b-chat.json", 'r') as openfile:
+    # Reading from json file
+    llama_chat_distribution= json.load(openfile)
+with open("result/dataNeuropsychologicalDomainsCluster.json", 'r') as openfile:
+    # Reading from json file
+    dataset_community= json.load(openfile)
 
-activations = []
-size = []
-def hook_fn(module, input, output):
-    activations.append(output)
-        
-
-named_layers = dict(model.named_modules())
+dataset_list = get_dataset_list(dataset_list)
+llama_distribution, model_shape = take_average(llama_distribution)
+vicuna_distribution, model_shape = take_average(vicuna_distribution)
+llama_chat_distribution, model_shape = take_average(llama_chat_distribution)
 
 
-outputs = model(**{k: v.unsqueeze(0) for k, v in inputs.items()}, labels=labels)
-logits = outputs.logits
-c = 0
-total = 0
-for a in activations:
-    if not(isinstance(a,dict)):
-        result = 0
-        for i in a:
-            size  = list(i.size())
-            result += multiply_list_elements(size)
-            print(size, end=(", "))
-        c+=1
-        print("Total=>",result)
-        total += result
-print(c,logits)
-#summary(model) 
-'''model_graph = draw_graph(model, input_data={k: v.unsqueeze(0) for k, v in inputs.items()},save_graph = True,filename='BERT_Model')
-model_graph.visual_graph'''
-#model_graph.visual_graph.render(format='png') 
+with open("result/dataMultidisciplinaryCognitiveSkillsFrameworkRestrict.json", 'r') as openfile:
+    #with open("result/dataCategory.json", 'r') as openfile:
+    # Reading from json file
+    dataCategory = json.load(openfile)
+
+dataCategory1 = dataCategory#filterData(dataCategory, 1.0)#0.4
+A_dataset_skill, skills = create_plot_bog_skills(dataCategory1, dataset_list, plot=False)
+AB_dataset_skill, skill_label = create_plot_bog_skills(dataCategory1, dataset_list, plot=False)
+
+
+for sparsity_ratio  in ["15","20","30","40"]:
+    for pruner_style in ["block","channel"]:
+        BC_dataset_modules, module_label = create_plot_bog_modules(llama_distribution,llama_original, dataset_list,pruner_style=pruner_style, pruner_ratio=sparsity_ratio,norm="|W|_0",plot=False, alpha=None)
+        data = {n:[] for n in ['average_degree','average_cluster', 'num_community', 'modularity', 'density', 'alpha']}
+        for alpha in [0.01,0.05,0.1,0.15,0.20,0.25,0.3,0.35,0.4,0.45,0.5]:
+            #AC_skill_modules =  np.dot(AB_dataset_skill.T,BC_dataset_modules)
+            #A_skill_skill,A_modules_modules  = get_projection(A_skill_modules, plot_projection= False)
+            original_network_list = []
+            for _ in range(100):
+                sparse_network = spectral_sparsification(BC_dataset_modules, alpha)
+                G, _ = get_network_property(sparse_network,dataset_list,module_label )
+                original_network_list.append(G)
+            module_p_values = permutation_test(original_network_list)
+            #_, property = get_network_property(AC_skill_modules,skill_label,module_label )
+            #A_dataset_modules,module_label = create_plot_bog_modules(llama_distribution,llama_original, dataset_list,pruner_style="channel", pruner_ratio=sparsity_ratio,norm="|W|_0",plot=False, alpha=alpha)
+            #_, property = get_network_property(A_dataset_modules,dataset_list,module_label )
+            for p_value_metric, p_value in module_p_values.items():
+                print(f"Model: Llama-7b | Sparsity ratio: {sparsity_ratio} | Pruner Style: {pruner_style} | Alpha: {alpha}| Metric: {p_value_metric} | Average Value(org): {p_value[2]} | Average Value(shuffle): {p_value[3]} |  Stats: {p_value[1]} |  P-Value: {p_value[0]}", flush=True)

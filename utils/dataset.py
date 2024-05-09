@@ -58,8 +58,8 @@ def adjustAutoRegressive(examples):
         examples["label"] = examples[key[2]]
     option = insertOption(option)
     examples["target"] = chr(int(examples["label"])+ord('A')) #option[int(examples["label"])] #chr(int(examples["label"])+ord('A'))#
-    examples["input"] = fewshotPrompt + f"Question: {examples[key[0]]} \n " + (" \n ").join(option)+" Answer: "
-    examples["input_no_few"] = f"Question: {examples[key[0]]} \n " + (" \n ").join(option)+" Answer: "
+    examples["input"] = fewshotPrompt + f"Question: {examples[key[0]]} \n " + (" \n ").join(option)+"Without any explanation, select the best answer.\nAnswer: "
+    examples["input_no_few"] = f"Question: {examples[key[0]]} \n " + (" \n ").join(option)+"Without any explanation, select the best answer.\nAnswer: "
     return examples
 
 def modifyDataset(dataset,keys,fewshot, prefix, dataset_name, args):
@@ -84,8 +84,8 @@ def get_data(dataset_name,dataset_list, tokenizer, args, seed=0):
             traindata = load_dataset(dataset_name[0],dataset_name[1], split="test") 
             valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation") 
         elif dataset_name[0] == "tasksource/bigbench":
-            traindata = load_dataset(dataset_name[0],dataset_name[1], split="train") 
-            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation") 
+            traindata = load_dataset(dataset_name[0],dataset_name[1], split="train",trust_remote_code=True) 
+            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation",trust_remote_code=True) 
     else:
         if dataset_name == "EleutherAI/truthful_qa_mc":
             traindata = load_dataset(dataset_name, split="validation") 
