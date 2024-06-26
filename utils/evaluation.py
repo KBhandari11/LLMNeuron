@@ -46,7 +46,7 @@ def getAnswer(tokenized_inputs, model, tokenizer, vocab_map, args):
 
 def generateText(model, tokenizer, dataloader,args):
     model.eval()
-    model.to(args.device)
+    #model.to(args.device)
     accuracy = []
     lbls_map = {v: k for k, v in tokenizer.get_vocab().items()}
     saveData = []
@@ -61,10 +61,11 @@ def generateText(model, tokenizer, dataloader,args):
         accuracy.append(acc)
         #print([input["input"],generated,true,acc])
         saveData.append([input["input_no_few"],generated,true,acc])
-        if 50+j == i+1:
+        if args.evaluation_size+j == i+1:
             break
     #print("Device: ",args.device, end=" -> ")
     #print_gpu_utilization(int(args.device.split(":")[-1]))
+    del model 
     return (sum(accuracy), len(accuracy),sum(accuracy)/len(accuracy)), saveData
 
 def evaluate(model,tokenizer,testloader,args):

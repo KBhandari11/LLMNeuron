@@ -16,7 +16,7 @@ def create_plot_bog_modules(distribution, original_distribution, dataset_list,pr
 
         #take the difference and normalize
         pruned_acc = distribution[pruner_style][pruner_ratio][dataset_name]["Accuracy"][2]
-        original_acc = original_distribution[dataset_name][2]
+        original_acc = original_distribution[dataset_name][-1]
 
         sparsity_ratio = [(((w_pruned)/w_org)) for w_org, w_pruned  in zip(original_data,pruned_data) ]
         min_weight_reduction = min(sparsity_ratio)

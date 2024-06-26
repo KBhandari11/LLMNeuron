@@ -75,10 +75,10 @@ def modifyDataset(dataset,keys,fewshot, prefix, dataset_name, args):
 
     return dataset
 
-def get_data(dataset_name,dataset_list, tokenizer, args, seed=0):
+def get_data(dataset_name,dataset_list, tokenizer, args):
     # Load train and validation datasets
-    print("*"*30)
-    print("Loading Dataset")
+    #print("*"*30)
+    #print("Loading Dataset")
     if isinstance(dataset_name,list):
         if dataset_name[0] == "tasksource/mmlu":
             traindata = load_dataset(dataset_name[0],dataset_name[1], split="test") 
@@ -93,6 +93,7 @@ def get_data(dataset_name,dataset_list, tokenizer, args, seed=0):
         else:
             traindata = load_dataset(dataset_name, split="train") 
             valdata = load_dataset(dataset_name, split="validation") 
+    valdata= valdata.shuffle(seed=args.seed)
     #traindata.cleanup_cache_files()
     #valdata.cleanup_cache_files()
     if isinstance(dataset_name,list):
@@ -102,8 +103,8 @@ def get_data(dataset_name,dataset_list, tokenizer, args, seed=0):
         traindata = modifyDataset(traindata,dataset_list[dataset_name]["keys"], "",dataset_list[dataset_name]["prefixes"],dataset_name,args)
         valdata = modifyDataset(valdata,dataset_list[dataset_name]["keys"],dataset_list[dataset_name]["fewshot_prompt"],dataset_list[dataset_name]["prefixes"],dataset_name,args)
     
-    print("*"*30)
-    print("Generating Samples")
+    #print("*"*30)
+    #print("Generating Samples")
     # Generate samples from training set
     trainloader = []
     if args.do_train_both:
@@ -123,8 +124,8 @@ def get_data(dataset_name,dataset_list, tokenizer, args, seed=0):
         inp = torch.nn.functional.pad(inp, (0, args.seqlen - inp.size(1)))
         tar = torch.nn.functional.pad(tar, (0, args.seqlen - tar.size(1)))
         trainloader.append((inp, tar))
-    print("*"*30)
-    print("Prepare Validation Dataset")
+    #print("*"*30)
+    #print("Prepare Validation Dataset")
     valloader = getDataLoader(tokenizerGiven=tokenizer, dataset=valdata, args=args)
     return trainloader, (valdata,valloader)
 

@@ -7,9 +7,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from utils.bag_of_words.community_layout import community_layout
+from sklearn.metrics import adjusted_rand_score, pairwise_distances
 import numpy as np
 from operator import itemgetter
-import itertools
+from itertools import combinations
 
 
 def plot_community_model(g,partition):
@@ -97,12 +98,44 @@ def most_central_edge(G):
     centrality = nx.edge_betweenness_centrality(G, weight="weight")
     return max(centrality, key=centrality.get)
 
-def get_community(G, n_community=None):
-    g = deepcopy(G)
-    isolated = list(nx.isolates(g))
+def consensus_community(G, num_runs=20, ground_truth =None):
+    if ground_truth == None:
+        # Track the best community structure
+        best_communities = None
+        modularity = []
+        best_modularity = -1  # Initialize with a very low modularity
+
+        for seed in range(num_runs):
+            communities = nx.community.louvain_communities(G, weight='weight', resolution=1, seed=seed)
+            current_modularity = nx.community.modularity(G, communities,weight='weight')
+            modularity.append(current_modularity)
+            if current_modularity > best_modularity:
+                best_modularity = current_modularity
+                best_communities = communities
+    else:
+        best_communities = None
+        best_adjusted_rand_score = -1  # Initialize with a very low modularity
+        
+        for seed in range(num_runs):
+            communities = nx.community.louvain_communities(G, weight='weight', resolution=1)
+            predicted_label = []
+            for nodes in G.nodes():
+                for comm_idx, comm in enumerate(communities):
+                    if nodes in comm:
+                        predicted_label.append(comm_idx)
+                        continue
+            score = adjusted_rand_score(ground_truth, predicted_label)
+            if best_adjusted_rand_score > score:
+                best_adjusted_rand_score = score
+                best_communities = communities
+    return best_communities
+def get_community(g, ground_truth=None):
+    #g = deepcopy(G)
+    #isolated = list(nx.isolates(g))
     #g.remove_nodes_from(isolated)
     #partition = community_louvain.best_partition(g)
-    communities = nx.community.louvain_communities(g,resolution=1,weight="weight")
+    #communities = consensus_community(g, ground_truth =ground_truth)
+    communities = nx.community.louvain_communities(g,resolution=1,weight="weight", seed=0)
     partition = {}
     for node in g.nodes():
         for idx,comm_nodes in enumerate(communities):
@@ -112,14 +145,14 @@ def get_community(G, n_community=None):
     comm = {x:[] for x in set(partition.values())}
     for i in partition:
         comm[partition[i]].append(i)
-    if isolated != []:
+    '''if isolated != []:
         comm[len(set(partition.values()))+1] = isolated
         new  = set(partition.values())+1
         for node in isolated:
-            partition[node] = new
+            partition[node] = new'''
     return comm, partition
 
-def get_network_property(AB, labelA, labelB,get_centrality_bool =False):
+def get_network_property(AB, labelA, labelB,get_centrality_bool =False, ground_truth=None):
     G = nx.Graph()
     for i in range(AB.shape[0]):
         for j in range(AB.shape[1]):  

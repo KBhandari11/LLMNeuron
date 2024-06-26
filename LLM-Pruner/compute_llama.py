@@ -172,7 +172,7 @@ def prune_llama(logger,dataset_info_list,args):
                 logger.log("Start Pruning")
                 for i in range(args.iterative_steps):
                     if pruner_type in ['taylor']:
-                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
+                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False,evaluation_size=50)
                         example_prompts, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
                         if args.taylor in ['param_mix', 'param_second']:
@@ -209,7 +209,7 @@ def prune_llama(logger,dataset_info_list,args):
                             logger.log("Loss = {}".format(loss))
 
                     else:
-                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
+                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False,evaluation_size=50)
                         example_prompts, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
 
                     pruner.step()
@@ -256,7 +256,7 @@ def prune_llama(logger,dataset_info_list,args):
                 logger.log("Start Pruning")
                 for i in range(args.iterative_steps):
                     if pruner_type in ['taylor']:
-                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=10,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
+                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=10,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False,evaluation_size=50)
                         example_prompts, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
                         #example_prompts = get_examples('bookcorpus', tokenizer, 10, seq_len = 64)
                         logger.log("Start Backwarding in iterative steps = {}...".format(i))
@@ -278,7 +278,7 @@ def prune_llama(logger,dataset_info_list,args):
                         loss = loss_value /len(example_prompts)
                         logger.log("Loss = {}".format(loss))
                     else:
-                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
+                        args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=args.num_examples,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False,evaluation_size=50)
                         example_prompts, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
                     pruner.step()
                     after_pruning_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)

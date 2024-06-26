@@ -53,13 +53,15 @@ def compute_effective_resistance(L):
             R_eff[j, i] = R_eff[i, j]
     return R_eff
 
-def spectral_sparsification(adj_matrix, alpha=0.5,random_seed = True):
+def spectral_sparsification(adj_matrix, alpha=None,random_seed = True):
     """
     Perform spectral sparsification on a graph represented by a weighted adjacency matrix.
     adj_matrix: Weighted adjacency matrix of the graph.
     alpha: Sampling probability multiplier.
     """
     # Calculate Laplacian and effective resistances
+    if alpha == None:
+        return adj_matrix
     if random_seed:
         set_random_seed()
     original_m, original_n = adj_matrix.shape

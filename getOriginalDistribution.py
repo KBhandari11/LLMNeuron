@@ -107,7 +107,7 @@ if __name__ == "__main__":
         # Reading from json file
         dataset_info_list = json.load(openfile)   
 
-    
+    print(args.base_model)
     dataset_list = get_dataset_list(dataset_info_list)
     value = {}
     value["distribution"]={}
@@ -120,23 +120,27 @@ if __name__ == "__main__":
     value["distribution"]["|W|_F"],value["distribution"]["|W|_inf"], value["distribution"]["|W|_0"],sparsity = create_distribution_llm_pruner(model)
     del model
     torch.cuda.empty_cache()
-    for dataset_name in dataset_list:
-            print(dataset_name)
-            distribution = {"|W|_F":None,"|W|_inf":None,"|W|_0":None,"Accuracy":None}
-            tokenizer = LlamaTokenizer.from_pretrained(args.base_model)
-            model = LlamaForCausalLM.from_pretrained(
+    tokenizer = LlamaTokenizer.from_pretrained(args.base_model)
+    model = LlamaForCausalLM.from_pretrained(
                 args.base_model,
                 low_cpu_mem_usage=True #if args.torch_version >=1.9 else False,
             )
-            args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=1,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cpu',fine_tune=False)
-            _, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
-            accuracy,_ = evaluate(model=model,tokenizer=tokenizer,testloader=validation_dataset,args=args)
+    for dataset_name in dataset_list:
+            print(dataset_name)
+            distribution = {"|W|_F":None,"|W|_inf":None,"|W|_0":None,"Accuracy":None}
+            args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=1,seqlen=500,model_type="llama",num_process=10,max_length=0,device='cuda',fine_tune=False,evaluation_size=30)
+            acc_list = []
+            for iter in range(5):
+                set_random_seed(iter)
+                _, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset,seed=iter)
+                accuracy,_ = evaluate(model=model,tokenizer=tokenizer,testloader=validation_dataset,args=args_dataset)
+                acc_list.append(accuracy)
             if isinstance(dataset_name,list):
-                value[dataset_name[-1].split('/')[-1]] = accuracy
-                print(dataset_name[-1].split('/')[-1], accuracy)
+                value[dataset_name[-1].split('/')[-1]] = (accuracy,np.mean([acc[-1] for acc in acc_list]))
+                print(dataset_name[-1].split('/')[-1], acc_list)
             else:
-                value[dataset_name.split('/')[-1]] = accuracy
-                print(dataset_name.split('/')[-1], accuracy)
+                value[dataset_name.split('/')[-1]] = (accuracy,np.mean([acc[-1] for acc in acc_list]))
+                print(dataset_name.split('/')[-1], acc_list)
     json_object = json.dumps(value, cls=NumpyEncoder)
     with open(args.save_distribution_path, "w") as outfile:
         outfile.write(json_object)

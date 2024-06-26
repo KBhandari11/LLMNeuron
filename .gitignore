@@ -1,7 +1,7 @@
 __pycache__
 llama/
 result/
-
+temp/
 LLM-Pruner/lm-evaluation-harness
 LLM-Pruner/examples
 LLM-Pruner/figures
