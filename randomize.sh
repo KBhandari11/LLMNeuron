@@ -16,9 +16,14 @@ echo $save_path
 python getOriginalDistribution.py --base_model ${model} --save_distribution_path ${save_path}
 
 '
-
+#when zero
+#zero=`expr $1 - 2`
 one=`expr $1 + 1`
 two=`expr $1 + 2`
+three=`expr $1 + 3`
+#when two 
+#zero=`expr $1 - 2`
+#one=`expr $1 - 1`
 #CUDA_VISIBLE_DEVICES=$1 python evaluateRandomized.py $1 1> ./result/randomize_accuracy/randomize_out_kaiming_$1.txt 2> ./result/randomize_accuracy/randomize_err_kaiming_$1.txt
-#CUDA_VISIBLE_DEVICES=$1,$one,$two python evaluate_trained_associated.py $1 1> ./result/randomize_accuracy/randomize_out_$1.txt 2> ./result/randomize_accuracy/randomize_err_$1.txt
 CUDA_VISIBLE_DEVICES=$1,$one,$two python evaluate_trained_associated.py $1 1> ./result/randomize_accuracy/randomize_out_$1.txt 2> ./result/randomize_accuracy/randomize_err_$1.txt
+#CUDA_VISIBLE_DEVICES=$zero,$one,$1 python evaluate_trained_associated.py $1 1> ./result/randomize_accuracy/randomize_out_$1.txt 2> ./result/randomize_accuracy/randomize_err_$1.txt

@@ -11,6 +11,7 @@ import numpy as np
 import torch.nn as nn 
 from LLMPruner.utils.logger import LoggerWithDepth
 from compute_llama import prune_llama
+from compute_llama3 import prune_llama3
 from compute_bloom import prune_bloom
 #from compute_single_dist import compute_single
 class NumpyEncoder(json.JSONEncoder):
@@ -81,7 +82,7 @@ def initialize_distribution(all_distribution, keys):
     return all_distribution
 
 def set_random_seed(seed):
-    #random.seed(seed)
+    random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -119,12 +120,15 @@ def main(args):
             style = "channel_random"
         else:
             style = "channel"
-
-    with open(args.save_distribution_path, 'r') as openfile:
-        # Reading from json file
-        all_distribution = json.load(openfile)
+    if os.path.isfile(args.save_distribution_path):
+        with open(args.save_distribution_path, 'r') as openfile:
+            # Reading from json file
+            all_distribution = json.load(openfile)
+    else:
+       all_distribution = {} 
     args.save_model = False
     for i in range(5):
+        args.seed = i *args.seed
         print("Index", i)
         print("Sparsity", args.pruning_ratio*100, "%")
         print("Begin: Memory Requirement: {} MiB\n".format(torch.cuda.memory_allocated()/1024/1024), file=sys.stderr)
@@ -134,7 +138,10 @@ def main(args):
         keys = [str(i),style,ratio]
         all_distribution = initialize_distribution(all_distribution, keys)
         if ("llama" in args.base_model) or ("vicuna" in args.base_model):
-            distribution =prune_llama(logger,dataset_list,args)
+            if  "Llama-3-8B" in args.base_model:
+                distribution =prune_llama3(logger,dataset_list,args)
+            else:
+                distribution =prune_llama(logger,dataset_list,args)
         elif ("bloom" in args.base_model):
             distribution =prune_bloom(logger,dataset_list,args)
         all_distribution[str(i)][style][ratio].update(distribution)
@@ -178,6 +185,7 @@ if __name__ == "__main__":
 
     # general argument
     parser.add_argument('--device', type=str, default="cuda", help='device')
+    parser.add_argument('--evaluation_size', type=int, default=50)
     parser.add_argument('--test_before_train', action='store_true', help='whether test before train')
     parser.add_argument('--eval_device', type=str, default="cuda", help='eval device')
     parser.add_argument('--test_after_train', action='store_true', help='whether test after train')

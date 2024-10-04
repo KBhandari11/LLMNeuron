@@ -3,9 +3,6 @@ import scipy.sparse as sp
 import scipy.sparse.linalg
 import random
 
-def set_random_seed(seed=0):
-    random.seed(seed)
-    np.random.seed(seed)
 
 def sparse_matrix(matrix,alpha):
     flattened_matrix= np.sort(matrix.flatten())
@@ -62,8 +59,7 @@ def spectral_sparsification(adj_matrix, alpha=None,random_seed = True):
     # Calculate Laplacian and effective resistances
     if alpha == None:
         return adj_matrix
-    if random_seed:
-        set_random_seed()
+
     original_m, original_n = adj_matrix.shape
     L = bipartite_laplacian(adj_matrix)
     adj_matrix = sp.bmat([[None, adj_matrix], [adj_matrix.T, None]], format='csr').toarray()

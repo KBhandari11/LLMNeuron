@@ -56,10 +56,10 @@ def adjustAutoRegressive(examples):
     elif datasetName == "tasksource/mmlu":
         option = examples[key[1]]
         examples["label"] = examples[key[2]]
-    option = insertOption(option)
-    examples["target"] = chr(int(examples["label"])+ord('A')) #option[int(examples["label"])] #chr(int(examples["label"])+ord('A'))#
-    examples["input"] = fewshotPrompt + f"Question: {examples[key[0]]} \n " + (" \n ").join(option)+"Without any explanation, select the best answer.\nAnswer: "
-    examples["input_no_few"] = f"Question: {examples[key[0]]} \n " + (" \n ").join(option)+"Without any explanation, select the best answer.\nAnswer: "
+    option_choices = insertOption(option)
+    examples["target"] = f"{chr(int(examples['label'])+ord('A'))}. {option[int(examples['label'])]}" #option[int(examples["label"])] #chr(int(examples["label"])+ord('A'))#
+    examples["input"] = fewshotPrompt + f"Question: {examples[key[0]]} \n " + (" \n ").join(option_choices)+"\nWithout any explanation, select the best answer.\nAnswer: "
+    examples["input_no_few"] = f"Question: {examples[key[0]]} \n " + (" \n ").join(option_choices)+"\nWithout any explanation, select the best answer.\nAnswer: "
     return examples
 
 def modifyDataset(dataset,keys,fewshot, prefix, dataset_name, args):
@@ -71,7 +71,8 @@ def modifyDataset(dataset,keys,fewshot, prefix, dataset_name, args):
     if args.model_type == 'bert':
         dataset = dataset.map(adjustBERT,num_proc=args.num_process)
     else:
-        dataset = dataset.map(adjustAutoRegressive,num_proc=args.num_process)
+        #dataset = dataset.map(adjustAutoRegressive,num_proc=args.num_process)
+        dataset = dataset.map(adjustAutoRegressive)
 
     return dataset
 
@@ -94,8 +95,8 @@ def get_data(dataset_name,dataset_list, tokenizer, args):
             traindata = load_dataset(dataset_name, split="train") 
             valdata = load_dataset(dataset_name, split="validation") 
     valdata= valdata.shuffle(seed=args.seed)
-    #traindata.cleanup_cache_files()
-    #valdata.cleanup_cache_files()
+    traindata.cleanup_cache_files()
+    valdata.cleanup_cache_files()
     if isinstance(dataset_name,list):
         traindata = modifyDataset(traindata,dataset_list[dataset_name[0]]["keys"], "",dataset_list[dataset_name[0]]["prefixes"],dataset_name[0],args)
         valdata = modifyDataset(valdata,dataset_list[dataset_name[0]]["keys"],dataset_list[dataset_name[0]]["fewshot_prompt"],dataset_list[dataset_name[0]]["prefixes"],dataset_name[0],args)
@@ -113,17 +114,20 @@ def get_data(dataset_name,dataset_list, tokenizer, args):
         num_dataset = args.nsamples
     for num in range(num_dataset):
         i = random.randint(0, len(traindata) - 1)
-        trainenc = tokenizer(traindata[i]['input'], return_tensors='pt')
-        label = tokenizer(traindata[i]['target'], return_tensors='pt')
-        i = trainenc.input_ids.shape[1]#random.randint(0, trainenc.input_ids.shape[1] - args.seqlen - 1)
-        #trainenc.input_ids = torch.cat((trainenc.input_ids, tar.input_ids), 1)
+        trainenc = tokenizer(traindata[i]['input'], return_tensors='pt',padding='max_length', max_length=args.seqlen,truncation=True)
+        #trainenc = tokenizer(traindata[i]['input'], return_tensors='pt',padding=True, truncation=True)
+        label = tokenizer(traindata[i]['target'], return_tensors='pt',padding='max_length', max_length=args.seqlen,truncation=True)
+        #i = trainenc.input_ids.shape[1]#random.randint(0, trainenc.input_ids.shape[1] - args.seqlen - 1)
         inp = trainenc.input_ids 
-        tar = inp.clone()
-        tar = torch.cat((tar, label.input_ids), 1)
+        atten = trainenc.attention_mask 
+        #tar = inp.clone()
+        tar = label.input_ids#torch.cat((tar, label.input_ids), 1)
+        #inp = torch.where(inp != 32000, inp, -100)
+        tar = torch.where(tar != 32000, inp, -100)
         #tar[:, :i] = -100
-        inp = torch.nn.functional.pad(inp, (0, args.seqlen - inp.size(1)))
-        tar = torch.nn.functional.pad(tar, (0, args.seqlen - tar.size(1)))
-        trainloader.append((inp, tar))
+        #inp = torch.nn.functional.pad(inp, (inp.size(1), args.seqlen - inp.size(1)), value=-100)
+        #tar = torch.nn.functional.pad(tar, (tar.size(1), args.seqlen - tar.size(1)), value=-100)
+        trainloader.append((inp,atten, tar))
     #print("*"*30)
     #print("Prepare Validation Dataset")
     valloader = getDataLoader(tokenizerGiven=tokenizer, dataset=valdata, args=args)

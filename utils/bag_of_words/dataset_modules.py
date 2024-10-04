@@ -4,7 +4,7 @@ import seaborn as sns
 from utils.bag_of_words.sparsification import spectral_sparsification
 
 #given the sparsity value of the model, return dataset vs modules data.
-def create_plot_bog_modules(distribution, original_distribution, dataset_list,pruner_style="block", pruner_ratio="15",norm="|W|_inf", alpha=None,plot=True, random_seed=True):
+def create_plot_bog_modules(distribution, original_distribution, dataset_list,pruner_style="block", pruner_ratio="15",norm="|W|_0", alpha=None,plot=True, random_seed=True):
     modules=["attn.q", "attn.k", "attn.v", "attn.o","gate","mlp.up", "mlp.down"]
     layer_modules_label=[ str(i)+"_"+m  for i in range(3,31) for m in modules]
     bag_o_words_neuron = []

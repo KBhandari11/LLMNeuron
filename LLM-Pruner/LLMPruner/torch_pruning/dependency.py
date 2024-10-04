@@ -2,7 +2,7 @@ import typing
 import warnings
 from numbers import Number
 from collections import namedtuple
-import sys
+
 import torch
 import torch.nn as nn
 
@@ -262,6 +262,7 @@ class DependencyGraph(object):
             ops.OPTYPE.SPLIT: ops.SplitPruner(),
             ops.OPTYPE.ELEMENTWISE: ops.ElementWisePruner(),
             ops.OPTYPE.RESHAPE: ops.ReshapePruner(),
+            ops.OPTYPE.EXPAND: ops.ExpandPruner(),
             ops.OPTYPE.CUSTOMIZED: None,
         }
         self.REGISTERED_PRUNERS = function.PrunerBox.copy()  # shallow copy
@@ -370,7 +371,6 @@ class DependencyGraph(object):
                 unwrapped_parameters.append( UnwrappedParameters(parameters=p, pruning_dim=pruning_dim) ) # prune the last non-singleton dim by daufault
         self.unwrapped_parameters = unwrapped_parameters
         # Build computational graph by tracing.
-
         self.module2node = self._trace(
             model, example_inputs, forward_fn, output_transform=output_transform
         )
@@ -624,6 +624,7 @@ class DependencyGraph(object):
                     trigger=trigger, handler=handler, source=node, target=in_node
                 )
                 node.dependencies.append(dep)
+
             for out_node in node.outputs:
                 trigger = self.get_pruner_of_module(node.module).prune_out_channels
                 handler = self.get_pruner_of_module(out_node.module).prune_in_channels
@@ -690,7 +691,6 @@ class DependencyGraph(object):
             out = output_transform(out)
 
         module2node = {}
-
         for o in utils.flatten_as_list(out):
             self._trace_computational_graph(
                 module2node, o.grad_fn, gradfn2module, reused)
@@ -747,6 +747,9 @@ class DependencyGraph(object):
                 elif "view" in grad_fn.name().lower() or 'reshape' in grad_fn.name().lower():
                     module = ops._ReshapeOp(self._op_id)
                     self._op_id+=1
+                elif "expand" in grad_fn.name().lower():
+                    module = ops._ExpandOp(self._op_id)
+                    self._op_id += 1
                 else:
                     # treate other ops as element-wise ones, like Add, Sub, Div, Mul.
                     module = ops._ElementWiseOp(self._op_id, grad_fn.name())
@@ -833,6 +836,9 @@ class DependencyGraph(object):
                 self._update_split_index_mapping(node)
             if node.type == ops.OPTYPE.RESHAPE:
                 self._update_reshape_index_mapping(node)
+            if node.type == ops.OPTYPE.EXPAND:
+                self._update_expand_index_mapping(node)
+
 
     def _init_shape_information(self):
         for module, node in self.module2node.items():
@@ -1032,6 +1038,45 @@ class DependencyGraph(object):
                         ))
                         addressed_dep.append(dep)
                         break
+
+    def _update_expand_index_mapping(self, node: Node):
+        out_channels = None
+        for n in node.outputs:
+            
+            out_channels = self._infer_in_channels_recursively(n)
+            if out_channels is not None:  # =0 if there is a residual connection to model inputs
+                break
+        if not hasattr(node.grad_fn, '_saved_self_sym_sizes'):
+            #warnings.warn("Expand operation detected but the shape information is not available")
+            return 
+
+        if len(node.grad_fn._saved_self_sym_sizes) != 5:
+            return
+
+        # for Huggingface GQA
+        batch, num_key_value_heads, n_rep, slen, head_dim = node.grad_fn._saved_self_sym_sizes
+        in_channels = num_key_value_heads * n_rep * head_dim
+        if out_channels is None or in_channels is None: return
+        repeat = out_channels // in_channels
+        addressed_dep = []
+        for i, out_node in enumerate(node.outputs):
+            for dep in node.dependencies:
+                if any((dep is d) for d in addressed_dep): continue
+                if dep.target == out_node:
+                    #if node.enable_index_mapping:
+                    dep.index_mapping[0] = (_helpers._ExpandIndexMapping(repeat=repeat, reverse=False))
+                    addressed_dep.append(dep)
+                    break
+        
+        addressed_dep = []
+        for i, out_node in enumerate(node.outputs):
+            for dep in out_node.dependencies:
+                if dep.target == node:
+                    if any((dep is d) for d in addressed_dep): continue
+                    #if node.enable_index_mapping:
+                    dep.index_mapping[0] = (_helpers._ExpandIndexMapping(repeat=repeat, reverse=True))
+                    addressed_dep.append(dep)
+                    break
 
     def infer_channels(self, node_1, node_2):
         if node_1.type == ops.OPTYPE.SPLIT:

@@ -67,7 +67,7 @@ def create_multiparitite(AB,BC,nodeA, nodeB,nodeC):
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 
-def networkx_draw_bipartite(AB,A_node, B_node,A_node_color,B_node_color, title=""):
+def networkx_draw_bipartite(AB,A_node, B_node,A_node_color,B_node_color, title="",path=None):
     G = create_biparitite(AB, A_node, B_node)
     X = {n for n, d in G.nodes(data=True) if d["bipartite"] == 1}
     plt.figure(figsize=(50,30))
@@ -82,6 +82,8 @@ def networkx_draw_bipartite(AB,A_node, B_node,A_node_color,B_node_color, title="
     plt.title(title)
     #nx.draw_networkx_labels(G,layout,font_size=5,font_weight="bold",horizontalalignment='left', verticalalignment='top')
     plt.show()
+    if path != None:
+        nx.write_edgelist(G, path, delimiter=', ', data=["weight"], encoding='utf-8')
 def networkx_draw_tripartite(AB,BC,A_node, B_node,C_node,A_node_color,B_node_color,C_node_color,title=""):
     G = create_multiparitite(AB,BC,A_node, B_node,C_node)
     #X = {n for n, d in G.nodes(data=True) if d["subset"] == 0}
@@ -98,9 +100,10 @@ def networkx_draw_tripartite(AB,BC,A_node, B_node,C_node,A_node_color,B_node_col
     plt.title(title)
     plt.show()
 
-def plot_AC_bipartite(AB_dataset_skill, skill_label,distribution,original, dataset_list,pruner_style="block", pruner_ratio="15",norm="|W|_0",alpha1=0,alpha2=90):
+
+def plot_AC_bipartite(AB_dataset_skill, skill_label,distribution,original, dataset_list,pruner_style="block", pruner_ratio="15",norm="|W|_0",alpha1=None,alpha2=None, path=None):
     BC_dataset_modules,  module_label = create_plot_bog_modules(distribution,original, dataset_list,pruner_style=pruner_style, pruner_ratio=pruner_ratio,norm=norm,alpha=alpha1,plot=False)
     AC_skill_modules = np.dot(AB_dataset_skill.T,BC_dataset_modules)
     AC_skill_modules = spectral_sparsification(AC_skill_modules,alpha=alpha2)
-    networkx_draw_bipartite(AC_skill_modules,skill_label,module_label, A_node_color="tab:red",B_node_color="tab:green")
+    networkx_draw_bipartite(AC_skill_modules,skill_label,module_label, A_node_color="tab:red",B_node_color="tab:green",path=path)
 

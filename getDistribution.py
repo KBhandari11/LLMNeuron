@@ -146,7 +146,7 @@ def main():
     json_object = json.dumps(all_distribution["|W|_F"], cls=NumpyEncoder)
     with open("result/all_distribution_org_pruner.json", "w") as outfile:
         outfile.write(json_object)'''
-    SAVE = "/data/Kushal/MLNeuron/checkpoints/llama-7b/"
+    SAVE = "/data/Kushal/MLNeuron/checkpoints/llama3-7b/"
     all_distribution = {"|W|_F":{},"|W|_0":{}}
     for pruner_type in ["LLM_Pruner"]:
         dir = SAVE + pruner_type +"/"

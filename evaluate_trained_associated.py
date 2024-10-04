@@ -18,7 +18,7 @@ from utils.dataset import getData
 from utils.evaluation import evaluate
 from transformers import AutoTokenizer, LlamaForCausalLM
 from transformers.models.llama.modeling_llama import LlamaDecoderLayer
-from torch.optim import AdamW
+from torch.optim import AdamW,Adadelta
 from utils.bag_of_words.projection_community import *
 
 from pynvml import *
@@ -178,10 +178,10 @@ def get_model(model_name):
     tokenizer = AutoTokenizer.from_pretrained(base_model)
     model = LlamaForCausalLM.from_pretrained(
         base_model,
-        low_cpu_mem_usage=True, 
+        #low_cpu_mem_usage=True, 
         #device_map="auto"
     )
-    tokenizer.add_special_tokens({'pad_token': '<pad>'})
+    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
     model.resize_token_embeddings(len(tokenizer))
     return model, tokenizer
 
@@ -231,11 +231,13 @@ def del_grad(model):
 
 class DataDataset(torch.utils.data.Dataset):
     def __init__(self, train_dataloader_list):
-        self.input = [x.squeeze(0) for x,_ in train_dataloader_list]
-        self.labels = [y.squeeze(0) for _,y in train_dataloader_list]
+        self.input = [x.squeeze(0) for x,_,_ in train_dataloader_list]
+        self.attention = [y.squeeze(0) for _,y,_ in train_dataloader_list]
+        self.labels = [z.squeeze(0) for _,_,z in train_dataloader_list]
 
     def __getitem__(self, idx):
         item = {"input_ids": torch.Tensor(self.input[idx])}
+        item['attention_mask'] = torch.Tensor(self.attention[idx])
         item['labels'] = torch.Tensor(self.labels[idx])
         return item
 
@@ -255,11 +257,11 @@ def train_multigpu(model, rank, world_size, train_loader, optimizer, epoch, samp
     if sampler:
         sampler.set_epoch(epoch)
     
-    for data, target in train_loader:
+    for data,atten, target in train_loader:
         #data, target = batch[0].to(rank), batch[1].to(rank)
-        data, target = data.to(rank), target.to(rank)
+        data,atten, target = data.to(rank), atten.to(rank), target.to(rank)
         optimizer.zero_grad()
-        outputs = model(input_ids=data, labels=target)
+        outputs = model(input_ids=data,attention_mask=atten,labels=target)
         loss = outputs.loss
         loss.backward()
         optimizer.step()
@@ -270,14 +272,15 @@ def train_multigpu(model, rank, world_size, train_loader, optimizer, epoch, samp
     if rank == 0:
         print('Train Epoch: {} \tLoss: {:.6f}'.format(epoch, ddp_loss[0] / ddp_loss[1]), file=sys.stderr)
 
-def fsdp_main(rank, world_size, dataset, model, epoch, optimizer):
+def fsdp_main(rank, world_size ,dataset, model, epoch,lr=1e-5):
     setup(rank, world_size)
 
+    optimizer = AdamW(model.parameters(), lr=lr,weight_decay=0.0)#Adadelta
 
     sampler1 = DistributedSampler(dataset, rank=rank, num_replicas=world_size, shuffle=False)
 
     train_kwargs = {'batch_size': 2, 'sampler': sampler1,"drop_last":True}
-    cuda_kwargs = {'num_workers': 3,
+    cuda_kwargs = {'num_workers': 4,
                     'pin_memory': True,
                     'shuffle': False}
     train_kwargs.update(cuda_kwargs)
@@ -290,24 +293,25 @@ def fsdp_main(rank, world_size, dataset, model, epoch, optimizer):
     sharding_strategy: ShardingStrategy = ShardingStrategy.FULL_SHARD
     torch.cuda.set_device(rank)
     bfSixteen = MixedPrecision( param_dtype=torch.bfloat16, reduce_dtype=torch.bfloat16, buffer_dtype=torch.bfloat16)
+    fpSixteen = MixedPrecision( param_dtype=torch.float16,reduce_dtype=torch.float16,buffer_dtype=torch.float16)
 
     init_start_event = torch.cuda.Event(enable_timing=True)
     init_end_event = torch.cuda.Event(enable_timing=True)
 
     model = FSDP(model,
                  auto_wrap_policy=llama_auto_wrap_policy,
-                  mixed_precision=bfSixteen, 
+                  #mixed_precision=fpSixteen, 
                   cpu_offload=CPUOffload(offload_params=True),
                   sharding_strategy=sharding_strategy,
                   backward_prefetch = BackwardPrefetch.BACKWARD_PRE,
                   use_orig_params=True,
                   device_id=torch.cuda.current_device())
 
-    scheduler = StepLR(optimizer, step_size=1)
+    #scheduler = StepLR(optimizer, step_size=epoch)
     init_start_event.record()
     for epoch in range(1, epoch + 1):
         train_multigpu(model, rank, world_size, train_loader, optimizer, epoch, sampler=sampler1)
-        scheduler.step()
+        #scheduler.step()
     init_end_event.record()
 
     if rank == 0:
@@ -322,29 +326,28 @@ def fsdp_main(rank, world_size, dataset, model, epoch, optimizer):
     cleanup()
     del model
 
-def run_fsdp(dataset, model, epoch, optimizer):
+def run_fsdp(dataset, model, epoch, lr):
     WORLD_SIZE = torch.cuda.device_count()
-    model = model.to("cpu")
     torch.cuda.empty_cache()
     mp.spawn(fsdp_main,
-        args=(WORLD_SIZE, dataset,model, epoch, optimizer),
-        nprocs=WORLD_SIZE,
-        join=True)
+            args=(WORLD_SIZE, dataset,model, epoch,lr),
+            nprocs=WORLD_SIZE,
+            join=True)
 
-def train_model_default(train_dataloader_list,model,num_epochs = 3):
+def train_model_default(train_dataloader_list,model,num_epochs = 3, lr=1e-5):
     if len(train_dataloader_list) == 0:
         print("No data within dataset")
         print("No data within dataset",file=sys.stderr)
         return model 
-    optimizer = AdamW(model.parameters(), lr=3e-5)
-    tensor_data = torch.stack([x.squeeze(0) for x,_ in train_dataloader_list],dim=0) # transform to torch tensor
-    tensor_label = torch.stack([y.squeeze(0) for _,y in train_dataloader_list],dim=0)
+    tensor_data = torch.stack([x.squeeze(0) for x,_,_ in train_dataloader_list],dim=0) # transform to torch tensor
+    tensor_atten = torch.stack([y.squeeze(0) for _,y,_ in train_dataloader_list],dim=0) # transform to torch tensor
+    tensor_label = torch.stack([z.squeeze(0) for _,_,z in train_dataloader_list],dim=0)
     #data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
-    train_dataset = TensorDataset(tensor_data,tensor_label) # create your datset
+    train_dataset = TensorDataset(tensor_data,tensor_atten,tensor_label) # create your datset
     #train_dataset = DataDataset(train_dataloader_list)
 
     #accelerator.print(f"{AcceleratorState()}")
-    run_fsdp(train_dataset,model,num_epochs, optimizer)
+    run_fsdp(train_dataset,model,num_epochs,lr)
     state_dict = torch.load( "./temp/test.pt")
     model.load_state_dict(state_dict)
     return model 
@@ -355,7 +358,7 @@ def get_high_datasets(ranked_dataset, top_skill= 50):
 
 def freeze_and_train_model(model, modules_list,train_dataloader_list,num_epochs):
     model_new =  freeze_model(model, modules_list)
-    model_train  = train_model_default(train_dataloader_list,model_new,num_epochs)
+    model_train  = train_model_default(train_dataloader_list,model_new,num_epochs,lr=1e-4)
     return model_train
 
 def flatten_comprehension(matrix):
@@ -420,52 +423,54 @@ def free_mem(model):
 if __name__ == "__main__":
     set_random_seed(int(sys.argv[1]))
     sparsity_ratio = "20"
-    data = {"iteration":[],"model":[],"pruning_style":[],"community":[],"pruning_ratio":[],"dataset":[],"accuracy":[],"rank":[],"modules":[],"modules_size":[],"finetune":[]}
+    modules=["attn.q", "attn.k", "attn.v", "attn.o"]
+    all_modules = [f"{i}_{m}"  for i in range(3,31) for m in modules]
+    data = {"iteration":[],"model":[],"pruning_style":[],"community":[],"pruning_ratio":[],"dataset":[],"accuracy":[],"rank":[],"modules":[],"modules_size":[],"finetune":[],"l2":[]}
     modules_community_dataset,dataset_info_list, dataset_list = get_modulesCommunityDataset(sparsity_ratio)
+    print("dataset_name,run_name,community,pruner_style,accuracy,modules_size,l2")
     #"pruner_style","model","sparsity_ratio","community"
     for idx, model_name in enumerate(modules_community_dataset["model"]):
-        print(idx, model_name, modules_community_dataset["pruner_style"][idx])
+        #print(idx, model_name, modules_community_dataset["pruner_style"][idx])
         #Just working with KL divergence based approach
         community_data_lists = modules_community_dataset["community"]["kl"][idx]
         for comm_name, community in community_data_lists.items():
-            print("Community Name:",comm_name)
+            #print("Community Name:",comm_name)
             #get_high_datasets(modules_community_dataset["community"]["network"][idx][comm_name]["dataset"], top_skill=20)
             module_dataset_kl = get_high_datasets(modules_community_dataset["community"]["kl"][idx][comm_name]["dataset"]["all"], top_skill=10)
             module_dataset_info_format_kl = get_all_dataset_list(dataset_info_list, module_dataset_kl)
             #Just working with KL divergence based approach,
             module_accuracy = []
             rank_list = []
+            rank = 1
             for dataset_name_label,dataset_name  in zip(module_dataset_kl, module_dataset_info_format_kl):
                 module_accuracy_run = []
-                print(dataset_name_label,end=" | ")
-                for run_name in ["All", "None",f"Community: {comm_name}"]:
+                for run_name in ["All","Community","Random"]:
                     model, tokenizer = get_model(model_name)
-                    before = compute_l2_norm(model)
-                    args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=100,seqlen=500,model_type="llama",num_process=10,max_length=100,device='cuda',fine_tune=False,evaluation_size=20, seed=0)
+                    args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=100,seqlen=1000,model_type="llama",num_process=10,max_length=100,device='cuda',fine_tune=False,evaluation_size=50, seed=0)
                     train_dataset_list, validation_dataset = getData(tokenizer,dataset_info_list, dataset_name, args_dataset)
-                    if run_name == "None":
-                        finetuned_model = model
+                    print(dataset_name_label,run_name, file=sys.stderr)
+                    if run_name == "All":
+                        finetuned_model = train_model_default(train_dataset_list,model,num_epochs = 1)
                         module_list = []
-                        rank = None
-                    elif run_name == "All":
-                        finetuned_model = train_model_default(train_dataset_list,model,num_epochs = 3)
-                        module_list = []
-                        rank = None
-                    else:
+                    elif run_name == "Community":
                         module_list =  community["modules"]
-                        finetuned_model = freeze_and_train_model(model, module_list, train_dataset_list,num_epochs = 3)
-                        rank = modules_community_dataset["community"]["kl"][idx][comm_name]["dataset"]["all"].index(dataset_name_label)
+                        finetuned_model = freeze_and_train_model(model, module_list, train_dataset_list,num_epochs = 1)
+                    elif run_name == "Random":
+                        all_non_comm_module_list =  [m for m in all_modules if m not in community["modules"] and m.split["_"][-1] not in [comm_m.split["_"][-1] for comm_m in community["modules"]]] 
+                        module_list = random.sample(all_non_comm_module_list,len(community["modules"]))
+                        finetuned_model = freeze_and_train_model(model, module_list, train_dataset_list,num_epochs = 1)
+                        #rank = modules_community_dataset["community"]["kl"][idx][comm_name]["dataset"]["all"].index(dataset_name_label)
                     finetuned_model = finetuned_model.to("cuda")
-                    print([before,  compute_l2_norm(finetuned_model)], end=", ")
                     accuracy, _ = evaluate(model=finetuned_model,tokenizer=tokenizer,testloader=validation_dataset,args=args_dataset)
 
                     module_accuracy_run.append(accuracy)
+                    after = compute_l2_norm(finetuned_model)
                     free_mem(finetuned_model)
                     free_mem(model)
                     del finetuned_model
                     del model
                     
-
+                    print(f"{dataset_name_label},{run_name},{comm_name},{modules_community_dataset['pruner_style'][idx]},{accuracy[2]},{len(module_list)},{after}")
                     data["iteration"].append(int(sys.argv[1]))
                     data["model"].append(model_name)
                     data["pruning_style"].append(modules_community_dataset["pruner_style"][idx])
@@ -477,17 +482,18 @@ if __name__ == "__main__":
                     data["modules"].append(module_list)
                     data["modules_size"].append(len(module_list))
                     data["finetune"].append(run_name)
-                print()
-                print(module_accuracy_run)
-                module_accuracy.append(module_accuracy)
+                    data["l2"].append(after)
+                module_accuracy.append(module_accuracy_run)
                 rank_list.append(rank)
+                rank +=1
             print("\n","*"*100)
             print(module_list)
             print("Module Accuracy",comm_name,module_accuracy, flush=True)
-            print("Module Rank",comm_name,rank_list, flush=True)
+            print("\n","*"*100)
+
         print("++"*100)
         df = pd.DataFrame(data)
-        df.to_csv(f'./result/randomize_accuracy/randomize_data_new_kl_{sys.argv[1]}.csv') 
+        df.to_csv(f'./result/randomize_accuracy/randomize_data_new_kl_{sys.argv[1]}.csv',index=False) 
 
     df = pd.DataFrame(data)
-    df.to_csv(f'./result/randomize_accuracy/randomize_data_new_kl_{sys.argv[1]}.csv') 
+    df.to_csv(f'./result/randomize_accuracy/randomize_data_new_kl_{sys.argv[1]}.csv', index=False) 
