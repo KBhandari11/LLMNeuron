@@ -12,6 +12,70 @@ import numpy as np
 from operator import itemgetter
 from itertools import combinations
 
+from collections import defaultdict
+from scipy.cluster.hierarchy import linkage, fcluster,ClusterWarning, dendrogram
+from scipy.spatial.distance import squareform
+from warnings import simplefilter
+simplefilter("ignore", ClusterWarning) 
+def create_coassignment_matrix(node_list, all_runs_communities, num_runs):
+    num_nodes = len(node_list)
+    coassignment_matrix = np.zeros((num_nodes, num_nodes))
+
+    node_index = {node: idx for idx, node in enumerate(node_list)}
+
+    for run_communities in all_runs_communities:
+        for community in run_communities.values():
+            for i in range(len(community)):
+                for j in range(i + 1, len(community)):
+                    node_i = community[i]
+                    node_j = community[j]
+                    idx_i = node_index[node_i]
+                    idx_j = node_index[node_j]
+
+                    coassignment_matrix[idx_i, idx_j] += 1
+                    coassignment_matrix[idx_j, idx_i] += 1  # Symmetric matrix
+
+    coassignment_matrix /= num_runs
+
+    return coassignment_matrix, node_index
+
+
+def analyze_stable_communities(node_list,all_runs_communities,avg_num_communities, num_runs=100, threshold=0.8):
+
+
+    coassignment_matrix, node_index = create_coassignment_matrix(node_list, all_runs_communities, num_runs)
+    condensed_coassignment_matrix = coassignment_matrix# squareform(coassignment_matrix)
+    Z = linkage(condensed_coassignment_matrix, method='average')
+    clusters = fcluster(Z, t=Z[-avg_num_communities, 2], criterion='distance')
+    '''# Create the heatmap
+    # Plot dendrogram and heatmap together
+    fig, ax_dendro = plt.subplots(figsize=(8, 4))
+
+    # Create a subplot for the dendrogram
+    dendrogram(Z, ax=ax_dendro, orientation='top', color_threshold=Z[-avg_num_communities, 2], labels=list(node_index.keys()))
+    ax_dendro.set_yticks([])
+    ax_dendro.set_title("Dendrogram")
+    plt.show()
+    fig,  ax_heatmap  = plt.subplots(figsize=(8, 8))
+    # Create a subplot for the heatmap
+    sns.heatmap(
+        coassignment_matrix,
+        ax=ax_heatmap,
+        cmap='viridis',
+        cbar=True,
+        square=True,
+        xticklabels=list(node_index.keys()),
+        yticklabels=list(node_index.keys())
+    )
+    ax_heatmap.set_title("Co-Assignment Matrix Heatmap")
+
+    # Show the plot
+    plt.show()'''
+    clustered_communities = defaultdict(list)
+    for node, cluster_id in zip(node_list, clusters):
+        clustered_communities[cluster_id].append(node)
+
+    return dict(clustered_communities)
 
 def plot_community_model(g,partition):
     g.remove_edges_from(nx.selfloop_edges(g))
@@ -98,44 +162,24 @@ def most_central_edge(G):
     centrality = nx.edge_betweenness_centrality(G, weight="weight")
     return max(centrality, key=centrality.get)
 
-def consensus_community(G, num_runs=20, ground_truth =None):
-    if ground_truth == None:
-        # Track the best community structure
-        best_communities = None
-        modularity = []
-        best_modularity = -1  # Initialize with a very low modularity
 
-        for seed in range(num_runs):
-            communities = nx.community.louvain_communities(G, weight='weight', resolution=1, seed=seed)
-            current_modularity = nx.community.modularity(G, communities,weight='weight')
-            modularity.append(current_modularity)
-            if current_modularity > best_modularity:
-                best_modularity = current_modularity
-                best_communities = communities
-    else:
-        best_communities = None
-        best_adjusted_rand_score = -1  # Initialize with a very low modularity
-        
-        for seed in range(num_runs):
-            communities = nx.community.louvain_communities(G, weight='weight', resolution=1)
-            predicted_label = []
-            for nodes in G.nodes():
-                for comm_idx, comm in enumerate(communities):
-                    if nodes in comm:
-                        predicted_label.append(comm_idx)
-                        continue
-            score = adjusted_rand_score(ground_truth, predicted_label)
-            if best_adjusted_rand_score > score:
-                best_adjusted_rand_score = score
-                best_communities = communities
-    return best_communities
-def get_community(g, ground_truth=None):
+def get_community(g,community_seed=0,ground_truth=None):
     #g = deepcopy(G)
     #isolated = list(nx.isolates(g))
     #g.remove_nodes_from(isolated)
     #partition = community_louvain.best_partition(g)
     #communities = consensus_community(g, ground_truth =ground_truth)
-    communities = nx.community.louvain_communities(g,resolution=1,weight="weight", seed=0)
+    all_runs_communities = []
+    num_communities_list = []
+    num_runs = 100
+    for i in range(num_runs):
+        communities = nx.community.louvain_communities(g,resolution=1,weight="weight", seed=i)
+        communities = {idx:list(x) for idx, x in enumerate(communities)}
+        all_runs_communities.append(communities)
+        num_communities_list.append(len(communities))  # Store number of communities per run
+    avg_num_communities = int(np.mean(num_communities_list))
+    communities = analyze_stable_communities(list(g.nodes()),all_runs_communities,avg_num_communities, num_runs=num_runs)
+    communities = [set(value) for _, value in communities.items()]
     partition = {}
     for node in g.nodes():
         for idx,comm_nodes in enumerate(communities):
@@ -152,7 +196,7 @@ def get_community(g, ground_truth=None):
             partition[node] = new'''
     return comm, partition
 
-def get_network_property(AB, labelA, labelB,get_centrality_bool =False, ground_truth=None):
+def get_network_property(AB, labelA, labelB,community_seed=0,get_centrality_bool =False, ground_truth=None):
     G = nx.Graph()
     for i in range(AB.shape[0]):
         for j in range(AB.shape[1]):  
@@ -162,7 +206,7 @@ def get_network_property(AB, labelA, labelB,get_centrality_bool =False, ground_t
     result["average_degree"] = sum(dict(G.degree()).values()) / len(G)
     result["average_cluster"] = nx.average_clustering(G)  # Average clustering coefficient
     result["density"] = nx.density(G)
-    community , result["partition"]  = get_community(G)
+    community , result["partition"]  = get_community(G,community_seed=community_seed)
     result["num_community"] = len([comm for comm in community if len(community[comm])!=0] )
     result["modularity"] = nx.community.modularity(G,[community[comm] for comm in community])
     result["community"] = community

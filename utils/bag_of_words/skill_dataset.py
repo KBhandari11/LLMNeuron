@@ -7,11 +7,6 @@ import seaborn as sns
 from collections import Counter
 from sklearn.preprocessing import MinMaxScaler
 
-def set_random_seed(seed=0):
-    #random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
     
 
 #create frequency matrix given list of skills for each dataset. Create an adj matrix for skills vs dataset

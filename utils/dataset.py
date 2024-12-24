@@ -58,8 +58,8 @@ def adjustAutoRegressive(examples):
         examples["label"] = examples[key[2]]
     option_choices = insertOption(option)
     examples["target"] = f"{chr(int(examples['label'])+ord('A'))}. {option[int(examples['label'])]}" #option[int(examples["label"])] #chr(int(examples["label"])+ord('A'))#
-    examples["input"] = fewshotPrompt + f"Question: {examples[key[0]]} \n " + (" \n ").join(option_choices)+"\nWithout any explanation, select the best answer.\nAnswer: "
-    examples["input_no_few"] = f"Question: {examples[key[0]]} \n " + (" \n ").join(option_choices)+"\nWithout any explanation, select the best answer.\nAnswer: "
+    examples["input"] = fewshotPrompt + f"Question: {examples[key[0]]} \n" + (" \n").join(option_choices)+"\nWithout any explanation, select the best answer.\nAnswer:"
+    examples["input_no_few"] = f"Question: {examples[key[0]]} \n" + (" \n").join(option_choices)+"\nWithout any explanation, select the best answer.\nAnswer:"
     return examples
 
 def modifyDataset(dataset,keys,fewshot, prefix, dataset_name, args):
@@ -114,16 +114,16 @@ def get_data(dataset_name,dataset_list, tokenizer, args):
         num_dataset = args.nsamples
     for num in range(num_dataset):
         i = random.randint(0, len(traindata) - 1)
-        trainenc = tokenizer(traindata[i]['input'], return_tensors='pt',padding='max_length', max_length=args.seqlen,truncation=True)
+        trainenc = tokenizer(traindata[i]['input_no_few'], return_tensors='pt',padding='max_length', max_length=args.seqlen,truncation=True)
         #trainenc = tokenizer(traindata[i]['input'], return_tensors='pt',padding=True, truncation=True)
         label = tokenizer(traindata[i]['target'], return_tensors='pt',padding='max_length', max_length=args.seqlen,truncation=True)
         #i = trainenc.input_ids.shape[1]#random.randint(0, trainenc.input_ids.shape[1] - args.seqlen - 1)
         inp = trainenc.input_ids 
         atten = trainenc.attention_mask 
-        #tar = inp.clone()
+        #tar = inp.clone(
         tar = label.input_ids#torch.cat((tar, label.input_ids), 1)
         #inp = torch.where(inp != 32000, inp, -100)
-        tar = torch.where(tar != 32000, inp, -100)
+        tar = torch.where(tar != 32000, tar, -100)
         #tar[:, :i] = -100
         #inp = torch.nn.functional.pad(inp, (inp.size(1), args.seqlen - inp.size(1)), value=-100)
         #tar = torch.nn.functional.pad(tar, (tar.size(1), args.seqlen - tar.size(1)), value=-100)

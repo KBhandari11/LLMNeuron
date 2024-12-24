@@ -1,9 +1,7 @@
 import networkx as nx
 import numpy as np
 import random
-def set_random_seed(seed=0):
-    random.seed(seed)
-    np.random.seed(seed)
+
 def community_layout(g, partition):
     """
     Compute the layout for a modular graph.
@@ -24,7 +22,6 @@ def community_layout(g, partition):
         node positions
 
     """
-    set_random_seed()
     pos_communities = _position_communities(g, partition, scale=3.)
 
     pos_nodes = _position_nodes(g, partition, scale=1.)

@@ -50,7 +50,7 @@ def compute_effective_resistance(L):
             R_eff[j, i] = R_eff[i, j]
     return R_eff
 
-def spectral_sparsification(adj_matrix, alpha=None,random_seed = True):
+def spectral_sparsification(adj_matrix, alpha=None):
     """
     Perform spectral sparsification on a graph represented by a weighted adjacency matrix.
     adj_matrix: Weighted adjacency matrix of the graph.

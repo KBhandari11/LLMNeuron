@@ -7,11 +7,9 @@ import matplotlib.pyplot as plt
 # Import necessary libraries
 mpl.rcParams.update(mpl.rcParamsDefault)
 import collections
-from utils.bag_of_words.bipartite_multipartite_projection import *
-from utils.bag_of_words.permutation_test import *
-from utils.bag_of_words.skill_dataset import *
-from utils.bag_of_words.network_property import *
-from utils.bag_of_words.dataset_modules import *
+from utils.bag_of_words.skill_dataset import create_plot_bog_skills
+from utils.bag_of_words.bipartite_multipartite_projection import spectral_sparsification, create_plot_bog_modules, get_projection, create_biparitite 
+from utils.bag_of_words.network_property import get_network_property
 from scipy.stats import chi2_contingency, entropy
 
 def l_0_norm(vector):
@@ -114,16 +112,17 @@ def add_isolated(label, all_label):
 
 def get_community_for_alpha(dataCategory, dataset_list, distribution, original, pruner_style="block", sparsity_ratio="15",alpha1=None, alpha2=None, random_seed=True, modules_vs_modules=True):
     AB_dataset_skill, skill_label = create_plot_bog_skills(dataCategory, dataset_list, plot=False)
-    BC_dataset_modules, module_label = create_plot_bog_modules(distribution,original, dataset_list,pruner_style=pruner_style, pruner_ratio=sparsity_ratio,norm="|W|_0",plot=False, alpha=alpha1, random_seed=random_seed)
+    BC_dataset_modules, module_label = create_plot_bog_modules(distribution,original, dataset_list,pruner_style=pruner_style, pruner_ratio=sparsity_ratio,norm="|W|_0",plot=False, alpha=alpha1)
     A_skill_modules =  np.dot(AB_dataset_skill.T,BC_dataset_modules)
-    sparse_network = spectral_sparsification(A_skill_modules, alpha2, random_seed=random_seed)
+    sparse_network = spectral_sparsification(A_skill_modules, alpha2)
+    sparse_network =  sparse_network #min_max(sparse_network)
     if modules_vs_modules:
         _ ,A_modules_modules  = get_projection(sparse_network, plot_projection= False)
-        G, network_property = get_network_property(A_modules_modules,module_label,module_label)
+        G, network_property = get_network_property(A_modules_modules,module_label,module_label )
     else:
         A_skills_skills , _ = get_projection(sparse_network, plot_projection= False)
         G, network_property = get_network_property(A_skills_skills,skill_label,skill_label )
-    return G, network_property, (BC_dataset_modules, sparse_network,skill_label,module_label)
+    return G, network_property, (sparse_network,skill_label,module_label), (AB_dataset_skill, BC_dataset_modules, A_skill_modules)
 
 def get_ground_truth(all_node, cognitive_skills_community):
     ground_truth = {}
@@ -217,31 +216,34 @@ def get_datasets_shared_by_modules(community_detected ,dataset_modules,dataset_l
         community[comm] = [x for x, y in ranked_nodes]
     return community
 
-def create_projection_network(dataCategory,dataset_list, distribution_dist, original_dist, sparsity_ratio = "25",random_seed=True, get_graph=False):
+def create_projection_network(dataCategory,dataset_list, distribution_dist, original_dist, sparsity_ratio = "25", get_graph=False):
     cognitive_skills_community, all_label_skills = all_skill_label()
     ground_truth = get_ground_truth(all_label_skills,cognitive_skills_community)
     ground_truth = np.array([comm for  _, comm in ground_truth.items()])
     if get_graph:
-        data  = {"pruner_style":[],"model":[],"sparsity_ratio":[],"community":{"kl":[],"network":[]},"graph":[]}
+        data  = {"pruner_style":[],"model":[],"sparsity_ratio":[],"community":{"kl":[],"network":[]},"network_data":[],"graph":[],"network_property":[],"frequency_skill":[]}
     else:
-        data  = {"pruner_style":[],"model":[],"sparsity_ratio":[],"community":{"kl":[],"network":[]}}
+        data  = {"pruner_style":[],"model":[],"sparsity_ratio":[],"community":{"kl":[],"network":[]},"network_data":[],"network_property":[],"frequency_skill":[]}
     for pruner_style in ["block","channel"]:
         for model_idx ,model in enumerate(["llama","llama_chat","vicuna"]):
-            G, property_1, (dataset_modules,skills_modules, skill_label, module_label) = get_community_for_alpha(dataCategory, dataset_list, distribution_dist[model_idx], original_dist[model_idx], pruner_style=pruner_style, sparsity_ratio=sparsity_ratio,alpha1=0.01,alpha2=0.01,random_seed=random_seed)
-            community_detected_frequency = get_skills_shared_by_modules(G,property_1["community"],skills_modules,skill_label, module_label, all_label_skills)
+            G, network_property, (skills_modules,skill_label,module_label), ( skill_dataset, dataset_modules, _)= get_community_for_alpha(dataCategory, dataset_list, distribution_dist[model_idx], original_dist[model_idx], pruner_style=pruner_style, sparsity_ratio=sparsity_ratio,alpha1=0.01,alpha2=0.01)
+            community_detected_frequency = get_skills_shared_by_modules(G,network_property["community"],skills_modules,skill_label, module_label, all_label_skills)
             dataset_frequency = create_frequency_skills(dataCategory, all_label_skills)
             kl_based_data = check_kl_divergence(community_detected_frequency,dataset_frequency, top_k=20)
-            nework_based_data = get_datasets_shared_by_modules(property_1["community"] ,dataset_modules,dataset_list,module_label)
+            nework_based_data = get_datasets_shared_by_modules(network_property["community"] ,dataset_modules,dataset_list,module_label)
             data["pruner_style"].append(pruner_style)
             data["sparsity_ratio"].append(sparsity_ratio)
             data["model"].append(model)
+            data["network_property"].append(network_property)
+            data["network_data"].append(((skill_label,dataset_list,module_label),(skill_dataset, dataset_modules,skills_modules)))
             if get_graph:
                 data["graph"].append(G)
             save_data_kl = {}
             save_data_network = {}
-            for comm, communities in property_1["community"].items():  
+            for comm, communities in network_property["community"].items():  
                 save_data_kl[comm] = {"modules":communities,"dataset": kl_based_data[comm]}
                 save_data_network[comm] = {"modules":communities,"dataset": nework_based_data[comm]}#kl_based_data[comm]}
             data["community"]["kl"].append(save_data_kl)
             data["community"]["network"].append(save_data_network)
+            data["frequency_skill"].append(community_detected_frequency)
     return data
