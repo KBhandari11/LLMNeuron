@@ -23,4 +23,4 @@ These networks allow us to analyze skill localization, module importance, and co
 - **Module Community Analysis**: Apply spectral and clustering methods to uncover modular specialization and skill co-activation patterns.
 - **Biological Comparison**: Evaluate fine-tuning strategies inspired by neural localization in biological systems (e.g., human vs. avian brains).
 
-Link to the dataset:  [Google Drive][https://drive.google.com/file/d/1icPj-ivjMHqr8VZh2wk6-Y324baK1PAp/view?usp=sharing]
+Link to the dataset:  [Google Drive](https://drive.google.com/file/d/1icPj-ivjMHqr8VZh2wk6-Y324baK1PAp/view?usp=sharing)
