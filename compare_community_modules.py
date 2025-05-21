@@ -213,6 +213,7 @@ def create_frequency_skills(dataCategory, all_skill_label):
         freq_skills = collections.Counter(skills)
         freq[data] = [freq_skills[skill] if skill in freq_skills else 0 for skill in all_skill_label]
     return freq
+    
 def check_kl_divergence(community_detected_frequency, sample_dict):
     comm_list = list(community_detected_frequency.keys())
     distributions = np.array([freq for _, freq in community_detected_frequency.items()],dtype='float64')

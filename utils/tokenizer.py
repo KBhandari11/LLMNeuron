@@ -17,13 +17,12 @@ def createTokens(examples):
     '''
     results = {}
     #model_inputs  = tokenizer(examples["input"], return_tensors="pt", padding=True, truncation=False)
-    model_inputs  = tokenizer(examples["input"], return_tensors="pt")
+    model_inputs  = tokenizer(examples["input_no_few"], return_tensors="pt")
     #results["input_ids"] = model_inputs["input_ids"]
     #results["attention_mask"] = model_inputs["attention_mask"]
     #results["labels"]  = tokenizer(examples["label"]).input_ids
     #results["labels"]  = tokenizer(examples["label"]).input_ids
     #results['labels'] = torch.squeeze(func.one_hot(torch.tensor(examples["label"]), num_classes = len(examples["input"])))
-
     return model_inputs
 
 def getDataLoader(tokenizerGiven: PreTrainedTokenizer,dataset: DataLoader,args:ArgumentParser):

@@ -242,7 +242,7 @@ def create_projection_network(dataCategory,dataset_list, distribution_dist, orig
             save_data_network = {}
             for comm, communities in network_property["community"].items():  
                 save_data_kl[comm] = {"modules":communities,"dataset": kl_based_data[comm]}
-                save_data_network[comm] = {"modules":communities,"dataset": nework_based_data[comm]}#kl_based_data[comm]}
+                save_data_network[comm] = {"modules":communities,"dataset": nework_based_data[comm]}
             data["community"]["kl"].append(save_data_kl)
             data["community"]["network"].append(save_data_network)
             data["frequency_skill"].append(community_detected_frequency)
