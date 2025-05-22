@@ -91,7 +91,7 @@ if __name__ == "__main__":
         dataset_info_list = json.load(openfile)
     existing_runs = pd.read_csv(f'./result/randomize_accuracy/finetuning_result_modified.csv',dtype=str).drop_duplicates(subset=['iteration','model',"pruning_style","community","finetune","dataset"])
     existing_runs = convert_list(existing_runs)
-    save_file = "/gpfs/u/home/LLMG/LLMGbhnd/barn/LLMNeuron/result/randomize_accuracy/cross_community_evaluation.csv"
+    save_file = "./result/randomize_accuracy/cross_community_evaluation.csv"
 
     results = []
     if os.path.exists(save_file) and os.path.getsize(save_file) > 0:
@@ -126,7 +126,7 @@ if __name__ == "__main__":
                 model,tokenizer = get_model(model_name)
                 if other_community != community:
                     if finetune != "Without Finetune":
-                        model.load_state_dict(torch.load(f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/checkpoint/{saved_model}"))
+                        model.load_state_dict(torch.load(f"./checkpoint/{saved_model}"))
 
                 _, test_dataset = getData(tokenizer,dataset_info_list, eval_dataset_actual, args_dataset,modified_evaluation_dataset=True)
                 accelerator = Accelerator()

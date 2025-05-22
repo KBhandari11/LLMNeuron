@@ -73,7 +73,7 @@ def tokenize_text(text):
 
 def main():
     set_random_seed()
-    with open("/home/bhandk/MLNeuron/dataset_info.json", 'r') as openfile:
+    with open("./dataset_info.json", 'r') as openfile:
         # Reading from json file
         dataset_info_list = json.load(openfile)
     dataset_name_list = get_dataset_list(dataset_info_list)

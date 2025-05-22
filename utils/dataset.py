@@ -82,18 +82,18 @@ def get_data(dataset_name,dataset_list, tokenizer, args, modified_evaluation_dat
     #print("Loading Dataset")
     if isinstance(dataset_name,list):
         if dataset_name[0] == "tasksource/mmlu":
-            traindata = load_dataset(dataset_name[0],dataset_name[1], split="test",cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
-            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation",cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets")  
+            traindata = load_dataset(dataset_name[0],dataset_name[1], split="test")#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation")#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets")  
         elif dataset_name[0] == "tasksource/bigbench":
-            traindata = load_dataset(dataset_name[0],dataset_name[1], split="train",trust_remote_code=True,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
-            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation",trust_remote_code=True,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            traindata = load_dataset(dataset_name[0],dataset_name[1], split="train",trust_remote_code=True)#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            valdata = load_dataset(dataset_name[0], dataset_name[1],split="validation",trust_remote_code=True)#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
     else:
         if dataset_name == "EleutherAI/truthful_qa_mc":
-            traindata = load_dataset(dataset_name, split="validation",cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
-            valdata = load_dataset(dataset_name, split="validation",cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            traindata = load_dataset(dataset_name, split="validation")#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            valdata = load_dataset(dataset_name, split="validation")#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
         else:
-            traindata = load_dataset(dataset_name, split="train",cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
-            valdata = load_dataset(dataset_name, split="validation",cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            traindata = load_dataset(dataset_name, split="train")#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
+            valdata = load_dataset(dataset_name, split="validation")#,cache_dir="/gpfs/u/home/LLMG/LLMGbhnd/scratch/huggingface-cache/datasets") 
     valdata= valdata.shuffle(seed=args.seed)
     traindata.cleanup_cache_files()
     valdata.cleanup_cache_files()

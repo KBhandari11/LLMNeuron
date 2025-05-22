@@ -103,7 +103,7 @@ if __name__ == "__main__":
         dataset_info_list = json.load(openfile)
     existing_runs = pd.read_csv(f'./result/randomize_accuracy/randomize_data_new_kl_longer_2_old.csv',dtype=str).drop_duplicates(subset=['iteration','model',"community","dataset"])
     existing_runs = convert_list(existing_runs)
-    save_file = "/gpfs/u/home/LLMG/LLMGbhnd/barn/LLMNeuron/result/randomize_accuracy/no_module_accuracy.csv"
+    save_file = "./result/randomize_accuracy/no_module_accuracy.csv"
 
     results = []
     if os.path.exists(save_file) and os.path.getsize(save_file) > 0:

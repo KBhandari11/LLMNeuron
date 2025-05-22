@@ -99,7 +99,7 @@ def get_dataset_list(dataset_list):
                 dataname.append(subset)
     return dataname
     #Dataset List
-with open("/home/bhandk/MLNeuron/dataset_info.json", 'r') as openfile:
+with open("./dataset_info.json", 'r') as openfile:
         # Reading from json file
         dataset_list = json.load(openfile)
 #Original Distribution
@@ -132,6 +132,13 @@ llama_chat_distribution, model_shape = take_average(llama_chat_distribution)
 
 
 from utils.bag_of_words.skill_dataset import *
+
+def set_random_seed(seed=0):
+    #random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
 set_random_seed()
 with open("result/dataNeuropsychologicalDomainsCluster.json", 'r') as openfile:
     # Reading from json file

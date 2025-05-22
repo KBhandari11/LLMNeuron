@@ -108,7 +108,7 @@ if __name__ == "__main__":
     existing_runs = pd.read_csv(f'./result/randomize_accuracy/finetuning_result_modified.csv',dtype=str).drop_duplicates(subset=['iteration','model',"pruning_style","community","finetune","dataset"])
     existing_runs = existing_runs.sort_values(by=['iteration','model',"pruning_style","community","dataset","finetune"])
     existing_runs = convert_list(existing_runs)
-    save_file = "/gpfs/u/home/LLMG/LLMGbhnd/barn/LLMNeuron/result/randomize_accuracy/finetuning_result_reevaluate.csv"
+    save_file = "./result/randomize_accuracy/finetuning_result_reevaluate.csv"
     results = []
     if os.path.exists(save_file):
         # Load existing data from the CSV into the results list
@@ -138,9 +138,9 @@ if __name__ == "__main__":
         eval_dataset_actual = get_all_dataset_list(dataset_info_list, [eval_dataset])[0]
         args_dataset = Namespace(save_data = "",do_train_both = False,nsamples=10,seqlen=1000,model_type="llama",num_process=10,max_length=10,device='cuda',fine_tune=False,evaluation_size=100, seed=0, base_model=model_name)
         model,tokenizer = get_model(model_name)
-        if os.path.isfile(f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/checkpoint/{saved_model}"):
+        if os.path.isfile(f"./checkpoint/{saved_model}"):
             print("\tFile Exists...")
-            model.load_state_dict(torch.load(f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/checkpoint/{saved_model}"))
+            model.load_state_dict(torch.load(f"./checkpoint/{saved_model}"))
 
         _, test_dataset = getData(tokenizer,dataset_info_list, eval_dataset_actual, args_dataset,modified_evaluation_dataset=True)
         accelerator = Accelerator()

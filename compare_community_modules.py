@@ -16,6 +16,14 @@ from utils.bag_of_words.bipartite_multipartite_projection import *
 from utils.bag_of_words.sparsification import spectral_sparsification
 import collections
 from scipy.stats import chi2_contingency, entropy
+
+def set_random_seed(seed=0):
+    #random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+
 def l_0_norm(vector):
     count = 0
     total = 0
@@ -74,7 +82,7 @@ def get_dataset_list(dataset_list):
                 dataname.append(subset)
     return dataname
     #Dataset List
-with open("/home/bhandk/MLNeuron/dataset_info.json", 'r') as openfile:
+with open("./dataset_info.json", 'r') as openfile:
         # Reading from json file
         dataset_list = json.load(openfile)
 #Original Distribution

@@ -78,7 +78,7 @@ def get_dataset_list(dataset_list):
                 dataname.append(subset)
     return dataname
     #Dataset List
-with open("/home/bhandk/MLNeuron/dataset_info.json", 'r') as openfile:
+with open("/dataset_info.json", 'r') as openfile:
         # Reading from json file
         dataset_list = json.load(openfile)
 #Original Distribution

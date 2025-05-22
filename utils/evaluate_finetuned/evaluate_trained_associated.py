@@ -410,8 +410,8 @@ def fsdp_main(rank, world_size, dataset,val_dataset, model, tokenizer, total_epo
     train_logger = []
     start_epoch = 1
     # Check if the logger CSV exists
-    checkpoint_path =f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/checkpoint/temp/{save_checkpoint}.pt" 
-    logger_csv_path = f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/checkpoint/temp/{save_checkpoint}.csv"
+    checkpoint_path =f"./checkpoint/temp/{save_checkpoint}.pt" 
+    logger_csv_path = f"./checkpoint/temp/{save_checkpoint}.csv"
     if os.path.exists(logger_csv_path):
         print_without_rank(f"Logger CSV found. Loading existing data...", file=sys.stderr)
         df_logger = pd.read_csv(logger_csv_path)
@@ -505,7 +505,7 @@ def fsdp_main(rank, world_size, dataset,val_dataset, model, tokenizer, total_epo
         save_dictionary['test_accuracy_gen'] = accuracy_gen[2]
         save_result_csv(file,save_dictionary)
         states = model.state_dict()
-        torch.save(states, f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/checkpoint/{save_checkpoint}.pt") 
+        torch.save(states, f"./checkpoint/{save_checkpoint}.pt") 
     free_mem(model)
     cleanup()
 
